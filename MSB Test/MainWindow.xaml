@@ -11,8 +11,6 @@
             <RowDefinition Height="42*"/>
             <RowDefinition Height="59*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="TestButton" Content="dvdroot" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="TestButton_Click" Width="63" Height="20"/>
-        <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="83,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="486" Height="20"/>
         <Button x:Name="Open_MSB" Content="Randomize" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top" Click="Open_MSB_Click" Height="20" Width="63"/>
         <CheckBox x:Name="ChaliceEnemies" Content="Include Chalice Enemies" HorizontalAlignment="Left" Margin="10,131,0,0" VerticalAlignment="Top" Checked="Chalice_Checked" Height="15" Width="147"/>
         <CheckBox x:Name="BossCheckBox" Content="Randomize Bosses" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Checked="BossCheckBox_Checked" Height="15" Width="118"/>

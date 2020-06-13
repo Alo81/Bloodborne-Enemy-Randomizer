@@ -9900,7 +9900,7 @@ namespace MSB_Test
                                     writetext.WriteLine(tempThinkId + " thinkID");
                                     writetext.WriteLine(modelName + " model");
 
-                                    BossListString.RemoveAt(removalNumber);
+                                    //BossListString.RemoveAt(removalNumber);
                                     writetext.WriteLine("Enemy Pool Count: " + BossListString.Count + Environment.NewLine + Environment.NewLine);
                                 }
                             }

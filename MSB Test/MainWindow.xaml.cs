@@ -142,62 +142,6 @@ namespace MSB_Test
             unusedList.Add("c8020");
             unusedList.Add("c2501");
             unusedList.Add("c90");
-            unusedList.Add("9999_9999");
-            unusedList.Add("9998_9998");
-            unusedList.Add("9997_9997");
-            unusedList.Add("9996_9996");
-            unusedList.Add("9995_9995");
-            unusedList.Add("9994_9994");
-            unusedList.Add("9993_9993");
-            unusedList.Add("9992_9992");
-            unusedList.Add("9991_9991");
-            unusedList.Add("9990_9990");
-            unusedList.Add("9989_9989");
-            unusedList.Add("9988_9988");
-            unusedList.Add("9987_9987");
-            unusedList.Add("9986_9986");
-            unusedList.Add("9985_9985");
-            unusedList.Add("9984_9984");
-            unusedList.Add("9983_9983");
-            unusedList.Add("9982_9982");
-            unusedList.Add("9981_9981");
-            unusedList.Add("9980_9980");
-            unusedList.Add("9979_9979");
-            unusedList.Add("9978_9978");
-            unusedList.Add("9977_9977");
-            unusedList.Add("9976_9976");
-            unusedList.Add("9975_9975");
-            unusedList.Add("9974_9974");
-            unusedList.Add("9973_9973");
-            unusedList.Add("9972_9972");
-            unusedList.Add("9971_9971");
-            unusedList.Add("9970_9970");
-            unusedList.Add("9969_9969");
-            unusedList.Add("9968_9968");
-            unusedList.Add("9967_9967");
-            unusedList.Add("9966_9966");
-            unusedList.Add("9965_9965");
-            unusedList.Add("9964_9964");
-            unusedList.Add("9963_9963");
-            unusedList.Add("9962_9962");
-            unusedList.Add("9961_9961");
-            unusedList.Add("9960_9960");
-            unusedList.Add("9959_9959");
-            unusedList.Add("9958_9958");
-            unusedList.Add("9957_9957");
-            unusedList.Add("9956_9956");
-            unusedList.Add("9955_9955");
-            unusedList.Add("9954_9954");
-            unusedList.Add("9953_9953");
-            unusedList.Add("9952_9952");
-            unusedList.Add("9951_9951");
-            unusedList.Add("9950_9950");
-            unusedList.Add("9949_9949");
-            unusedList.Add("9948_9948");
-            unusedList.Add("9947_9947");
-            unusedList.Add("9946_9946");
-            unusedList.Add("9945_9945");
-            unusedList.Add("9944_9944");
             unusedList.Add("c9030");
             unusedList.Add("c2501");
             unusedList.Add("c2571");
@@ -226,7 +170,6 @@ namespace MSB_Test
             unusedList.Add("c3060_0000");
             unusedList.Add("c8070_0000");
             unusedList.Add("c5130_0000");
-            //unusedList.Add("c1110_0000"); patches
             unusedList.Add("c4031_0000");
             unusedList.Add("c4520_0000");
 
@@ -237,60 +180,35 @@ namespace MSB_Test
             bossList.Add("c2120_0000");
             bossList.Add("c2120_0001");
             bossList.Add("c2120_0002");
-            //bossList.Add("c2121");
             bossList.Add("c2320_0000");
-            //bossList.Add("c2321");
-            bossList.Add("c2500_0000"); //celestial emmisary (remove)
+            bossList.Add("c2500_0000");
             bossList.Add("c2570_0001");
             bossList.Add("c2510_0000");
-            //bossList.Add("c2570");
-            //bossList.Add("c2571");
-            bossList.Add("c2710_0000"); //gascoigne
+            bossList.Add("c2710_0000");
             bossList.Add("c2720_0000");
-            //bossList.Add("c4520_0000");
             bossList.Add("c4520_0002");
-            bossList.Add("c4030_0000"); //living failures (remove)
+            bossList.Add("c4030_0000");
             bossList.Add("c4030_0001");
             bossList.Add("c4030_0002");
             bossList.Add("c4030_0003");
             bossList.Add("c4030_0004");
-            //bossList.Add("c4031_0000");
             bossList.Add("c4500_0000");
             bossList.Add("c4510_0000");
-            bossList.Add("c4540_0000"); //fix kos first phase no death
-            //bossList.Add("c4543_0000"); second kos phase?
+            bossList.Add("c4540_0000");
             bossList.Add("c4541_0000");
-            //bossList.Add("c4541");
-            //bossList.Add("c4542");
-            bossList.Add("c5000_0000"); //cleric beast
-            //bossList.Add("c5010");
+            bossList.Add("c5000_0000");
             bossList.Add("c5020_0000");
-            //bossList.Add("c5040");
-            //bossList.Add("c0000_0005");
             bossList.Add("c5070_0000");
-            //bossList.Add("c5071");
             bossList.Add("c5080_0000");
-            //bossList.Add("c5090");
             bossList.Add("c5100_0000");
             bossList.Add("c5120_0001");
-            //bossList.Add("c5130");
-            //bossList.Add("c5140");
-            //bossList.Add("c5150");
             bossList.Add("c5400_0000");
             bossList.Add("c5510_0000");
-            //bossList.Add("c8060_0000");
             bossList.Add("c8050_0000");
             bossList.Add("c3130_0000");
             bossList.Add("c5010_0000");
             bossList.Add("c4510_0002");
             bossList.Add("c3050_0000");
-            //c3130_0000
-            //c5010_0000
-            //c3050_0000
-            //c5090_0000 110509010
-            //c3060_0000 210306016
-            //
-            //
 
 
             for (int i = 0; i < unusedList.Count; i ++)

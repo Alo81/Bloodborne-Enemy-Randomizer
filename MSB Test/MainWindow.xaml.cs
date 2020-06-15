@@ -12,7 +12,6 @@ namespace MSB_Test
     /// </summary>
     public partial class MainWindow : Window
     {
-        int newNumber = 9999;
         List<string> unusedList = new List<string>();
         List<string> bossList = new List<string>();
         List<string> unusedPlusBossList = new List<string>();
@@ -494,7 +493,7 @@ namespace MSB_Test
         private void GenerateEnemyList(string currentMap, List<string> noNoList)
         {
             string enemyEntityID;
-            //var asstwo = LUAGNL.Read(ass);
+
                 Random rand = new Random();
 
                 var tempGUY = MSBB.Read(currentMap);
@@ -795,7 +794,10 @@ namespace MSB_Test
 
                 for(int j = 0; j < modelList.Count; j ++)
                 {
-                    tempAss.Models.Add(modelList[j]);
+                    if (!tempAss.Models.Enemies.Contains(modelList[j]))
+                    {
+                        tempAss.Models.Enemies.Add(modelList[j]);
+                    }
                 }
 
                 tempAss.Write(mapList[i]);

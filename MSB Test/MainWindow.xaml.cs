@@ -19,11 +19,15 @@ namespace MSB_Test
         List<MSBB.Part.Enemy> addedEnemyList = new List<MSBB.Part.Enemy>();
         List<MSBB.Part.Enemy> addedBossesList = new List<MSBB.Part.Enemy>();
         List<string> logList = new List<string>();
+        List<long> maxSizeList = new List<long>();
         List<long> npcParams = new List<long>();
         List<long> longList = new List<long>();
+        List<string> nameList = new List<string>();
+        List<long> sizeList = new List<long>();
         List<MSBB.Part.Enemy> oopsAllEnemyList = new List<MSBB.Part.Enemy>();
         List<string> oopsAllEnemyString = new List<string>();
         string oopsBossString;
+        Dictionary<string, long> namesAndSizes = new Dictionary<string, long>();
         List<MSBB.Part.Enemy> oopsAllBossList = new List<MSBB.Part.Enemy>();
         List<string> oopsAllBossString = new List<string>();
         List<string> BossListString = new List<string>();
@@ -45,6 +49,7 @@ namespace MSB_Test
         List<MSBB.Part.Enemy> chaliceEnemiesMSB = new List<MSBB.Part.Enemy>();
         string bossLogFilePath;
         string enemyLogFilePath;
+        string sizeFilePath;
         bool oopsAll;
         List<string> oopsAllList = new List<string>();
         string oopsAllString;
@@ -699,7 +704,23 @@ namespace MSB_Test
                 npcParams.Add(long.Parse(logList[i]));
             }
 
+            var nameFile = File.ReadAllLines(filePath + "\\Mod Files\\NPC Scaling File\\Names.txt");
+            for(int i = 0; i < nameFile.Length; i ++)
+            {
+                nameList.Add(nameFile[i]);
+            }
 
+            var sizeFile = File.ReadAllLines(filePath + "\\Mod Files\\NPC Scaling File\\Sizes.txt");
+            for (int i = 0; i < sizeFile.Length; i++)
+            {
+                sizeList.Add(long.Parse(sizeFile[i]));
+            }
+
+            for(int i = 0; i < nameList.Count; i ++)
+            {
+                namesAndSizes.Add(nameList[i], sizeList[i]);
+            }
+            
             mapList = new List<string>();
 
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
@@ -744,6 +765,41 @@ namespace MSB_Test
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+
+            string dateNowww = DateTime.Now.ToString("h:mm:ss tt");
+            string buttsss = dateNowww.Replace(":", "-");
+            sizeFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttsss + "EnemySizes.txt";
+            using (FileStream sw1 = File.Create(sizeFilePath))
+            {
+
+            }
+
+            for (int i = 0; i < mapList.Count; i ++)
+            {
+                var tempMapRead = MSBB.Read(mapList[i] + ".bak");
+
+                long maxSizeLong = 0;
+
+                for(int j = 0; j < tempMapRead.Parts.Enemies.Count; j ++)
+                {
+                    for(int k = 0; k < nameList.Count; k ++)
+                    {
+                        if(tempMapRead.Parts.Enemies[j].ModelName.Contains(nameList[k]))
+                        {
+                            maxSizeLong += sizeList[k];
+                            k = nameList.Count + 1;
+                        }
+                    }
+                }
+
+                //maxSizeList.Add(maxSizeLong);
+
+                using (StreamWriter writetext = File.AppendText(sizeFilePath))
+                {
+                        writetext.WriteLine("MAX SIZE " + mapList[i] + " "  + maxSizeLong + " " + tempMapRead.Parts.Enemies.Count);
+                }
+            }
+
 
             List<string> tempDirList = new List<string>();
             List<string> chaliceMapListString = new List<string>();
@@ -1139,8 +1195,8 @@ namespace MSB_Test
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
+                //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx", unusedPlusBossList);
+                //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx", unusedPlusBossList);
@@ -1151,7 +1207,7 @@ namespace MSB_Test
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
+                //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx", unusedPlusBossList);
                 if (chaliceBosses)
                 {
@@ -1202,6 +1258,77 @@ namespace MSB_Test
             ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
             ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
             ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+
+            mapList = new List<string>();
+
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
+            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+
+            for (int i = 0; i < mapList.Count; i++)
+            {
+                var tempMapRead = MSBB.Read(mapList[i]);
+
+                long maxSizeLong = 0;
+
+                for (int j = 0; j < tempMapRead.Parts.Enemies.Count; j++)
+                {
+                    for (int k = 0; k < nameList.Count; k++)
+                    {
+                        if (tempMapRead.Parts.Enemies[j].ModelName.Contains(nameList[k]))
+                        {
+                            maxSizeLong += sizeList[k];
+                            k = nameList.Count + 1;
+                        }
+                    }
+                }
+
+                //maxSizeList.Add(maxSizeLong);
+
+                using (StreamWriter writetext = File.AppendText(sizeFilePath))
+                {
+                    writetext.WriteLine("MAX SIZE " + mapList[i] + " " + maxSizeLong + " " + tempMapRead.Parts.Enemies.Count);
+                }
+            }
 
             MessageBox.Show("Finished.");
         }
@@ -2262,17 +2389,16 @@ namespace MSB_Test
                             /*
                             if (tempGUY.Parts.Enemies[i].ModelName.Contains("2520"))
                             {
-
-                                Random chooseRand = new Random();
-                                int randChoose = chooseRand.Next(0, 11);
-                                if (randChoose >= 3)
-                                {
-                                    changeData = false;
-                                }
-                                else
-                                {
-                                    changeData = true;
-                                }
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 11);
+                            if (randChoose >= 3)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                changeData = true;
+                            }
                             }
                             */
                         }
@@ -2334,6 +2460,67 @@ namespace MSB_Test
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                            string originalModelName = tempGUY.Parts.Enemies[i].ModelName;
+                            long originalModelValue = 0;
+                            long newModelValue = 0;
+
+                            int tries = 0;
+
+                            for(int j = 0; j < nameList.Count; j ++)
+                            {
+                                if(nameList[j].Contains(originalModelName))
+                                {
+                                    originalModelValue = sizeList[j];
+                                }
+
+                                if(nameList[j].Contains(modelName))
+                                {
+                                    newModelValue = sizeList[j];
+                                }
+                            }
+
+                            while(newModelValue >= originalModelValue && tries < 20)
+                            {
+                                if (chaliceEnemies)
+                                {
+                                    randomChalice = rand.Next(0, chaliceEnemiesString.Count);
+                                }
+                                random = rand.Next(0, enemyDataRandomized.Count);
+                                if (chaliceRandom <= chaliceChanceFloat && chaliceEnemies)
+                                {
+                                    thisEnemy = chaliceEnemiesString[random];
+                                }
+                                else if (currentMap.Contains("m29") && chaliceEnemies)
+                                {
+                                    thisEnemy = chaliceEnemiesString[randomChalice];
+                                }
+                                else
+                                {
+                                    thisEnemy = enemyDataRandomized[random];
+                                }
+
+                                tempnpcint = thisEnemy.IndexOf("*");
+                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                                for (int j = 0; j < nameList.Count; j++)
+                                {
+                                    if (nameList[j].Contains(originalModelName))
+                                    {
+                                        originalModelValue = sizeList[j];
+                                    }
+
+                                    if (nameList[j].Contains(modelName))
+                                    {
+                                        newModelValue = sizeList[j];
+                                        
+                                    }
+                                }
+
+                                tries++;
+                            }
 
                             if (currentMap.Contains("m24_02"))
                             {

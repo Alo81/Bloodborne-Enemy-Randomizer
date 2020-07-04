@@ -2386,12 +2386,9 @@ namespace MSB_Test
 
                         if (currentMap.Contains("24_02"))
                         {
-                            /*
-                            if (tempGUY.Parts.Enemies[i].ModelName.Contains("2520"))
-                            {
                             Random chooseRand = new Random();
                             int randChoose = chooseRand.Next(0, 11);
-                            if (randChoose >= 3)
+                            if (randChoose >= 7)
                             {
                                 changeData = false;
                             }
@@ -2399,16 +2396,10 @@ namespace MSB_Test
                             {
                                 changeData = true;
                             }
-                            }
-                            */
                         }
 
                         if (currentMap.Contains("35"))
                         {
-                            /*
-                            if (tempGUY.Parts.Enemies[i].ModelName.Contains("4020"))
-                            {
-
                                 Random chooseRand = new Random();
                                 int randChoose = chooseRand.Next(0, 11);
                                 if (randChoose >= 3)
@@ -2419,8 +2410,6 @@ namespace MSB_Test
                                 {
                                     changeData = true;
                                 }
-                            }
-                            */
                         }
 
                         if (changeData && enemyDataRandomized.Count > 0)
@@ -2480,46 +2469,93 @@ namespace MSB_Test
                                 }
                             }
 
-                            while(newModelValue >= originalModelValue && tries < 20)
+                            if (currentMap.Contains("m24_02") || currentMap.Contains("m35"))
                             {
-                                if (chaliceEnemies)
+                                while (newModelValue >= (originalModelValue) && tries < 30)
                                 {
-                                    randomChalice = rand.Next(0, chaliceEnemiesString.Count);
-                                }
-                                random = rand.Next(0, enemyDataRandomized.Count);
-                                if (chaliceRandom <= chaliceChanceFloat && chaliceEnemies)
-                                {
-                                    thisEnemy = chaliceEnemiesString[random];
-                                }
-                                else if (currentMap.Contains("m29") && chaliceEnemies)
-                                {
-                                    thisEnemy = chaliceEnemiesString[randomChalice];
-                                }
-                                else
-                                {
-                                    thisEnemy = enemyDataRandomized[random];
-                                }
-
-                                tempnpcint = thisEnemy.IndexOf("*");
-                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                                for (int j = 0; j < nameList.Count; j++)
-                                {
-                                    if (nameList[j].Contains(originalModelName))
+                                    if (chaliceEnemies)
                                     {
-                                        originalModelValue = sizeList[j];
+                                        randomChalice = rand.Next(0, chaliceEnemiesString.Count);
+                                    }
+                                    random = rand.Next(0, enemyDataRandomized.Count);
+                                    if (chaliceRandom <= chaliceChanceFloat && chaliceEnemies)
+                                    {
+                                        thisEnemy = chaliceEnemiesString[random];
+                                    }
+                                    else if (currentMap.Contains("m29") && chaliceEnemies)
+                                    {
+                                        thisEnemy = chaliceEnemiesString[randomChalice];
+                                    }
+                                    else
+                                    {
+                                        thisEnemy = enemyDataRandomized[random];
                                     }
 
-                                    if (nameList[j].Contains(modelName))
-                                    {
-                                        newModelValue = sizeList[j];
-                                        
-                                    }
-                                }
+                                    tempnpcint = thisEnemy.IndexOf("*");
+                                    tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                    tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                    modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
 
-                                tries++;
+                                    for (int j = 0; j < nameList.Count; j++)
+                                    {
+                                        if (nameList[j].Contains(originalModelName))
+                                        {
+                                            originalModelValue = sizeList[j];
+                                        }
+
+                                        if (nameList[j].Contains(modelName))
+                                        {
+                                            newModelValue = sizeList[j];
+
+                                        }
+                                    }
+
+                                    tries++;
+                                }
+                            }
+                            else
+                            {
+                                while (newModelValue > (originalModelValue + 20000000) && tries < 30)
+                                {
+                                    if (chaliceEnemies)
+                                    {
+                                        randomChalice = rand.Next(0, chaliceEnemiesString.Count);
+                                    }
+                                    random = rand.Next(0, enemyDataRandomized.Count);
+                                    if (chaliceRandom <= chaliceChanceFloat && chaliceEnemies)
+                                    {
+                                        thisEnemy = chaliceEnemiesString[random];
+                                    }
+                                    else if (currentMap.Contains("m29") && chaliceEnemies)
+                                    {
+                                        thisEnemy = chaliceEnemiesString[randomChalice];
+                                    }
+                                    else
+                                    {
+                                        thisEnemy = enemyDataRandomized[random];
+                                    }
+
+                                    tempnpcint = thisEnemy.IndexOf("*");
+                                    tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                    tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                    modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                                    for (int j = 0; j < nameList.Count; j++)
+                                    {
+                                        if (nameList[j].Contains(originalModelName))
+                                        {
+                                            originalModelValue = sizeList[j];
+                                        }
+
+                                        if (nameList[j].Contains(modelName))
+                                        {
+                                            newModelValue = sizeList[j];
+
+                                        }
+                                    }
+
+                                    tries++;
+                                }
                             }
 
                             if (currentMap.Contains("m24_02"))

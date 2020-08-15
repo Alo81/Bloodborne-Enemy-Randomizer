@@ -2353,6 +2353,8 @@ namespace MSB_Test
                 var tempGUY = MSBB.Read(currentMap);
 
                 bool changeData;
+                bool ucw = true;
+                bool rh = true;
 
                 if (!oopsAll && randomizeEnemiesBool)
                 {
@@ -2365,6 +2367,8 @@ namespace MSB_Test
                             if (tempGUY.Parts.Enemies[i].Name.Contains(nonoList[j]))
                             {
                                 changeData = false;
+                                ucw = false;
+                                rh = false;
                             }
                         }
 
@@ -2388,13 +2392,16 @@ namespace MSB_Test
                         {
                             Random chooseRand = new Random();
                             int randChoose = chooseRand.Next(0, 11);
-                            if (randChoose >= 7)
+                            if (randChoose >= 6)
                             {
                                 changeData = false;
                             }
                             else
                             {
-                                changeData = true;
+                                if (ucw)
+                                {
+                                    changeData = true;
+                                }
                             }
                         }
 
@@ -2408,7 +2415,10 @@ namespace MSB_Test
                                 }
                                 else
                                 {
-                                    changeData = true;
+                                    if (rh)
+                                    {
+                                        changeData = true;
+                                    }
                                 }
                         }
 

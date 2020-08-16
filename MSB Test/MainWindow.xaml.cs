@@ -31,6 +31,7 @@ namespace MSB_Test
         List<MSBB.Part.Enemy> oopsAllBossList = new List<MSBB.Part.Enemy>();
         List<string> oopsAllBossString = new List<string>();
         List<string> BossListString = new List<string>();
+        bool includeNPCs;
         bool includeBosses;
         bool randomizeEnemiesBool;
         bool randomize = true;
@@ -1750,7 +1751,7 @@ namespace MSB_Test
 
                             if(currentMap.Contains("m24_00"))
                             {
-                                while(modelName.Contains("4500"))
+                                while(modelName.Contains("4500") || modelName.Contains("4520"))
                                 {
                                     random = rand.Next(0, enemyDataRandomized.Count);
                                     thisEnemy = enemyDataRandomized[random];
@@ -2804,6 +2805,11 @@ namespace MSB_Test
         private void RandomizeEnemiesCheck_Checked(object sender, RoutedEventArgs e)
         {
             randomizeEnemiesBool = RandomizeEnemiesCheck.IsChecked.Value;
+        }
+
+        private void AddNPCS_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

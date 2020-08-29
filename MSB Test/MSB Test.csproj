@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="menu_knowledge_04215.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Ookii.Dialogs" Version="1.0.0" />
   </ItemGroup>
 
@@ -20,6 +24,10 @@
     <Reference Include="Microsoft.VisualStudio.Windows.Forms">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Microsoft.VisualStudio.Windows.Forms.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="menu_knowledge_04215.png" />
   </ItemGroup>
 
 </Project>

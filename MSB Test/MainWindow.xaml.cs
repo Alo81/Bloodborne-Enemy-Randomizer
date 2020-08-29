@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SoulsFormats;
 using System.IO;
+using System.Linq;
 
 namespace MSB_Test
 {
@@ -14,8 +15,10 @@ namespace MSB_Test
     {
         List<string> unusedList = new List<string>();
         List<string> bossList = new List<string>();
+        int numberOfKeyIemsRandomized;
         List<string> unusedPlusBossList = new List<string>();
         List<string> addedBosses = new List<string>();
+        List<int> keyItemLots = new List<int>();
         List<MSBB.Part.Enemy> addedEnemyList = new List<MSBB.Part.Enemy>();
         List<MSBB.Part.Enemy> addedBossesList = new List<MSBB.Part.Enemy>();
         List<string> logList = new List<string>();
@@ -31,11 +34,15 @@ namespace MSB_Test
         List<MSBB.Part.Enemy> oopsAllBossList = new List<MSBB.Part.Enemy>();
         List<string> oopsAllBossString = new List<string>();
         List<string> BossListString = new List<string>();
+        List<int> itemLotList = new List<int>();
         bool includeNPCs;
         bool includeBosses;
         bool randomizeEnemiesBool;
         bool randomize = true;
         bool oopsAllBosses;
+        bool randomizeItemLots;
+        bool lesserBossesBool;
+        bool bellMaidenBool;
         string thisnpc;
         string thismo;
         string thisthink;
@@ -51,20 +58,27 @@ namespace MSB_Test
         string bossLogFilePath;
         string enemyLogFilePath;
         string sizeFilePath;
+        string insertedBossPath;
+        string randomizedNPCPath;
+        string randomizedItemLotPath;
         bool oopsAll;
         List<string> oopsAllList = new List<string>();
         string oopsAllString;
         List<string> secondaryBosses = new List<string>();
+        List<string> tertiaryBosses = new List<string>();
         int totalBossesToReplace = 0;
         List<long> newNPCParam = new List<long>();
         List<long> oldNPCParam = new List<long>();
         long paramNumber = 999999;
         List<string> mapsForParamChanges = new List<string>();
         List<string> chaliceBossString = new List<string>();
+        List<string> npcList = new List<string>();
+        List<MSBB.Part.Enemy> npcEnemyList = new List<MSBB.Part.Enemy>();
         List<MSBB.Part.Enemy> chaliceBossMSB = new List<MSBB.Part.Enemy>();
         List<string> chaliceBossParams = new List<string>();
         List<string> insertBossesString = new List<string>();
         List<MSBB.Part.Enemy> insertBossesEnemy = new List<MSBB.Part.Enemy>();
+        int ludwigCount = 0;
         string scaleLogFile;
 
         public MainWindow()
@@ -769,8 +783,32 @@ namespace MSB_Test
 
             string dateNowww = DateTime.Now.ToString("h:mm:ss tt");
             string buttsss = dateNowww.Replace(":", "-");
-            sizeFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttsss + "EnemySizes.txt";
+            sizeFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttsss + "-EnemySizes.txt";
             using (FileStream sw1 = File.Create(sizeFilePath))
+            {
+
+            }
+
+            string dateNowwww = DateTime.Now.ToString("h:mm:ss tt");
+            string buttssss = dateNowwww.Replace(":", "-");
+            insertedBossPath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttssss + "-InsertedBossesLog.txt";
+            using (FileStream sw1 = File.Create(insertedBossPath))
+            {
+
+            }
+
+            string dateNowwwww = DateTime.Now.ToString("h:mm:ss tt");
+            string buttsssss = dateNowwwww.Replace(":", "-");
+            randomizedNPCPath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttsssss + "-RandomizedNPCLog.txt";
+            using (FileStream sw1 = File.Create(randomizedNPCPath))
+            {
+
+            }
+
+            string dateNowwwwww = DateTime.Now.ToString("h:mm:ss tt");
+            string buttssssss = dateNowwwwww.Replace(":", "-");
+            randomizedItemLotPath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttssssss + "-RandomizedItemLog.txt";
+            using (FileStream sw1 = File.Create(randomizedItemLotPath))
             {
 
             }
@@ -991,11 +1029,33 @@ namespace MSB_Test
                     //DoStuff(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", nonoList);
                 }
 
-                while (enemyData.Count > 0)
+                if (randomizeEnemiesBool)
                 {
-                    int index = rand.Next(0, enemyData.Count);
-                    enemyDataRandomized.Add(enemyData[index]);
-                    enemyData.RemoveAt(index);
+                    while (enemyData.Count > 0)
+                    {
+                        int index = rand.Next(0, enemyData.Count);
+                        enemyDataRandomized.Add(enemyData[index]);
+                        enemyData.RemoveAt(index);
+                    }
+
+                    List<string> uniqueEnemyList = enemyDataRandomized.Distinct().ToList();
+                    enemyDataRandomized = new List<string>();
+
+                    for (int i = 0; i < uniqueEnemyList.Count; i++)
+                    {
+                        enemyDataRandomized.Add(uniqueEnemyList[i]);
+                    }
+
+                    if (chaliceEnemies)
+                    {
+                        List<string> uniqueEnemyListc = chaliceEnemiesString.Distinct().ToList();
+                        chaliceEnemiesString = new List<string>();
+
+                        for (int i = 0; i < uniqueEnemyList.Count; i++)
+                        {
+                            chaliceEnemiesString.Add(uniqueEnemyListc[i]);
+                        }
+                    }
                 }
             }
 
@@ -1106,22 +1166,21 @@ namespace MSB_Test
                     //DoStuffBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", nonoList);
                 }
 
-                for (int i = 0; i < enemyData.Count; i++)
+                if (includeBosses)
                 {
-                    secondaryBosses.Add(enemyData[i]);
-                }
+                    for (int i = 0; i < enemyData.Count; i++)
+                    {
+                        secondaryBosses.Add(enemyData[i]);
+                        tertiaryBosses.Add(enemyData[1]);
+                    }
 
-                while (secondaryBosses.Count <= totalBossesToReplace + 1)
-                {
-                    int ass = rand.Next(0, enemyData.Count);
-                    secondaryBosses.Add(enemyData[ass]);
-                }
-
-                while (secondaryBosses.Count > 0)
-                {
-                    int index = rand.Next(0, secondaryBosses.Count);
-                    enemyDataRandomized.Add(secondaryBosses[index]);
-                    secondaryBosses.RemoveAt(index);
+                    while (secondaryBosses.Count > 0)
+                    {
+                        int index = rand.Next(0, secondaryBosses.Count);
+                        enemyDataRandomized.Add(secondaryBosses[index]);
+                        enemyDataRandomized.Add(secondaryBosses[index]);
+                        secondaryBosses.RemoveAt(index);
+                    }
                 }
             }
                 dateNow = DateTime.Now.ToString("h:mm:ss tt");
@@ -1185,6 +1244,20 @@ namespace MSB_Test
             }
             if (insertBossesBool)
             {
+                List<string> uniqueLst = insertBossesString.Distinct().ToList();
+                insertBossesString = new List<string>();
+
+                for(int i = 0; i < uniqueLst.Count; i ++)
+                {
+                    insertBossesString.Add(uniqueLst[i]);
+                }
+
+                using (StreamWriter writetext = File.AppendText(insertedBossPath))
+                {
+                    writetext.WriteLine("INSERTING BOSSES STARTING BELOW THIS LINE");
+                    writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                }
+
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx", unusedPlusBossList);
                 InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx", unusedPlusBossList);
@@ -1233,6 +1306,146 @@ namespace MSB_Test
                     InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", unusedPlusBossList);
                         
                 }
+            }
+
+            if(includeNPCs)
+            {
+                using (StreamWriter writetext = File.AppendText(randomizedNPCPath))
+                {
+                    writetext.WriteLine("RANDOMIZED NPC'S STARTING BELOW THIS LINE");
+                    writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                }
+
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+
+
+                for (int i = 0; i < npcEnemyList.Count; i++)
+                {
+                    string tempString = npcEnemyList[i].NPCParamID.ToString() + "*" + npcEnemyList[i].ThinkParamID.ToString() + "*" + npcEnemyList[i].UnkT07.ToString();
+                    npcList.Add(npcEnemyList[i].NPCParamID.ToString() + "*" + npcEnemyList[i].ThinkParamID.ToString() + "*" + npcEnemyList[i].UnkT07.ToString());
+                }
+
+                List<string> uniqueNPCList = npcList.Distinct().ToList();
+                npcList = new List<string>();
+                for(int i = 0; i < uniqueNPCList.Count; i ++)
+                {
+                    npcList.Add(uniqueNPCList[i]);
+                }
+
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+                RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+            }
+
+            if(randomizeItemLots)
+            {
+                keyItemLots.Add(2800290);
+                keyItemLots.Add(2600550);
+                keyItemLots.Add(2400450);
+                keyItemLots.Add(3200720);
+                keyItemLots.Add(3200810);
+                keyItemLots.Add(2410990);
+                keyItemLots.Add(3502000);
+                keyItemLots.Add(3401810);
+                keyItemLots.Add(3500800);
+                
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
             }
 
             string dateNoww = DateTime.Now.ToString("h:mm:ss tt");
@@ -1331,7 +1544,81 @@ namespace MSB_Test
                 }
             }
 
+
+
             MessageBox.Show("Finished.");
+        }
+
+        private void GenerateNPCList(string currentMap)
+        {
+            var tempGuy = MSBB.Read(currentMap);
+
+            for(int i = 0; i < tempGuy.Parts.Enemies.Count; i ++)
+            {
+                if(tempGuy.Parts.Enemies[i].ModelName.Contains("c0000") && tempGuy.Parts.Enemies[i].ThinkParamID != 1)
+                {
+                    npcEnemyList.Add(tempGuy.Parts.Enemies[i]);
+                }
+            }
+        }
+
+        private void RandomizeNPCs(string currentMap)
+        {
+            var tempGuy = MSBB.Read(currentMap);
+
+            for(int i = 0; i < tempGuy.Parts.Enemies.Count; i ++)
+            {
+                if(tempGuy.Parts.Enemies[i].ModelName.Contains("c0000") && tempGuy.Parts.Enemies[i].ThinkParamID != 1)
+                {
+                    Random rand = new Random();
+                    int random = rand.Next(0, npcList.Count);
+                    string thisEnemy;
+
+                    thisEnemy = npcList[random];
+
+                    string tempNpcParam;
+                    string tempThinkId;
+                    string modelName;
+
+                    int tempNpcParamInt;
+                    int tempThinkIdInt;
+
+                    string npc = tempGuy.Parts.Enemies[i].NPCParamID.ToString();
+                    string think = tempGuy.Parts.Enemies[i].ThinkParamID.ToString();
+                    string mo = tempGuy.Parts.Enemies[i].UnkT07.ToString();
+                    string entityID = tempGuy.Parts.Enemies[i].EntityID.ToString();
+
+                    int tempnpcint = thisEnemy.IndexOf("*");
+                    tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                    tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                    modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 4);
+
+                    tempNpcParamInt = int.Parse(tempNpcParam);
+                    tempThinkIdInt = int.Parse(tempThinkId);
+
+                    using (StreamWriter writetext = File.AppendText(randomizedNPCPath))
+                    {
+                        writetext.WriteLine(currentMap);
+                        writetext.WriteLine("Old NPC");
+                        writetext.WriteLine(npc + " npcParam");
+                        writetext.WriteLine(think + " thinkID");
+                        writetext.WriteLine(mo + "UNKT07");
+
+                        writetext.WriteLine("New NPC");
+                        writetext.WriteLine(tempNpcParam + " npcParam");
+                        writetext.WriteLine(tempThinkId + " thinkID");
+                        writetext.WriteLine(modelName + " UNKT07");
+
+                        writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                    }
+
+                    tempGuy.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                    tempGuy.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                    tempGuy.Parts.Enemies[i].UnkT07 = int.Parse(modelName);
+                }
+            }
+
+            tempGuy.Write(currentMap);
         }
 
         private void InsertBossesVoid(string currentMap, List<string> nonoList)
@@ -1400,6 +1687,17 @@ namespace MSB_Test
                         float assass = ass.Next(0,100);
                         if (assass <= bossPercentage)
                         {
+                            using (StreamWriter writetext = File.AppendText(insertedBossPath))
+                            {
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine("Inserted Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " model");
+
+                                writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                            }
+
                             tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                             if (tempNpcParamInt == 551000)
                             {
@@ -1482,6 +1780,10 @@ namespace MSB_Test
                             {
                                 addEnemy = false;
                             }
+                            else if(ludwigCount >= 2 && tempGUY.Parts.Enemies[i].Name.Contains("c4510"))
+                            {
+                                addEnemy = false;
+                            }
                             else
                             {
                                 addEnemy = true;
@@ -1493,6 +1795,7 @@ namespace MSB_Test
                                         if (tempGUY.Parts.Enemies[i].NPCParamID.ToString() == chaliceBossParams[k])
                                         {
                                             chaliceBossMSB.Add(tempGUY.Parts.Enemies[i]);
+                                            insertBossesEnemy.Add(tempGUY.Parts.Enemies[i]);
                                         }
                                     }
                                 }
@@ -1536,7 +1839,7 @@ namespace MSB_Test
                                     && !tempGUY.Parts.Enemies[i].Name.Contains("c4030_0003") && !tempGUY.Parts.Enemies[i].Name.Contains("c2120_0001")
                                     && !tempGUY.Parts.Enemies[i].Name.Contains("c2120_0000") && !tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002")
                                     && !tempGUY.Parts.Enemies[i].Name.Contains("c2570") && !tempGUY.Parts.Enemies[i].Name.Contains("c2571")
-                                    && !tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002") && !tempGUY.Parts.Enemies[i].Name.Contains("c4030_0000"))
+                                    && !tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002")) /*&& !tempGUY.Parts.Enemies[i].Name.Contains("c4030_0000"))*/
                                 {
                                     bool add = true;
 
@@ -1706,18 +2009,17 @@ namespace MSB_Test
                             }
                         }
 
+                        if(enemyDataRandomized.Count <= 1)
+                        {
+                            for (int k = 0; k < tertiaryBosses.Count; k++)
+                            {
+                                enemyDataRandomized.Add(tertiaryBosses[k]);
+                            }
+                        }
 
                         if (changeData && enemyDataRandomized.Count > 0)
                         {
                             oldNPCParam.Add(tempGUY.Parts.Enemies[i].NPCParamID);
-
-                            if (enemyDataRandomized.Count <= 2)
-                            {
-                                for (int k = 0; k < secondaryBosses.Count; k++)
-                                {
-                                    enemyDataRandomized.Add(secondaryBosses[k]);
-                                }
-                            }
 
                             Random rand = new Random();
                             int random = rand.Next(0, enemyDataRandomized.Count);
@@ -1799,7 +2101,7 @@ namespace MSB_Test
                                     addCounter++;
                                     if (addCounter >= enemyDataRandomized.Count)
                                     {
-                                        enemyDataRandomized.Add(secondaryBosses[random]);
+                                        //enemyDataRandomized.Add(secondaryBosses[random]);
                                         addCounter = 0;
                                     }
                                 }
@@ -1886,7 +2188,7 @@ namespace MSB_Test
                                         addCounter++;
                                         if (addCounter >= enemyDataRandomized.Count)
                                         {
-                                            enemyDataRandomized.Add(secondaryBosses[random]);
+                                            //enemyDataRandomized.Add(secondaryBosses[random]);
                                             addCounter = 0;
                                         }
                                     }
@@ -1967,7 +2269,7 @@ namespace MSB_Test
                                         addCounter++;
                                         if (addCounter >= enemyDataRandomized.Count)
                                         {
-                                            enemyDataRandomized.Add(secondaryBosses[random]);
+                                            //enemyDataRandomized.Add(secondaryBosses[random]);
                                             addCounter = 0;
                                         }
                                     }
@@ -2043,7 +2345,7 @@ namespace MSB_Test
                                         addCounter++;
                                         if (addCounter >= enemyDataRandomized.Count)
                                         {
-                                            enemyDataRandomized.Add(secondaryBosses[random]);
+                                            //enemyDataRandomized.Add(secondaryBosses[random]);
                                             addCounter = 0;
                                         }
                                     }
@@ -2089,7 +2391,7 @@ namespace MSB_Test
                                         addCounter++;
                                         if (addCounter >= enemyDataRandomized.Count)
                                         {
-                                            enemyDataRandomized.Add(secondaryBosses[random]);
+                                            //enemyDataRandomized.Add(secondaryBosses[random]);
                                             addCounter = 0;
                                         }
                                     }
@@ -2115,6 +2417,28 @@ namespace MSB_Test
                                     writetext.WriteLine("Enemy Pool Count: " + enemyDataRandomized.Count + Environment.NewLine + Environment.NewLine);
                                 }
                             }
+                            if (currentMap.Contains("m29"))
+                            {
+                                using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                                {
+                                    writetext.WriteLine(bossCount);
+                                    writetext.WriteLine(currentMap);
+                                    writetext.WriteLine(i + " Number in map list");
+                                    writetext.WriteLine("Old Boss");
+                                    writetext.WriteLine(thisnpc + " npcParam");
+                                    writetext.WriteLine(thisthink + " thinkID");
+                                    writetext.WriteLine(thismo + " model");
+                                    writetext.WriteLine(thisentityID);
+
+                                    writetext.WriteLine("New Boss");
+                                    writetext.WriteLine(tempNpcParam + " npcParam");
+                                    writetext.WriteLine(tempThinkId + " thinkID");
+                                    writetext.WriteLine(modelName + " model");
+
+                                    writetext.WriteLine("Enemy Pool Count: " + enemyDataRandomized.Count + Environment.NewLine + Environment.NewLine);
+                                }
+                            }
+
                             bossCount++;
                             newNPCParam.Add(paramNumber);
                             mapsForParamChanges.Add(currentMap);
@@ -2702,6 +3026,82 @@ namespace MSB_Test
                 tempGUY.Write(currentMap);
             }
         }
+        
+        private void GenerateItemLotList(string currentMap)
+        {
+            var tempGuy = MSBB.Read(currentMap);
+
+            for (int i = 0; i < tempGuy.Events.Treasures.Count; i++)
+            {
+                bool changeKey = true;
+
+                for (int j = 0; j < keyItemLots.Count; j++)
+                {
+                    if (tempGuy.Events.Treasures[i].ItemLot1 == keyItemLots[j])
+                    {
+                        changeKey = false;
+                    }
+                }
+
+                if (tempGuy.Events.Treasures[i].ItemLot1 > 1 && changeKey)
+                {
+                    itemLotList.Add(tempGuy.Events.Treasures[i].ItemLot1);
+                }
+            }
+        }
+
+        private void RandomizeItemLots(string currentMap)
+        {
+            var tempGuy = MSBB.Read(currentMap);
+
+            Random rand = new Random();
+
+            int randomNumber;
+
+
+            if (itemLotList.Count > 0)
+            {
+                for (int i = 0; i < tempGuy.Events.Treasures.Count; i++)
+                {
+                    bool changeKey = true;
+
+                    for (int j = 0; j < keyItemLots.Count; j++)
+                    {
+                        if (tempGuy.Events.Treasures[i].ItemLot1 == keyItemLots[j])
+                        {
+                            changeKey = false;
+                        }
+                    }
+
+                    if (tempGuy.Events.Treasures[i].ItemLot1 > 1 && changeKey)
+                    {
+                        numberOfKeyIemsRandomized++;
+
+                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        {
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine("Number of items randomized so far " + numberOfKeyIemsRandomized);
+                            writetext.WriteLine("Old item lot");
+                            writetext.WriteLine(tempGuy.Events.Treasures[i].ItemLot1);
+                        }
+
+                        randomNumber = rand.Next(0, itemLotList.Count);
+                        tempGuy.Events.Treasures[i].ItemLot1 = itemLotList[randomNumber];
+
+                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        {
+                            writetext.WriteLine("New item lot");
+                            writetext.WriteLine(itemLotList[randomNumber]);
+                            writetext.WriteLine(Environment.NewLine);
+                        }
+
+                        itemLotList.RemoveAt(randomNumber);
+                    }
+                }
+            }
+
+            tempGuy.Write(currentMap);
+        }
 
         private void BossCheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -2809,7 +3209,12 @@ namespace MSB_Test
 
         private void AddNPCS_Checked(object sender, RoutedEventArgs e)
         {
+            includeNPCs = AddNPCS.IsChecked.Value;
+        }
 
+        private void ArmorRandomizerCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            randomizeItemLots = ArmorRandomizerCheckBox.IsChecked.Value;
         }
     }
 }

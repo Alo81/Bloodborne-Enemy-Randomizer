@@ -3,35 +3,47 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        ResizeMode="NoResize"
+        Background="DarkGray"
         xmlns:local="clr-namespace:MSB_Test"
         mc:Ignorable="d"
-        Title="Bloodborne Randomizer" Height="533" Width="782" Icon="/menu_knowledge_04215.png">
-    <Grid Margin="18,10,10,-16">
+        Title="Bloodborne Randomizer" Height="590" Width="782" Icon="/menu_knowledge_04215.png">
+    <Grid x:Name="RandomizeMusicBox" Margin="18,10,10,-16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="42*"/>
-            <RowDefinition Height="59*"/>
+            <RowDefinition Height="218*"/>
+            <RowDefinition Height="271*"/>
+            <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="Open_MSB" Content="Randomize" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="Open_MSB_Click" Height="20" Width="63"/>
-        <CheckBox x:Name="ChaliceEnemies" Content="Include Chalice Enemies" HorizontalAlignment="Left" Margin="10,131,0,0" VerticalAlignment="Top" Checked="Chalice_Checked" Height="15" Width="147"/>
-        <CheckBox x:Name="BossCheckBox" Content="Randomize Bosses" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Checked="BossCheckBox_Checked" Height="15" Width="118"/>
-        <CheckBox x:Name="InsertBosses" Content="Enemies Can Be Bosses" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Checked="InsertBosses_Checked" Height="15" Width="143"/>
-        <Slider x:Name="bossSlider" HorizontalAlignment="Left" Margin="42,205,0,0" VerticalAlignment="Top" Width="690" ValueChanged="Slider_ValueChanged" Height="18" Grid.RowSpan="2"/>
-        <Label x:Name="sliderValue" Content="0" HorizontalAlignment="Left" Margin="0,201,0,0" VerticalAlignment="Top" Height="26" Width="34" Grid.RowSpan="2"/>
-        <CheckBox x:Name="ChaliceBoss" Content="Include Chalice Bosses" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" Checked="ChaliceBoss_Checked" Height="15" Width="139"/>
-        <Label Content="Percentage Chance an Enemy Will Be a Boss" HorizontalAlignment="Left" Margin="0,170,0,0" VerticalAlignment="Top" Height="26" Width="242"/>
-        <CheckBox x:Name="OopsAllCheck" Content="Enemies" HorizontalAlignment="Left" Margin="110,131,0,0" VerticalAlignment="Top" Checked="OopsAllCheck_Checked" Height="15" Width="79" Grid.Row="1"/>
-        <TextBox x:Name="OopsAllStringName" TextWrapping="Wrap" TextChanged="OopsAllStringName_TextChanged" Margin="84,166,0,96" Grid.Row="1"/>
-        <Label Content="Percentage Chance an Enemy Will Be a Chalice Enemy" HorizontalAlignment="Left" Margin="0,18,0,0" VerticalAlignment="Top" Height="26" Width="294" Grid.Row="1"/>
+        <CheckBox ToolTip="Include chalice enemies in enemy randomization pool. This will also randomize enemies in the chalice maps." x:Name="ChaliceEnemies" Content="Include Chalice Enemies" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" Checked="Chalice_Checked" Height="15" Width="147"/>
+        <CheckBox ToolTip="Randomize bosses in all maps, excluding chalice maps." x:Name="BossCheckBox" Content="Randomize Bosses" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Checked="BossCheckBox_Checked" Height="15" Width="118"/>
+        <CheckBox ToolTip="Randomly select an enemy to be replaced by a boss." x:Name="InsertBosses" Content="Enemies Can Be Bosses" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Checked="InsertBosses_Checked" Height="15" Width="143"/>
+        <Slider x:Name="bossSlider" HorizontalAlignment="Left" Margin="42,230,0,0" VerticalAlignment="Top" Width="690" ValueChanged="Slider_ValueChanged" Height="18" Grid.RowSpan="2"/>
+        <Label x:Name="sliderValue" Content="0" HorizontalAlignment="Left" Margin="0,226,0,0" VerticalAlignment="Top" Height="26" Width="42" Grid.RowSpan="2"/>
+        <CheckBox ToolTip="Include chalice bosses in enemy randomization pool. This will also randomize bosses in the chalice maps." x:Name="ChaliceBoss" Content="Include Chalice Bosses" HorizontalAlignment="Left" Margin="10,131,0,0" VerticalAlignment="Top" Checked="ChaliceBoss_Checked" Height="15" Width="139"/>
+        <Label Content="Percentage Chance an Enemy Will Be a Boss" HorizontalAlignment="Left" Margin="0,195,0,0" VerticalAlignment="Top" Height="26" Width="257" FontWeight="Bold" FontStyle="Normal"/>
+        <CheckBox ToolTip="Customize the enemies that will appear in all maps." x:Name="OopsAllCheck" Content="Enemies" HorizontalAlignment="Left" Margin="110,131,0,0" VerticalAlignment="Top" Checked="OopsAllCheck_Checked" Height="15" Width="79" Grid.Row="1"/>
+        <TextBox x:Name="OopsAllStringName" TextWrapping="Wrap" TextChanged="OopsAllStringName_TextChanged" Margin="84,166,0,92" Grid.Row="1"/>
+        <Label Content="Percentage Chance an Enemy Will Be a Chalice Enemy" HorizontalAlignment="Left" Margin="0,28,0,0" VerticalAlignment="Top" Height="26" Width="313" Grid.Row="1" FontWeight="Bold"/>
         <Label x:Name="ChaliceSliderValue" Content="0" HorizontalAlignment="Left" Margin="0,59,0,0" Grid.Row="1" VerticalAlignment="Top" Width="42"/>
         <Slider x:Name="ChaliceSliderThing" HorizontalAlignment="Left" Margin="42,62,0,0" Grid.Row="1" VerticalAlignment="Top" Width="690" ValueChanged="ChaliceSliderThing_ValueChanged"/>
         <TextBox x:Name="OopsBoss" Margin="84,208,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="29" TextChanged="OopsBoss_TextChanged" Grid.Row="1"/>
         <Label Content="Enemies:" HorizontalAlignment="Left" Margin="21,171,0,0" VerticalAlignment="Top" Grid.Row="1"/>
         <Label Content="Bosses:" HorizontalAlignment="Left" Margin="25,210,0,0" VerticalAlignment="Top" Grid.Row="1"/>
-        <CheckBox x:Name="OopsAllBossesCheck" Content="Bosses" HorizontalAlignment="Left" Margin="214,131,0,0" VerticalAlignment="Top" Checked="OopsAllBossesCheck_Checked" Grid.Row="1"/>
-        <Label Content="Customize Run" HorizontalAlignment="Left" Margin="10,126,0,0" VerticalAlignment="Top" IsEnabled="False" Grid.Row="1"/>
-        <CheckBox x:Name="RandomizeEnemiesCheck" Content="Randomize Enemies" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" Checked="RandomizeEnemiesCheck_Checked"/>
-        <CheckBox x:Name="AddNPCS" Content="Randomize NPC's (Experimental)" HorizontalAlignment="Left" Margin="422,71,0,0" VerticalAlignment="Top" Checked="AddNPCS_Checked"/>
-        <CheckBox x:Name="ArmorRandomizerCheckBox" Content="Randomize Items - Doesn't include keys (Experimental)" HorizontalAlignment="Left" Margin="422,51,0,0" VerticalAlignment="Top" Checked="ArmorRandomizerCheckBox_Checked"/>
-
+        <CheckBox ToolTip="Customize the bosses that will appear in all maps." x:Name="OopsAllBossesCheck" Content="Bosses" HorizontalAlignment="Left" Margin="214,131,0,0" VerticalAlignment="Top" Checked="OopsAllBossesCheck_Checked" Grid.Row="1"/>
+        <CheckBox ToolTip="Randomize enemies in all maps, excluding chalice maps." x:Name="RandomizeEnemiesCheck" Content="Randomize Enemies" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" Checked="RandomizeEnemiesCheck_Checked"/>
+        <CheckBox ToolTip="Randomize the NPCs in all maps." x:Name="AddNPCS" Content="Randomize NPCs" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Checked="AddNPCS_Checked"/>
+        <CheckBox ToolTip="Randomize non-key items in all maps." x:Name="ArmorRandomizerCheckBox" Content="Randomize Non-Key Overworld Items" HorizontalAlignment="Left" Margin="185,91,0,0" VerticalAlignment="Top" Checked="ArmorRandomizerCheckBox_Checked"/>
+        <ProgressBar x:Name="TotalProgressBar" HorizontalAlignment="Left" Height="18" Margin="10,267,0,0" Grid.Row="1" VerticalAlignment="Top" Width="697" ValueChanged="TotalProgressBar_ValueChanged"/>
+        <Label x:Name="CurrentTaskLabel" Content="CURRENT TASK" HorizontalAlignment="Left" Margin="10,239,0,0" Grid.Row="1" VerticalAlignment="Top" Width="638"/>
+        <Button x:Name="TEST" Content="RANDOMIZE" HorizontalAlignment="Left" Margin="6,0,0,0" VerticalAlignment="Top" Click="TEST_Click" Width="144" Height="36"/>
+        <Label x:Name="TotalTime" Content="0:00" HorizontalAlignment="Left" Margin="675,239,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label Content="Customize Run" HorizontalAlignment="Left" Margin="17,124,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <CheckBox ToolTip="Include bosses from group boss fights as a single boss. Witches, Shadows, Emissary, Failures, and One Reborn." x:Name="LesserBossesBox" Content="Include Lesser Bosses in Boss Fight Pool " HorizontalAlignment="Left" Margin="185,71,0,0" VerticalAlignment="Top" Checked="LesserBossesBox_Checked"/>
+        <CheckBox ToolTip="Keep Bell Maidens from being changed, keeping the generators working." x:Name="BellMaidenBox" Content="Keep Bell Maidens the Same" HorizontalAlignment="Left" Margin="185,51,0,0" VerticalAlignment="Top" Checked="BellMaidenBox_Checked"/>
+        <CheckBox ToolTip="Randomize key items in all maps." x:Name="RandomizeKeyItemsBox" Content="Randomize Key Overworld Items (With Logic)" HorizontalAlignment="Left" Margin="185,111,0,0" VerticalAlignment="Top" Checked="RandomizeKeyItemsBox_Checked"/>
+        <CheckBox ToolTip="Randomize items that will appear in all shops." x:Name="RandomizeShopBox" Content="Randomize Shop Items" HorizontalAlignment="Left" Margin="185,131,0,0" VerticalAlignment="Top" Checked="RandomizeShopBox_Checked"/>
+        <CheckBox ToolTip="Randomize items that drop from enemies." x:Name="EnemyDropBox" Content="Randomize Enemy Drops" HorizontalAlignment="Left" Margin="185,151,0,0" VerticalAlignment="Top" Checked="EnemyDropBox_Checked"/>
+        <CheckBox ToolTip="Randomize the workshop tools in the normal maps. Blood gem tool and rune tool." x:Name="WorkshopBox" Content="Randomize Workshop Tools" HorizontalAlignment="Left" Margin="451,51,0,0" VerticalAlignment="Top" Checked="WorkshopBox_Checked"/>
+        <Label Content="Randomizer will exit when finished. Find logs in &quot;dvdroot_ps4\Mod Files\Logs. Don't Delete\&quot;" HorizontalAlignment="Left" Margin="156,0,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
     </Grid>
 </Window>

@@ -18,6 +18,7 @@ namespace MSB_Test
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool GOBAdded = false;
         int totalTime;
         int totalPercent;
         string paramPath;
@@ -27,6 +28,8 @@ namespace MSB_Test
         List<string> logList2 = new List<string>();
         List<string> unusedList = new List<string>();
         List<string> bossList = new List<string>();
+        List<string> combinedBossList = new List<string>();
+        List<string> combinedBossList2 = new List<string>();
         int numberOfKeyIemsRandomized;
         List<string> unusedPlusBossList = new List<string>();
         List<string> addedBosses = new List<string>();
@@ -54,7 +57,6 @@ namespace MSB_Test
         bool includeNPCs;
         bool shopBool;
         bool enemyDropBool;
-        bool bossMusicBool;
         bool includeBosses;
         bool randomizeEnemiesBool;
         bool randomize = true;
@@ -100,9 +102,10 @@ namespace MSB_Test
         List<string> chaliceBossParams = new List<string>();
         List<string> insertBossesString = new List<string>();
         List<MSBB.Part.Enemy> insertBossesEnemy = new List<MSBB.Part.Enemy>();
-        int ludwigCount = 0;
         string scaleLogFile;
         List<string> eventFileList = new List<string>();
+        string OoKFirstPhase;
+        MSBB.Part.Enemy OoKEnemy;
 
         public MainWindow()
         {
@@ -140,7 +143,6 @@ namespace MSB_Test
             chaliceBossParams.Add("310504000");
             chaliceBossParams.Add("10305006");
             chaliceBossParams.Add("110509010");
-            chaliceBossParams.Add("210306016");
             chaliceBossParams.Add("10218090");
             chaliceBossParams.Add("110504000");
             chaliceBossParams.Add("210508006");
@@ -148,7 +150,8 @@ namespace MSB_Test
             chaliceBossParams.Add("110257000");
             chaliceBossParams.Add("210251096");
             chaliceBossParams.Add("310305016");
-            chaliceBossParams.Add("210306015");
+            chaliceBossParams.Add("210306016");
+            chaliceBossParams.Add("511000");
 
             unusedList.Add("c2120_9999");
             unusedList.Add("c2120_9998");
@@ -211,7 +214,6 @@ namespace MSB_Test
             unusedList.Add("c5510_0002");
             unusedList.Add("c4540_0000");
             unusedList.Add("c4543_0000");
-            unusedList.Add("c3060_0000");
             unusedList.Add("c8070_0000");
             unusedList.Add("c5130_0000");
             unusedList.Add("c4031_0000");
@@ -253,6 +255,8 @@ namespace MSB_Test
             bossList.Add("c5010_0000");
             bossList.Add("c4510_0002");
             bossList.Add("c3050_0000");
+            bossList.Add("c3060_0000");
+            bossList.Add("c5110");
 
 
             for (int i = 0; i < unusedList.Count; i ++)
@@ -443,7 +447,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 11;
+                            int tempInt = npcParamPositions[i] + 17;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -465,7 +469,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 11;
+                            int tempInt = npcParamPositions[i] + 13;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -981,11 +985,11 @@ namespace MSB_Test
                 WorkshopBox.IsEnabled = false;
             });
 
-            if(bellMaidenBool)
+            if (bellMaidenBool)
             {
-                unusedList.Add("c1050");
-                unusedList.Add("c1051");
-                unusedList.Add("c1055");
+                unusedPlusBossList.Add("c1050");
+                unusedPlusBossList.Add("c1051");
+                unusedPlusBossList.Add("c1055");
             }
 
             currentDirectory = Directory.GetCurrentDirectory();
@@ -1078,6 +1082,11 @@ namespace MSB_Test
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+            if (File.Exists(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx"))
+            {
+                mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
+                GOBAdded = true;
+            }
 
             eventFileList.Add(filePath + "\\event\\m21_00_00_00.emevd.dcx");
             eventFileList.Add(filePath + "\\event\\m21_01_00_00.emevd.dcx");
@@ -1379,6 +1388,10 @@ namespace MSB_Test
                     //DoStuff(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", nonoList);
                     GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", unusedPlusBossList);
                     //DoStuff(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", nonoList);
+                    if (GOBAdded)
+                    {
+                        GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx", unusedPlusBossList);
+                    }
                 }
 
                 if (randomizeEnemiesBool)
@@ -1471,7 +1484,11 @@ namespace MSB_Test
                 Randomize(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", unusedPlusBossList);
                 //Randomize(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", nonoList);
                 Randomize(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", unusedPlusBossList);
-                
+                if (GOBAdded)
+                {
+                    Randomize(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx", unusedPlusBossList);
+                }
+
             }
 
                 enemyData = new List<string>();
@@ -1530,6 +1547,29 @@ namespace MSB_Test
                     //DoStuffBosses(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", nonoList);
                     GenerateBossList(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", unusedPlusBossList);
                     //DoStuffBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", nonoList);
+                    if (GOBAdded)
+                    {
+                        GenerateBossList(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx", unusedPlusBossList);
+                    }
+                }
+
+
+                chaliceBossParams.Add("210306015");
+
+                List<string> uniqueEnemyList = enemyData.Distinct().ToList();
+                enemyData = new List<string>();
+
+                for (int i = 0; i < uniqueEnemyList.Count; i++)
+                {
+                    enemyData.Add(uniqueEnemyList[i]);
+                }
+
+                List<string> uniqueEnemyList2 = chaliceBossString.Distinct().ToList();
+                chaliceBossString = new List<string>();
+
+                for (int i = 0; i < uniqueEnemyList2.Count; i++)
+                {
+                    chaliceBossString.Add(uniqueEnemyList2[i]);
                 }
 
                 if (includeBosses)
@@ -1537,16 +1577,48 @@ namespace MSB_Test
                     for (int i = 0; i < enemyData.Count; i++)
                     {
                         secondaryBosses.Add(enemyData[i]);
-                        tertiaryBosses.Add(enemyData[1]);
+                        tertiaryBosses.Add(enemyData[i]);
+                    }
+
+                    if (chaliceBosses)
+                    {
+                        for (int i = 0; i < chaliceBossString.Count; i++)
+                        {
+                            combinedBossList.Add(chaliceBossString[i]);
+                        }
+                        for (int i = 0; i < enemyData.Count; i ++)
+                        {
+                            combinedBossList.Add(enemyData[i]);
+                        }
+                    }
+
+                    for(int i = 0; i < combinedBossList.Count; i ++)
+                    {
+                        combinedBossList2.Add(combinedBossList[i]);
+                    }
+
+                    for(int i = 0; i < combinedBossList2.Count; i ++)
+                    {
+                        for (int j = combinedBossList2.Count - 1; j >= 0; j--)
+                        {
+                            string modelString = combinedBossList2[i].Substring(combinedBossList2[i].Length - 5, 5);
+
+                            if (combinedBossList2[j].Contains(modelString) && j != i)
+                            {
+                                combinedBossList2.RemoveAt(j);
+                            }
+                        }
                     }
 
                     while (secondaryBosses.Count > 0)
                     {
                         int index = rand.Next(0, secondaryBosses.Count);
                         enemyDataRandomized.Add(secondaryBosses[index]);
-                        enemyDataRandomized.Add(secondaryBosses[index]);
                         secondaryBosses.RemoveAt(index);
                     }
+
+
+
                 }
             }
                 dateNow = DateTime.Now.ToString("h:mm:ss tt");
@@ -1566,18 +1638,46 @@ namespace MSB_Test
                     UpdateUI();
                 });
 
+                Random rando = new Random();
+                int thisOne = rando.Next(0, 2);
+
+                if(thisOne == 0)
+                {
+                    AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
+                }
+                else if(thisOne == 1)
+                {
+                    AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
+                }
+                else if(thisOne == 2)
+                {
+                    AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
+                }
+
+                using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                {
+                    writetext.WriteLine("Number of bosses in combined boss list");
+                    for (int i = 0; i < combinedBossList.Count; i++)
+                    {
+                        writetext.WriteLine(combinedBossList[i]);
+                    }
+
+                    writetext.WriteLine("Enemy Pool Count: " + chaliceBossString.Count + Environment.NewLine + Environment.NewLine);
+                }
+
+                RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx", unusedPlusBossList);
+                RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
+
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx", unusedPlusBossList);
                 //RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx", nonoList);
-                RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx", unusedPlusBossList);
                 //RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx", nonoList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
                 //RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx", nonoList);
                 //RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx", nonoList);
-                RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx", unusedPlusBossList);
                 //RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx", nonoList);
@@ -1590,6 +1690,11 @@ namespace MSB_Test
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx", unusedPlusBossList);
+
+                AddTheRest(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx", unusedPlusBossList);
+                AddTheRest(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx", unusedPlusBossList);
+                AddTheRest(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
+
                 if (chaliceBosses || oopsAllBosses)
                 {
                     
@@ -1611,7 +1716,11 @@ namespace MSB_Test
                     RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", unusedPlusBossList);
                     //RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", nonoList);
                     RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", unusedPlusBossList);
-                    
+                    if (GOBAdded)
+                    {
+                        RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx", unusedPlusBossList);
+                    }
+
                 }
             }
             if (insertBossesBool)
@@ -1623,6 +1732,8 @@ namespace MSB_Test
                 {
                     insertBossesString.Add(uniqueLst[i]);
                 }
+
+
 
                 using (StreamWriter writetext = File.AppendText(insertedBossPath))
                 {
@@ -1737,9 +1848,14 @@ namespace MSB_Test
 
                 for(int i = 0; i < npcList.Count; i ++)
                 {
-                    if(npcList[i].Contains("6070") || npcList[i].Contains("6300") || npcList[i].Contains("6301") ||
-                        npcList[i].Contains("6310") || npcList[i].Contains("6340") || npcList[i].Contains("6350") ||
-                        npcList[i].Contains("6360"))
+                    if (npcList[i].Contains("*6300") || npcList[i].Contains("*6301") || npcList[i].Contains("*6380")
+                        || npcList[i].Contains("*6310") || npcList[i].Contains("*6340") || npcList[i].Contains("*6350")
+                        || npcList[i].Contains("*6360") || npcList[i].Contains("*6400") || npcList[i].Contains("*6410")
+                        || npcList[i].Contains("*6160") || npcList[i].Contains("*6161") || npcList[i].Contains("*6162")
+                        || npcList[i].Contains("*6430") || npcList[i].Contains("*6420") || npcList[i].Contains("*6545")
+                        || npcList[i].Contains("*6390") || npcList[i].Contains("*6395") || npcList[i].Contains("*6450")
+                        || npcList[i].Contains("*6580") || npcList[i].Contains("*6585") || npcList[i].Contains("*6610")
+                        || npcList[i].Contains("*6520") || npcList[i].Contains("*6570") || npcList[i].Contains("*6630"))
                     {
                         hostileNpcList.Add(npcList[i]);
                     }
@@ -1932,6 +2048,10 @@ namespace MSB_Test
             ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
             ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
             ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+            if (GOBAdded)
+            {
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
+            }
 
             mapList = new List<string>();
 
@@ -1977,6 +2097,10 @@ namespace MSB_Test
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+            if (GOBAdded)
+            {
+                mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
+            }
 
             for (int i = 0; i < mapList.Count; i++)
             {
@@ -2075,24 +2199,8 @@ namespace MSB_Test
             Random rand = new Random();
 
             List<string> vialAndBulletIDsList = new List<string>();
-            vialAndBulletIDsList.Add("100000");
-            vialAndBulletIDsList.Add("110000");
-            vialAndBulletIDsList.Add("120000");
-            vialAndBulletIDsList.Add("130000");
-            vialAndBulletIDsList.Add("140000");
-            vialAndBulletIDsList.Add("510000");
-            vialAndBulletIDsList.Add("520000");
-            vialAndBulletIDsList.Add("530000");
-            vialAndBulletIDsList.Add("540000");
-            vialAndBulletIDsList.Add("610000");
-            vialAndBulletIDsList.Add("620000");
-            vialAndBulletIDsList.Add("630000");
-            vialAndBulletIDsList.Add("640000");
-            vialAndBulletIDsList.Add("100001");
-            vialAndBulletIDsList.Add("110001");
-            vialAndBulletIDsList.Add("120001");
-            vialAndBulletIDsList.Add("130001");
-            vialAndBulletIDsList.Add("140001");
+            vialAndBulletIDsList.Add("1000");
+            vialAndBulletIDsList.Add("900");
             vialAndBulletIDsList.Add("240");
 
             List<string> shopWeaponList = new List<string>();
@@ -2145,6 +2253,11 @@ namespace MSB_Test
                     if (shopLineupParams.Rows[i].Cells[7].Value.ToString() == "0" && shopWeaponList.Count > 0)
                     {
                         int randomNumber = rand.Next(0, shopWeaponList.Count);
+
+                        while(shopWeaponList[randomNumber].Contains(shopLineupParams.Rows[i].Cells[0].ToString()))
+                        {
+                            randomNumber = rand.Next(0, shopWeaponList.Count);
+                        }
 
                         using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
                         {
@@ -2223,11 +2336,35 @@ namespace MSB_Test
             {
                 if(tempGuy.Parts.Enemies[i].ModelName.Contains("c0000") && tempGuy.Parts.Enemies[i].ThinkParamID != 1)
                 {
+                    bool addHostile = false;
+
+
+                    for (int k = 0; k < hostileNpcList.Count; k++)
+                    {
+                        if (tempGuy.Parts.Enemies[i].UnkT07.ToString().Contains(hostileNpcList[k]))
+                        {
+                            addHostile = true;
+                        }
+                    }
+
                     Random rand = new Random();
                     int random = rand.Next(0, npcList.Count);
-                    string thisEnemy;
+                    string thisEnemy = "";
 
-                    thisEnemy = npcList[random];
+                    if (addHostile)
+                    {
+                        random = rand.Next(0, hostileNpcList.Count);
+
+                        while (hostileNpcList[random].Contains(tempGuy.Parts.Enemies[i].UnkT07.ToString()))
+                        {
+                            random = rand.Next(0, hostileNpcList.Count);
+                            thisentityID = hostileNpcList[random];
+                        }
+                    }
+                    else
+                    {
+                        thisEnemy = npcList[random];
+                    }
 
                     string tempNpcParam;
                     string tempThinkId;
@@ -2258,7 +2395,7 @@ namespace MSB_Test
                             writetext.WriteLine("Old NPC");
                             writetext.WriteLine(npc + " npcParam");
                             writetext.WriteLine(think + " thinkID");
-                            writetext.WriteLine(mo + "UNKT07");
+                            writetext.WriteLine(mo + " UNKT07");
 
                             writetext.WriteLine("New NPC");
                             writetext.WriteLine(tempNpcParam + " npcParam");
@@ -2414,6 +2551,11 @@ namespace MSB_Test
             }
         }
 
+        private void RandomizeMultipleBossBossFights(string currentMap, List<string> noNoList)
+        {
+
+        }
+
         private void GenerateBossList(string currentMap, List<string> noNoList)
         {
             Random rand = new Random();
@@ -2430,6 +2572,11 @@ namespace MSB_Test
                 for (int i = 0; i < tempGUY.Parts.Enemies.Count; i++)
                 {
                     addEnemy = false;
+                    
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c4540_0000"))
+                    {
+                        OoKEnemy = tempGUY.Parts.Enemies[i];
+                    }
 
                     for (int j = 0; j < bossList.Count; j++)
                     {
@@ -2479,7 +2626,7 @@ namespace MSB_Test
                             {
                                 addEnemy = false;
                             }
-                            else if(ludwigCount >= 2 && tempGUY.Parts.Enemies[i].Name.Contains("c4510"))
+                            else if(tempGUY.Parts.Enemies[i].Name.Contains("c3060") && tempGUY.Parts.Enemies[i].NPCParamID != 210306016)
                             {
                                 addEnemy = false;
                             }
@@ -2642,6 +2789,11 @@ namespace MSB_Test
                     }
                 }
 
+                if (currentMap.Contains("m36"))
+                {
+                    OoKFirstPhase = OoKEnemy.NPCParamID.ToString() + "*" + OoKEnemy.ThinkParamID.ToString() + "*" + OoKEnemy.ModelName;
+                }
+
                 for (int i = 0; i < chaliceBossMSB.Count; i++)
                 {
                     string tempString = chaliceBossMSB[i].NPCParamID.ToString() + "*" + chaliceBossMSB[i].ThinkParamID.ToString() + "*" + chaliceBossMSB[i].ModelName;
@@ -2664,6 +2816,474 @@ namespace MSB_Test
             }
         }
 
+        private void AddOrphanPhaseOne(string currentMap, List<string> nonoList)
+        {
+            var tempGUY = MSBB.Read(currentMap);
+
+            for(int i = 0; i < tempGUY.Parts.Enemies.Count; i ++)
+            {
+                if(currentMap.Contains("m24_01"))
+                {
+                    if(tempGUY.Parts.Enemies[i].Name.Contains("c2710_0000"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        string thisEnemy = OoKFirstPhase;
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                            writetext.WriteLine("This is first phase Orphan.");
+                        }
+                    }
+                }
+                else if (currentMap.Contains("m24_02"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0000"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        string thisEnemy = OoKFirstPhase;
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                            writetext.WriteLine("This is first phase Orphan.");
+                        }
+                    }
+                }
+                else if (currentMap.Contains("m34_00"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c4510_0000"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        string thisEnemy = OoKFirstPhase;
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                            writetext.WriteLine("This is first phase Orphan.");
+                        }
+                    }
+                }
+            }
+
+            tempGUY.Write(currentMap);
+        }
+
+        private void AddTheRest(string currentMap, List<string> nonoList)
+        {
+            var tempGUY = MSBB.Read(currentMap);
+
+            for (int i = 0; i < tempGUY.Parts.Enemies.Count; i++)
+            {
+                if (currentMap.Contains("m22"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2100_0001"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                        }
+                    }
+                }
+                else if (currentMap.Contains("m27"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0001"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                        }
+                    }
+
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                        }
+                    }
+                }
+                else if (currentMap.Contains("m35_00"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0001"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                        }
+                    }
+
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0002"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                        }
+                    }
+
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0003"))
+                    {
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        {
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " model");
+                        }
+                    }
+                }
+            }
+
+            tempGUY.Write(currentMap);
+        }
 
         private void RandomizeBosses(string currentMap, List<string> nonoList)
         {
@@ -2677,10 +3297,22 @@ namespace MSB_Test
 
                 int addCounter = 0;
 
+                
                 if (!oopsAllBosses)
                 {
                     for (int i = 0; i < tempGUY.Parts.Enemies.Count; i++)
                     {
+                        
+                        if(combinedBossList.Count <= 0)
+                        {
+                            combinedBossList = new List<string>();
+
+                            for(int j = 0; j < combinedBossList2.Count; j ++)
+                            {
+                                combinedBossList.Add(combinedBossList2[j]);
+                            }
+                        }
+
                         changeData = false;
 
                         for (int j = 0; j < bossList.Count; j++)
@@ -2719,11 +3351,51 @@ namespace MSB_Test
                                 {
                                     changeData = false;
                                 }
+                                else if (tempGUY.Parts.Enemies[i].Name.Contains("c3060") && !currentMap.Contains("m29"))
+                                {
+                                    changeData = false;
+                                }
+                                else if(!currentMap.Contains("m36") && tempGUY.Parts.Enemies[i].ThinkParamID == 454000)
+                                {
+                                    changeData = false;
+                                }
+                                else if(currentMap.Contains("m22") && tempGUY.Parts.Enemies[i].Name.Contains("c2100_0001"))
+                                {
+                                    changeData = false;
+                                }
+                                else if(currentMap.Contains("m27") && tempGUY.Parts.Enemies[i].Name.Contains("c2120_0001"))
+                                {
+                                    changeData = false;
+                                }
+                                else if (currentMap.Contains("m27") && tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002"))
+                                {
+                                    changeData = false;
+                                }
+                                else if (currentMap.Contains("m35") && tempGUY.Parts.Enemies[i].Name.Contains("c4030_0001"))
+                                {
+                                    changeData = false;
+                                }
+                                else if (currentMap.Contains("m35") && tempGUY.Parts.Enemies[i].Name.Contains("c4030_0002"))
+                                {
+                                    changeData = false;
+                                }
+                                else if (currentMap.Contains("m35") && tempGUY.Parts.Enemies[i].Name.Contains("c4030_0003"))
+                                {
+                                    changeData = false;
+                                }
                                 else if(!currentMap.Contains("m26") && tempGUY.Parts.Enemies[i].Name.Contains("c0000_0005"))
                                 {
                                     changeData = false;
                                     List<long> tempLong = new List<long>();
                                     tempLong.Add(tempGUY.Parts.Enemies[i].NPCParamID);
+                                }
+                                else if (tempGUY.Parts.Enemies[i].Name.Contains("c3060") && !currentMap.Contains("m29"))
+                                {
+                                    changeData = false;
+                                }
+                                else if(tempGUY.Parts.Enemies[i].Name.Contains("c4030_0004") && currentMap.Contains("m35"))
+                                {
+                                    changeData = false;
                                 }
                                 else
                                 {
@@ -2760,36 +3432,67 @@ namespace MSB_Test
                             {
                                 if (tempGUY.Parts.Enemies[i].NPCParamID.ToString() == chaliceBossParams[k])
                                 {
-                                    changeData = true;
+                                    Random rand = new Random();
+                                    int random = rand.Next(0, chaliceBossString.Count);
+                                    string thisEnemy;
+
+                                    thisEnemy = chaliceBossString[random];
+
+                                    removalNumber = random;
+
+                                    string tempNpcParam;
+                                    string tempThinkId;
+                                    string modelName;
+
+                                    int tempNpcParamInt;
+                                    int tempThinkIdInt;
+
+                                    int tempnpcint = thisEnemy.IndexOf("*");
+                                    tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                    tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                    modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                                    tempNpcParamInt = int.Parse(tempNpcParam);
+                                    tempThinkIdInt = int.Parse(tempThinkId);
+
+                                    tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                                    tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                                    tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                                    using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                                    {
+                                        writetext.WriteLine(bossCount);
+                                        writetext.WriteLine(currentMap);
+                                        writetext.WriteLine(i + " Number in map list");
+                                        writetext.WriteLine("Old Boss");
+                                        writetext.WriteLine(thisnpc + " npcParam");
+                                        writetext.WriteLine(thisthink + " thinkID");
+                                        writetext.WriteLine(thismo + " model");
+                                        writetext.WriteLine(thisentityID);
+
+                                        writetext.WriteLine("New Boss");
+                                        writetext.WriteLine(tempNpcParam + " npcParam");
+                                        writetext.WriteLine(tempThinkId + " thinkID");
+                                        writetext.WriteLine(modelName + " model");
+
+                                        writetext.WriteLine("Enemy Pool Count: " + chaliceBossString.Count + Environment.NewLine + Environment.NewLine);
+                                    }
                                 }
                             }
                         }
 
-                        if(enemyDataRandomized.Count <= 1)
-                        {
-                            for (int k = 0; k < tertiaryBosses.Count; k++)
-                            {
-                                enemyDataRandomized.Add(tertiaryBosses[k]);
-                            }
-                        }
+                        
 
-                        if (changeData && enemyDataRandomized.Count > 0)
+                        if (changeData && combinedBossList.Count > 0)
                         {
                             oldNPCParam.Add(tempGUY.Parts.Enemies[i].NPCParamID);
 
                             Random rand = new Random();
-                            int random = rand.Next(0, enemyDataRandomized.Count);
-                            int randomChalice = rand.Next(0, chaliceBossString.Count);
+                            int random = rand.Next(0, combinedBossList.Count);
                             string thisEnemy;
-                            if (currentMap.Contains("m29"))
-                            {
-                                thisEnemy = chaliceBossString[randomChalice];
 
-                            }
-                            else
-                            {
-                                thisEnemy = enemyDataRandomized[random];
-                            }
+                            thisEnemy = combinedBossList[random];
+
                             removalNumber = random;
 
                             string tempNpcParam;
@@ -2807,33 +3510,35 @@ namespace MSB_Test
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
 
+                            /*
                             if(currentMap.Contains("m24_00"))
                             {
                                 while(modelName.Contains("4500") || modelName.Contains("4520"))
                                 {
-                                    random = rand.Next(0, enemyDataRandomized.Count);
-                                    thisEnemy = enemyDataRandomized[random];
+                                    random = rand.Next(0, combinedBossList.Count);
+                                    thisEnemy = combinedBossList[random];
                                     tempnpcint = thisEnemy.IndexOf("*");
                                     tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                                     tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                                     modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
                                 }
                             }
+                            */
 
+                            
                             if (currentMap.Contains("m24_02"))
                             {
                                 while (modelName.Contains("5100") || modelName.Contains("8050") || modelName.Contains("4520"))
                                 {
-                                    random = rand.Next(0, enemyDataRandomized.Count);
-                                    thisEnemy = enemyDataRandomized[random];
+                                    random = rand.Next(0, combinedBossList.Count);
+                                    thisEnemy = combinedBossList[random];
                                     tempnpcint = thisEnemy.IndexOf("*");
                                     tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                                     tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                                     modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
                                 }
                             }
-
-
+                            
 
                             tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                             tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
@@ -2843,8 +3548,8 @@ namespace MSB_Test
                             {
                                 while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
                                 {
-                                    random = rand.Next(0, enemyDataRandomized.Count);
-                                    thisEnemy = enemyDataRandomized[random];
+                                    random = rand.Next(0, combinedBossList.Count);
+                                    thisEnemy = combinedBossList[random];
                                     removalNumber = random;
 
                                     tempnpcint = thisEnemy.IndexOf("*");
@@ -2855,35 +3560,10 @@ namespace MSB_Test
                                     tempThinkIdInt = int.Parse(tempThinkId);
 
                                     addCounter++;
-                                    if (addCounter >= enemyDataRandomized.Count)
+                                    if (addCounter >= combinedBossList.Count)
                                     {
                                         //enemyDataRandomized.Add(secondaryBosses[random]);
                                         addCounter = 0;
-                                    }
-                                }
-
-                                if (addedBosses != null && addedBosses.Count >= 2)
-                                {
-                                    int counter = 0;
-                                    for (int l = 0; l < addedBosses.Count; l++)
-                                    {
-                                        if (tempNpcParamInt.ToString().Contains(addedBosses[l]))
-                                        {
-                                            counter++;
-                                            if (counter >= 2)
-                                            {
-                                                random = rand.Next(0, enemyDataRandomized.Count);
-                                                thisEnemy = enemyDataRandomized[random];
-                                                removalNumber = random;
-
-                                                tempnpcint = thisEnemy.IndexOf("*");
-                                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                                tempNpcParamInt = int.Parse(tempNpcParam);
-                                                tempThinkIdInt = int.Parse(tempThinkId);
-                                            }
-                                        }
                                     }
                                 }
 
@@ -2899,57 +3579,8 @@ namespace MSB_Test
                                 {
                                     tempGUY.Parts.Enemies[i].ThinkParamID = 507200;
                                 }
-                                //celestial emissary fix
-                                if (tempGUY.Parts.Enemies[i].Name == "c2570_0001")
-                                {
-                                    while (modelName.Contains("c5100") || modelName.Contains("c5000"))
-                                    {
-                                        random = rand.Next(0, enemyDataRandomized.Count);
-                                        thisEnemy = enemyDataRandomized[random];
-                                        removalNumber = random;
-
-                                        Console.WriteLine(enemyDataRandomized[0]);
-
-                                        tempnpcint = thisEnemy.IndexOf("*");
-                                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                                        tempNpcParamInt = int.Parse(tempNpcParam);
-                                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                                        if (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                                        {
-                                            random = rand.Next(0, enemyDataRandomized.Count);
-                                            thisEnemy = enemyDataRandomized[random];
-                                            removalNumber = random;
-
-                                            tempnpcint = thisEnemy.IndexOf("*");
-                                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                            tempNpcParamInt = int.Parse(tempNpcParam);
-                                            tempThinkIdInt = int.Parse(tempThinkId);
-                                        }
-
-                                        npc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                                        think = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                                        mo = tempGUY.Parts.Enemies[i].ModelName;
-                                        entityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
-
-                                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                                        addCounter++;
-                                        if (addCounter >= enemyDataRandomized.Count)
-                                        {
-                                            //enemyDataRandomized.Add(secondaryBosses[random]);
-                                            addCounter = 0;
-                                        }
-                                    }
-                                }
-                                else if (tempGUY.Parts.Enemies[i].Name == "c2500_0000")
+                                //Emissary fix
+                                if (tempGUY.Parts.Enemies[i].Name == "c2500_0000")
                                 {
                                     for (int k = 0; k < tempGUY.Parts.Enemies.Count; k++)
                                     {
@@ -2961,7 +3592,7 @@ namespace MSB_Test
                                         }
                                     }
                                 }
-                                //enemyDataRandomized.RemoveAt(0);
+                                //wet nurse fix
                                 if (tempGUY.Parts.Enemies[i].Name == "c5510_0000")
                                 {
                                     for (int k = 0; k < tempGUY.Parts.Enemies.Count; k++)
@@ -2977,56 +3608,6 @@ namespace MSB_Test
                                             tempGUY.Parts.Enemies[k].NPCParamID = tempNpcParamInt;
                                             tempGUY.Parts.Enemies[k].ThinkParamID = tempThinkIdInt;
                                             tempGUY.Parts.Enemies[k].ModelName = modelName;
-                                        }
-                                    }
-                                }
-                                //ludwig fix
-                                if (tempGUY.Parts.Enemies[i].Name == "c4510_0002")
-                                {
-                                    while (modelName.Contains("c5100") || modelName.Contains("c5000"))
-                                    {
-                                        random = rand.Next(0, enemyDataRandomized.Count);
-                                        thisEnemy = enemyDataRandomized[random];
-                                        removalNumber = random;
-
-                                        Console.WriteLine(enemyDataRandomized[0]);
-
-                                        tempnpcint = thisEnemy.IndexOf("*");
-                                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                                        tempNpcParamInt = int.Parse(tempNpcParam);
-                                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                                        if (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                                        {
-                                            random = rand.Next(0, enemyDataRandomized.Count);
-                                            thisEnemy = enemyDataRandomized[random];
-                                            removalNumber = random;
-
-                                            tempnpcint = thisEnemy.IndexOf("*");
-                                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                            tempNpcParamInt = int.Parse(tempNpcParam);
-                                            tempThinkIdInt = int.Parse(tempThinkId);
-                                        }
-
-                                        npc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                                        think = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                                        mo = tempGUY.Parts.Enemies[i].ModelName;
-                                        entityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
-
-                                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                                        addCounter++;
-                                        if (addCounter >= enemyDataRandomized.Count)
-                                        {
-                                            //enemyDataRandomized.Add(secondaryBosses[random]);
-                                            addCounter = 0;
                                         }
                                     }
                                 }
@@ -3056,102 +3637,8 @@ namespace MSB_Test
                                         }
                                     }
                                 }
-                                //Orphan fix
-                                if (tempGUY.Parts.Enemies[i].Name == "c4541_0000")
-                                {
-                                    while (modelName.Contains("c5100") || modelName.Contains("c5000"))
-                                    {
-                                        random = rand.Next(0, enemyDataRandomized.Count);
-                                        thisEnemy = enemyDataRandomized[random];
-                                        removalNumber = random;
-
-                                        Console.WriteLine(enemyDataRandomized[0]);
-
-                                        tempnpcint = thisEnemy.IndexOf("*");
-                                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                                        tempNpcParamInt = int.Parse(tempNpcParam);
-                                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                                        if (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                                        {
-                                            random = rand.Next(0, enemyDataRandomized.Count);
-                                            thisEnemy = enemyDataRandomized[random];
-                                            removalNumber = random;
-
-                                            tempnpcint = thisEnemy.IndexOf("*");
-                                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                            tempNpcParamInt = int.Parse(tempNpcParam);
-                                            tempThinkIdInt = int.Parse(tempThinkId);
-                                        }
-
-                                        npc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                                        think = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                                        mo = tempGUY.Parts.Enemies[i].ModelName;
-                                        entityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
-
-                                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                                        addCounter++;
-                                        if (addCounter >= enemyDataRandomized.Count)
-                                        {
-                                            //enemyDataRandomized.Add(secondaryBosses[random]);
-                                            addCounter = 0;
-                                        }
-                                    }
-                                }
-                                //gascoigne fix
-                                if (tempGUY.Parts.Enemies[i].Name == "c2720_0000")
-                                {
-                                    while (modelName.Contains("c5100") || modelName.Contains("c5000"))
-                                    {
-                                        random = rand.Next(0, enemyDataRandomized.Count);
-                                        thisEnemy = enemyDataRandomized[random];
-                                        removalNumber = random;
-
-                                        Console.WriteLine(enemyDataRandomized[0]);
-
-                                        tempnpcint = thisEnemy.IndexOf("*");
-                                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                                        tempNpcParamInt = int.Parse(tempNpcParam);
-                                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                                        if (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                                        {
-                                            random = rand.Next(0, enemyDataRandomized.Count);
-                                            thisEnemy = enemyDataRandomized[random];
-                                            removalNumber = random;
-
-                                            tempnpcint = thisEnemy.IndexOf("*");
-                                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                            tempNpcParamInt = int.Parse(tempNpcParam);
-                                            tempThinkIdInt = int.Parse(tempThinkId);
-                                        }
-
-
-                                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                                        addCounter++;
-                                        if (addCounter >= enemyDataRandomized.Count)
-                                        {
-                                            //enemyDataRandomized.Add(secondaryBosses[random]);
-                                            addCounter = 0;
-                                        }
-                                    }
-                                }
+                                
+                                
 
                                 using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                                 {
@@ -3169,31 +3656,21 @@ namespace MSB_Test
                                     writetext.WriteLine(tempThinkId + " thinkID");
                                     writetext.WriteLine(modelName + " model");
 
-                                    enemyDataRandomized.RemoveAt(removalNumber);
-                                    writetext.WriteLine("Enemy Pool Count: " + enemyDataRandomized.Count + Environment.NewLine + Environment.NewLine);
+                                    combinedBossList.RemoveAt(random);
+                                    writetext.WriteLine("Enemy Pool Count: " + combinedBossList.Count);
+
+                                    for (int m = combinedBossList.Count - 1; m >= 0; m--)
+                                    {
+                                        if(combinedBossList[m].Contains("*" + modelName) && !combinedBossList[m].Contains("*4510"))
+                                        {
+                                            combinedBossList.RemoveAt(m);
+                                        }
+                                    }
+
+                                    writetext.WriteLine("New count after removing similar bosses " + combinedBossList.Count + Environment.NewLine + Environment.NewLine);
                                 }
                             }
-                            if (currentMap.Contains("m29"))
-                            {
-                                using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                                {
-                                    writetext.WriteLine(bossCount);
-                                    writetext.WriteLine(currentMap);
-                                    writetext.WriteLine(i + " Number in map list");
-                                    writetext.WriteLine("Old Boss");
-                                    writetext.WriteLine(thisnpc + " npcParam");
-                                    writetext.WriteLine(thisthink + " thinkID");
-                                    writetext.WriteLine(thismo + " model");
-                                    writetext.WriteLine(thisentityID);
-
-                                    writetext.WriteLine("New Boss");
-                                    writetext.WriteLine(tempNpcParam + " npcParam");
-                                    writetext.WriteLine(tempThinkId + " thinkID");
-                                    writetext.WriteLine(modelName + " model");
-
-                                    writetext.WriteLine("Enemy Pool Count: " + enemyDataRandomized.Count + Environment.NewLine + Environment.NewLine);
-                                }
-                            }
+                            
 
                             bossCount++;
                             newNPCParam.Add(paramNumber);
@@ -3201,10 +3678,10 @@ namespace MSB_Test
                             paramNumber--;
 
                         }
-
                     }
                 }
-                else if(oopsAllBosses)
+                
+                if(oopsAllBosses)
                 {
                     for (int i = 0; i < tempGUY.Parts.Enemies.Count; i++)
                     {
@@ -3539,6 +4016,39 @@ namespace MSB_Test
                                         changeData = true;
                                     }
                                 }
+                        }
+
+                        if(currentMap.Contains("m28"))
+                        {
+                            if(tempGUY.Parts.Enemies[i].Name.Contains("c1050_0117"))
+                            {
+                                changeData = true;
+                            }
+
+                            if (tempGUY.Parts.Enemies[i].Name.Contains("c1050_0115"))
+                            {
+                                changeData = true;
+                            }
+
+                            if (tempGUY.Parts.Enemies[i].Name.Contains("c1050_0119"))
+                            {
+                                changeData = true;
+                            }
+
+                            if (tempGUY.Parts.Enemies[i].Name.Contains("c1050_0110"))
+                            {
+                                changeData = true;
+                            }
+
+                            if (tempGUY.Parts.Enemies[i].Name.Contains("c1050_0112"))
+                            {
+                                changeData = true;
+                            }
+
+                            if (tempGUY.Parts.Enemies[i].Name.Contains("c1050_0114"))
+                            {
+                                changeData = true;
+                            }
                         }
 
                         if (changeData && enemyDataRandomized.Count > 0)
@@ -4179,6 +4689,7 @@ namespace MSB_Test
         private void BossCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             includeBosses = BossCheckBox.IsChecked.Value;
+            chaliceBosses = BossCheckBox.IsChecked.Value;
         }
 
         private void InsertBosses_Checked(object sender, RoutedEventArgs e)
@@ -4195,7 +4706,7 @@ namespace MSB_Test
 
         private void ChaliceBoss_Checked(object sender, RoutedEventArgs e)
         {
-            chaliceBosses = ChaliceBoss.IsChecked.Value;
+            //chaliceBosses = ChaliceBoss.IsChecked.Value;
         }
 
         private void OopsAllCheck_Checked(object sender, RoutedEventArgs e)

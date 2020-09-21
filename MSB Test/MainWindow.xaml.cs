@@ -24,6 +24,7 @@ namespace MSB_Test
         string paramPath;
         string paramDefPath;
         string currentTask;
+        bool keepGuns;
         List<long> longList2 = new List<long>();
         List<string> logList2 = new List<string>();
         List<string> unusedList = new List<string>();
@@ -73,6 +74,20 @@ namespace MSB_Test
         bool insertBossesBool;
         double bossPercentage;
         double chaliceChanceFloat;
+        double HemwickChance = 100;
+        double OldYharnamChance = 100;
+        double CathedralWardChance = 100;
+        double CentralYharnamChance = 100;
+        double UpperCathedralWardChance = 60;
+        double CainhurstChance = 60;
+        double NightmareOfMensisChance = 100;
+        double WoodsChance = 100;
+        double YahargulChance = 100;
+        double ByrgenwerthChance = 100;
+        double FrontierChance = 100;
+        double HuntersNightmareChance = 90;
+        double ResearchHallChance = 30;
+        double HamletChance = 100;
         int bossCount = 0;
         bool chaliceBosses;
         bool chaliceEnemies;
@@ -106,10 +121,17 @@ namespace MSB_Test
         List<string> eventFileList = new List<string>();
         string OoKFirstPhase;
         MSBB.Part.Enemy OoKEnemy;
+        List<string> rightHandList = new List<string>();
+        List<string> leftHandList = new List<string>();
 
         public MainWindow()
         {
             InitializeComponent();
+
+            UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
 
             RandomizeKeyItemsBox.IsEnabled = false;
 
@@ -971,8 +993,6 @@ namespace MSB_Test
                 ChaliceEnemies.IsEnabled = false;
                 ArmorRandomizerCheckBox.IsEnabled = false;
                 AddNPCS.IsEnabled = false;
-                bossSlider.IsEnabled = false;
-                ChaliceSliderThing.IsEnabled = false;
                 OopsAllCheck.IsEnabled = false;
                 OopsAllBossesCheck.IsEnabled = false;
                 OopsAllStringName.IsEnabled = false;
@@ -983,6 +1003,118 @@ namespace MSB_Test
                 RandomizeShopBox.IsEnabled = false;
                 EnemyDropBox.IsEnabled = false;
                 WorkshopBox.IsEnabled = false;
+
+                BossDownTen.IsEnabled = false;
+                BossUpOne.IsEnabled = false;
+                BossUpPointOne.IsEnabled = false;
+                BossUpTen.IsEnabled = false;
+                BossUpOne_Copy.IsEnabled = false;
+                BossUpPointOne_Copy.IsEnabled = false;
+
+                HCDT.IsEnabled = false;
+                HCDO.IsEnabled = false;
+                HCDPO.IsEnabled = false;
+                HCUPO.IsEnabled = false;
+                HCUO.IsEnabled = false;
+                HCUT.IsEnabled = false;
+
+                CWDT.IsEnabled = false;
+                CWDO.IsEnabled = false;
+                CWDPO.IsEnabled = false;
+                CWUPO.IsEnabled = false;
+                CWUO.IsEnabled = false;
+                CWUT.IsEnabled = false;
+
+                UCDT.IsEnabled = false;
+                UCDO.IsEnabled = false;
+                UCDPO.IsEnabled = false;
+                UCUPO.IsEnabled = false;
+                UCUO.IsEnabled = false;
+                UCUT.IsEnabled = false;
+
+                MDT.IsEnabled = false;
+                MDO.IsEnabled = false;
+                MDPO.IsEnabled = false;
+                MUPO.IsEnabled = false;
+                MUO.IsEnabled = false;
+                MUT.IsEnabled = false;
+
+                YDT.IsEnabled = false;
+                YDO.IsEnabled = false;
+                YDPO.IsEnabled = false;
+                YUPO.IsEnabled = false;
+                YUO.IsEnabled = false;
+                YUT.IsEnabled = false;
+
+                FDT.IsEnabled = false;
+                FDO.IsEnabled = false;
+                FDPO.IsEnabled = false;
+                FUPO.IsEnabled = false;
+                FUO.IsEnabled = false;
+                FUT.IsEnabled = false;
+
+                OYDT.IsEnabled = false;
+                OYDO.IsEnabled = false;
+                OYDPO.IsEnabled = false;
+                OYUPO.IsEnabled = false;
+                OYUO.IsEnabled = false;
+                OYUT.IsEnabled = false;
+
+                CYDT.IsEnabled = false;
+                CYDO.IsEnabled = false;
+                CYDPO.IsEnabled = false;
+                CYUPO.IsEnabled = false;
+                CYUO.IsEnabled = false;
+                CYUT.IsEnabled = false;
+
+                CDT.IsEnabled = false;
+                CDO.IsEnabled = false;
+                CDPO.IsEnabled = false;
+                CUPO.IsEnabled = false;
+                CUO.IsEnabled = false;
+                CUT.IsEnabled = false;
+
+                WDT.IsEnabled = false;
+                WDO.IsEnabled = false;
+                WDPO.IsEnabled = false;
+                WUPO.IsEnabled = false;
+                WUO.IsEnabled = false;
+                WUT.IsEnabled = false;
+
+                BDT.IsEnabled = false;
+                BDO.IsEnabled = false;
+                BDPO.IsEnabled = false;
+                BUPO.IsEnabled = false;
+                BUO.IsEnabled = false;
+                BUT.IsEnabled = false;
+
+                HDT.IsEnabled = false;
+                HDO.IsEnabled = false;
+                HDPO.IsEnabled = false;
+                HUPO.IsEnabled = false;
+                HUO.IsEnabled = false;
+                HUT.IsEnabled = false;
+
+                FHDT.IsEnabled = false;
+                FHDO.IsEnabled = false;
+                FHDPO.IsEnabled = false;
+                FHUPO.IsEnabled = false;
+                FHUO.IsEnabled = false;
+                FHUT.IsEnabled = false;
+
+                RDT.IsEnabled = false;
+                RDO.IsEnabled = false;
+                RDPO.IsEnabled = false;
+                RUPO.IsEnabled = false;
+                RUO.IsEnabled = false;
+                RUT.IsEnabled = false;
+
+                ChaliceUpOne.IsEnabled = false;
+                ChaliceUpPointOne.IsEnabled = false;
+                ChaliceUpTen.IsEnabled = false;
+                ChaliceUpOne_Copy.IsEnabled = false;
+                ChaliceUpPointOne_Copy.IsEnabled = false;
+                ChaliceDownTen.IsEnabled = false;
             });
 
             if (bellMaidenBool)
@@ -2156,8 +2288,6 @@ namespace MSB_Test
                 ChaliceEnemies.IsEnabled = true;
                 ArmorRandomizerCheckBox.IsEnabled = true;
                 AddNPCS.IsEnabled = true;
-                bossSlider.IsEnabled = true;
-                ChaliceSliderThing.IsEnabled = true;
                 OopsAllCheck.IsEnabled = true;
                 OopsAllBossesCheck.IsEnabled = true;
                 OopsAllStringName.IsEnabled = true;
@@ -2202,12 +2332,215 @@ namespace MSB_Test
             vialAndBulletIDsList.Add("1000");
             vialAndBulletIDsList.Add("900");
             vialAndBulletIDsList.Add("240");
+            if (keepGuns)
+            {
+                vialAndBulletIDsList.Add("14000000");
+                vialAndBulletIDsList.Add("6000000");
+            }
 
             List<string> shopWeaponList = new List<string>();
             List<string> shopConsumableList = new List<string>();
             List<string> shopArmorList = new List<string>();
 
-            for(int i = 0; i < shopLineupParams.Rows.Count; i ++)
+            //EQUIP ID'S
+
+            //RIGHT HAND WEAPONS
+            //Parasite 38000000
+            //Amygdalan Arm? 25000000
+            //ax 5000000
+            //cane 22000000
+            //lost blood sword 2020000
+            //chikage 2000000
+            //hammer 8000000
+            //war pick? 30000000
+            //lost war pick? 30020000
+            //lost hammer 8020000
+            //cut off the lost meat??? 24020000
+            //double edged decidious??? 27000000
+            //gun hammer? 28000000
+            //funeral blade 5100000
+            //gatling gun 33000000
+            //chigatana heterogenity 2010000
+            //Heterogeneity of church stone mallet 8010000
+            //Heterogeneity of deciduous 27010000
+            //Heterogeneity of Funeral blade 5110000
+            //Heterogeneity of Juyari 10010000
+            //Heterogeneity of Leyte Rupa rush 10110000
+            //Heterogeneity of mercy blade 4010000
+            //Heterogeneity of moonlight Seiken 26010000
+            //Heterogeneity of parasite 38010000
+            //Heterogeneity of phlebotomy mallet 29010000
+            //Heterogeneity of rotation sawtooth 31010000
+            //Heterogeneity of Shishitsume 9010000
+            //Heterogeneity of small Amun arm 25010000
+            //Heterogeneity of the beast hunting ax 5010000
+            //Heterogeneity of the beast hunting songs sword 23010000
+            //Heterogeneity of the bow sword 32010000
+            //Heterogeneity of the church pile 30010000
+            //Heterogeneity of the explosion hammer 28010000
+            //Heterogeneity of the feed wand 22010000
+            //Heterogeneity of the holy sword 8110000
+            //Heterogeneity of the meat cut off 24010000
+            //Heterogeneity of the pile hammer 11010000
+            //Heterogeneity of the sawtooth hatchet 7010000
+            //Heterogeneity of the wheels 12010000
+            //Heterogeneity of Tonitorusu 13010000
+            //Holy sword of moonlight (moonlight sword) 26000000
+            //Holy sword of Rudouiku (sword sword) 8100000
+            //Juyari (Juyari) 10000000
+            //Juyari lost 10020000
+            //Leyte Rupa Rush (bayonet) 10100000
+            //Lost beast hunting ax 5020000
+            //Lost beast hunting songs sword 23020000
+            //Lost bow sword 32020000
+            //Lost charged cane 22020000
+            //Lost deciduous 27020000
+            //Lost explosion hammer 28020000
+            //Lost Funeral blade 5120000
+            //Lost Leyte Rupa rush 10120000
+            //Lost mercy blade 4020000
+            //Lost moonlight Seiken 26020000
+            //Lost parasites 38020000
+            //Lost pile hammer 11020000
+            //Lost wheel 12020000
+            //Meat cut off (Nokomuchi) 24000000
+            //Mercy of the blade (twin sword) 4000000
+            //Nokonata 7000000
+            //Phlebotomy hammer lost 29020000
+            //Phlebotomy of the mallet (cross Mace) 29000000
+            //Pile hammer (Kenkui) 11000000
+            //Pole ax 5000000
+            //Rogeriusu of the wheel (wheel) 12000000
+            //Rotation sawtooth (circular saw chain saw) 31000000
+            //Rotation sawtooth lost 31020000
+            //Sawtooth hatchet(Nokonata) 7000000
+            //Sawtooth hatchet that lost 7020000
+            //Sawtooth spear (Nokoyari) 7100000
+            //Sawtooth spear lost 7120000
+            //Shishitsume lost 9020000
+            //Simon bow sword (deformation bow) 32000000
+            //Small Amun arm that was lost 25020000
+            //Song sword of the beast hunting (saw song sword) 23000000
+            //St. sword that was lost 8120000
+            //Stick whip 22000000
+            //Tonitorusu (爆槌) 13000000
+            //Tonitorusu lost 13020000
+
+            rightHandList.Add("38000000");
+            rightHandList.Add("25000000");
+            rightHandList.Add("5000000");
+            rightHandList.Add("22000000");
+            rightHandList.Add("2020000");
+            rightHandList.Add("2000000");
+            rightHandList.Add("8000000");
+            rightHandList.Add("30000000");
+            rightHandList.Add("30020000");
+            rightHandList.Add("8020000");
+            rightHandList.Add("24020000");
+            rightHandList.Add("27000000");
+            rightHandList.Add("28000000");
+            rightHandList.Add("5100000");
+            rightHandList.Add("2010000");
+            rightHandList.Add("8010000");
+            rightHandList.Add("27010000");
+            rightHandList.Add("5110000");
+            rightHandList.Add("10010000");
+            rightHandList.Add("10110000");
+            rightHandList.Add("4010000");
+            rightHandList.Add("26010000");
+            rightHandList.Add("38010000");
+            rightHandList.Add("29010000");
+            rightHandList.Add("31010000");
+            rightHandList.Add("9010000");
+            rightHandList.Add("25010000");
+            rightHandList.Add("5010000");
+            rightHandList.Add("23010000");
+            rightHandList.Add("32010000");
+            rightHandList.Add("30010000");
+            rightHandList.Add("28010000");
+            rightHandList.Add("22010000");
+            rightHandList.Add("8110000");
+            rightHandList.Add("24010000");
+            rightHandList.Add("11010000");
+            rightHandList.Add("7010000");
+            rightHandList.Add("12010000");
+            rightHandList.Add("13010000");
+            rightHandList.Add("26000000");
+            rightHandList.Add("8100000");
+            rightHandList.Add("10000000");
+            rightHandList.Add("10020000");
+            rightHandList.Add("10100000");
+            rightHandList.Add("5020000");
+            rightHandList.Add("23020000");
+            rightHandList.Add("32020000");
+            rightHandList.Add("22020000");
+            rightHandList.Add("27020000");
+            rightHandList.Add("28020000");
+            rightHandList.Add("5120000");
+            rightHandList.Add("10120000");
+            rightHandList.Add("4020000");
+            rightHandList.Add("26020000");
+            rightHandList.Add("38020000");
+            rightHandList.Add("11020000");
+            rightHandList.Add("12020000");
+            rightHandList.Add("24000000");
+            rightHandList.Add("4000000");
+            rightHandList.Add("7000000");
+            rightHandList.Add("29020000");
+            rightHandList.Add("/29000000");
+            rightHandList.Add("11000000");
+            rightHandList.Add("5000000");
+            rightHandList.Add("12000000");
+            rightHandList.Add("31000000");
+            rightHandList.Add("31020000");
+            rightHandList.Add("7000000");
+            rightHandList.Add("7020000");
+            rightHandList.Add("7100000");
+            rightHandList.Add("7120000");
+            rightHandList.Add("9020000");
+            rightHandList.Add("32000000");
+            rightHandList.Add("25020000");
+            rightHandList.Add("23000000");
+            rightHandList.Add("8120000");
+            rightHandList.Add("22000000");
+            rightHandList.Add("13000000");
+            rightHandList.Add("13020000");
+
+            //LEFT HAND WEAPONS
+            //cannon 15000000
+            //church cannon 35000000
+            //evelyn 14100000
+            //flamethrower 18100000
+            //fist of gratia 34000000
+            //Long gun Rudouiku (church length gun)??? 6100000
+            //Of the beast hunting handguns (workshop handguns) 14000000
+            //Of the beast hunting shotgun (workshop Nagaju) 6000000
+            //Rosmarinus (sprayer) 18000000\
+            //Shield of the lake (attribute shield) 19100000
+            //Through gun (through gun) 36000000
+            //Torches of the beast hunting (torches of the hunter) 20000000
+            //Twin gun of the Church (Church handguns) 14200000
+            //Workshop handgun 14000000
+            //Workshop Nagaju 6000000
+
+            leftHandList.Add("15000000");
+            leftHandList.Add("35000000");
+            leftHandList.Add("14100000");
+            leftHandList.Add("18100000");
+            leftHandList.Add("34000000");
+            leftHandList.Add("6100000");
+            leftHandList.Add("14000000");
+            leftHandList.Add("6000000");
+            leftHandList.Add("18000000");
+            leftHandList.Add("19100000");
+            leftHandList.Add("36000000");
+            leftHandList.Add("20000000");
+            leftHandList.Add("14200000");
+            leftHandList.Add("14000000");
+            leftHandList.Add("6000000");
+            leftHandList.Add("33000000");
+
+            for (int i = 0; i < shopLineupParams.Rows.Count; i ++)
             {
                 bool addToList = true;
 
@@ -2257,6 +2590,45 @@ namespace MSB_Test
                         while(shopWeaponList[randomNumber].Contains(shopLineupParams.Rows[i].Cells[0].ToString()))
                         {
                             randomNumber = rand.Next(0, shopWeaponList.Count);
+                        }
+
+                        if(shopLineupParams.Rows[i].Cells[0].ToString().Contains("7000000")
+                            || shopLineupParams.Rows[i].Cells[0].ToString().Contains("5000000")
+                            || shopLineupParams.Rows[i].Cells[0].ToString().Contains("22000000"))
+                        {
+                            bool rightHand = false;
+
+                            while(!rightHand)
+                            {
+                                if(!rightHandList.Contains(shopWeaponList[randomNumber]))
+                                {
+                                    randomNumber = rand.Next(0, shopWeaponList.Count);
+                                }
+                                else
+                                {
+                                    rightHand = true;
+                                }
+                            }
+
+                        }
+
+                        if (shopLineupParams.Rows[i].Cells[0].ToString().Contains("14000000")
+                            || shopLineupParams.Rows[i].Cells[0].ToString().Contains("6000000"))
+                        {
+                            bool leftHand = false;
+
+                            while(!leftHand)
+                            {
+                                if (!leftHandList.Contains(shopWeaponList[randomNumber]))
+                                {
+                                    randomNumber = rand.Next(0, shopWeaponList.Count);
+                                }
+                                else
+                                {
+                                    leftHand = true;
+                                }
+                            }
+
                         }
 
                         using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
@@ -3911,10 +4283,7 @@ namespace MSB_Test
                 var tempGUY = MSBB.Read(currentMap);
 
                 bool changeData;
-                bool ucw = true;
-                bool rh = true;
-                bool ch = true;
-                bool cp = true;
+                bool cc = true;
 
                 if (!oopsAll && randomizeEnemiesBool)
                 {
@@ -3927,10 +4296,7 @@ namespace MSB_Test
                             if (tempGUY.Parts.Enemies[i].Name.Contains(nonoList[j]))
                             {
                                 changeData = false;
-                                ucw = false;
-                                rh = false;
-                                ch = false;
-                                cp = false;
+                                cc = false;
                             }
                         }
 
@@ -3950,75 +4316,245 @@ namespace MSB_Test
                             }
                         }
 
+                        if (currentMap.Contains("22_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= HemwickChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("23_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= OldYharnamChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("24_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= CathedralWardChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("24_01"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= CentralYharnamChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
                         if (currentMap.Contains("24_02"))
                         {
                             Random chooseRand = new Random();
-                            int randChoose = chooseRand.Next(0, 11);
-                            if (randChoose >= 6)
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= UpperCathedralWardChance)
                             {
                                 changeData = false;
                             }
                             else
                             {
-                                if (ucw)
+                                if (cc)
                                 {
                                     changeData = true;
                                 }
                             }
                         }
 
-                        if (currentMap.Contains("25"))
+                        if (currentMap.Contains("25_00"))
                         {
                             Random chooseRand = new Random();
-                            int randChoose = chooseRand.Next(0, 11);
-                            if (randChoose >= 6)
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= CainhurstChance)
                             {
                                 changeData = false;
                             }
                             else
                             {
-                                if (ch)
+                                if (cc)
                                 {
                                     changeData = true;
                                 }
                             }
                         }
 
-                        if (currentMap.Contains("34"))
+                        if (currentMap.Contains("26_00"))
                         {
                             Random chooseRand = new Random();
-                            int randChoose = chooseRand.Next(0, 11);
-                            if (randChoose >= 9)
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= NightmareOfMensisChance)
                             {
                                 changeData = false;
                             }
                             else
                             {
-                                if (cp)
+                                if (cc)
                                 {
                                     changeData = true;
                                 }
                             }
                         }
 
-                        if (currentMap.Contains("35"))
+                        if (currentMap.Contains("27_00"))
                         {
-                                Random chooseRand = new Random();
-                                int randChoose = chooseRand.Next(0, 11);
-                                if (randChoose >= 3)
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= WoodsChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
                                 {
-                                    changeData = false;
+                                    changeData = true;
                                 }
-                                else
-                                {
-                                    if (rh)
-                                    {
-                                        changeData = true;
-                                    }
-                                }
+                            }
                         }
 
-                        if(currentMap.Contains("m28"))
+                        if (currentMap.Contains("28_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= YahargulChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("32_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= ByrgenwerthChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("33_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= FrontierChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("34_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= HuntersNightmareChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("35_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= ResearchHallChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("36_00"))
+                        {
+                            Random chooseRand = new Random();
+                            int randChoose = chooseRand.Next(0, 101);
+                            if (randChoose >= HamletChance)
+                            {
+                                changeData = false;
+                            }
+                            else
+                            {
+                                if (cc)
+                                {
+                                    changeData = true;
+                                }
+                            }
+                        }
+
+                        if (currentMap.Contains("m28"))
                         {
                             if(tempGUY.Parts.Enemies[i].Name.Contains("c1050_0117"))
                             {
@@ -4695,13 +5231,7 @@ namespace MSB_Test
         private void InsertBosses_Checked(object sender, RoutedEventArgs e)
         {
             insertBossesBool = InsertBosses.IsChecked.Value;
-        }
-
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            bossPercentage = bossSlider.Value * 10;
-            sliderValue.Content = (bossPercentage).ToString("0.0");
-
+            MessageBox.Show("This may make the game unstable\r\nand cause crashing.\r\nUse this feature at your own risk.");
         }
 
         private void ChaliceBoss_Checked(object sender, RoutedEventArgs e)
@@ -4737,12 +5267,6 @@ namespace MSB_Test
         private void GetItemLot_Click(object sender, RoutedEventArgs e)
         {
            
-        }
-
-        private void ChaliceSliderThing_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            chaliceChanceFloat = ChaliceSliderThing.Value * 10;
-            ChaliceSliderValue.Content = (chaliceChanceFloat).ToString("0.0");
         }
 
         private void VFXCheck_Checked(object sender, RoutedEventArgs e)
@@ -4855,5 +5379,1966 @@ namespace MSB_Test
         {
             workshopBool = WorkshopBox.IsChecked.Value;
         }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void BossUpPointOne_Click(object sender, RoutedEventArgs e)
+        {
+            if (bossPercentage < 100)
+            {
+                bossPercentage += .1f;
+
+                if (bossPercentage > 100)
+                {
+                    bossPercentage = 100;
+                }
+
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+            else
+            {
+                bossPercentage = 100;
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+        }
+
+        private void BossUpOne_Click(object sender, RoutedEventArgs e)
+        {
+            if (bossPercentage < 100)
+            {
+                bossPercentage += 1f;
+
+                if(bossPercentage > 100)
+                {
+                    bossPercentage = 100;
+                }
+
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+            else
+            {
+                bossPercentage = 100;
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+        }
+
+        private void BossUpPointOne_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (bossPercentage >= .1f)
+            {
+                bossPercentage -= .1f;
+
+                if(bossPercentage < 0)
+                {
+                    bossPercentage = 0;
+                }
+
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+            else
+            {
+                bossPercentage = 0;
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+        }
+
+        private void BossUpOne_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (bossPercentage >= 1)
+            {
+                bossPercentage -= 1f;
+
+                if (bossPercentage < 0)
+                {
+                    bossPercentage = 0;
+                }
+
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+            else
+            {
+                bossPercentage = 0;
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+        }
+
+
+        private void BossUpTen_Click(object sender, RoutedEventArgs e)
+        {
+            if (bossPercentage < 100)
+            {
+                bossPercentage += 10f;
+
+                if (bossPercentage > 100)
+                {
+                    bossPercentage = 100;
+                }
+
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+            else
+            {
+                bossPercentage = 100;
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+        }
+
+        private void BossDownTen_Click(object sender, RoutedEventArgs e)
+        {
+            if (bossPercentage >= 10)
+            {
+                bossPercentage -= 10f;
+
+                if (bossPercentage < 0)
+                {
+                    bossPercentage = 0;
+                }
+
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+            else
+            {
+                bossPercentage = 0;
+                BossPercentageLabel.Content = String.Format("{0:0.00}", bossPercentage);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void ChaliceUpPointOne_Click(object sender, RoutedEventArgs e)
+        {
+            if (chaliceChanceFloat < 100)
+            {
+                chaliceChanceFloat += .1f;
+
+                if (chaliceChanceFloat > 100)
+                {
+                    chaliceChanceFloat = 100;
+                }
+
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+            else
+            {
+                chaliceChanceFloat = 100;
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+        }
+
+        private void ChaliceUpOne_Click(object sender, RoutedEventArgs e)
+        {
+            if (chaliceChanceFloat < 100)
+            {
+                chaliceChanceFloat += 1f;
+
+                if (chaliceChanceFloat > 100)
+                {
+                    chaliceChanceFloat = 100;
+                }
+
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+            else
+            {
+                chaliceChanceFloat = 100;
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+        }
+
+        private void ChaliceUpPointOne_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (chaliceChanceFloat >= .1f)
+            {
+                chaliceChanceFloat -= .1f;
+
+                if (chaliceChanceFloat < 0)
+                {
+                    chaliceChanceFloat = 0;
+                }
+
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+            else
+            {
+                chaliceChanceFloat = 0;
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+        }
+
+        private void ChaliceUpOne_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (chaliceChanceFloat >= 1)
+            {
+                chaliceChanceFloat -= 1f;
+
+                if (chaliceChanceFloat < 0)
+                {
+                    chaliceChanceFloat = 0;
+                }
+
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+            else
+            {
+                chaliceChanceFloat = 0;
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+        }
+
+        private void ChaliceUpTen_Click(object sender, RoutedEventArgs e)
+        {
+            if (chaliceChanceFloat < 100)
+            {
+                chaliceChanceFloat += 10f;
+
+                if (chaliceChanceFloat > 100)
+                {
+                    chaliceChanceFloat = 100;
+                }
+
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+            else
+            {
+                chaliceChanceFloat = 100;
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+        }
+
+        private void ChaliceDownTen_Click(object sender, RoutedEventArgs e)
+        {
+            if (chaliceChanceFloat >= 10)
+            {
+                chaliceChanceFloat -= 10f;
+
+                if (chaliceChanceFloat < 0)
+                {
+                    chaliceChanceFloat = 0;
+                }
+
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+            else
+            {
+                chaliceChanceFloat = 0;
+                ChalicePercentLabel.Content = String.Format("{0:0.00}", chaliceChanceFloat);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void HCUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HemwickChance < 100)
+            {
+                HemwickChance += .1f;
+
+                if (HemwickChance > 100)
+                {
+                    HemwickChance = 100;
+                }
+
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+            else
+            {
+                HemwickChance = 100;
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+        }
+
+        private void HCUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HemwickChance < 100)
+            {
+                HemwickChance += 1f;
+
+                if (HemwickChance > 100)
+                {
+                    HemwickChance = 100;
+                }
+
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+            else
+            {
+                HemwickChance = 100;
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+        }
+
+        private void HCDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HemwickChance >= .1f)
+            {
+                HemwickChance -= .1f;
+
+                if (HemwickChance < 0)
+                {
+                    HemwickChance = 0;
+                }
+
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+            else
+            {
+                HemwickChance = 0;
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+        }
+
+        private void HCDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HemwickChance >= 1)
+            {
+                HemwickChance -= 1f;
+
+                if (HemwickChance < 0)
+                {
+                    HemwickChance = 0;
+                }
+
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+            else
+            {
+                HemwickChance = 0;
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+        }
+
+        private void HCUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (HemwickChance < 100)
+            {
+                HemwickChance += 10f;
+
+                if (HemwickChance > 100)
+                {
+                    HemwickChance = 100;
+                }
+
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+            else
+            {
+                HemwickChance = 100;
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+        }
+
+        private void HCDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (HemwickChance >= 10)
+            {
+                HemwickChance -= 10f;
+
+                if (HemwickChance < 0)
+                {
+                    HemwickChance = 0;
+                }
+
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+            else
+            {
+                HemwickChance = 0;
+                HemwickLabel.Content = String.Format("{0:0.00}", HemwickChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void CWUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CathedralWardChance < 100)
+            {
+                CathedralWardChance += .1f;
+
+                if (CathedralWardChance > 100)
+                {
+                    CathedralWardChance = 100;
+                }
+
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+            else
+            {
+                CathedralWardChance = 100;
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+        }
+
+        private void CWUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CathedralWardChance < 100)
+            {
+                CathedralWardChance += 1f;
+
+                if (CathedralWardChance > 100)
+                {
+                    CathedralWardChance = 100;
+                }
+
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+            else
+            {
+                CathedralWardChance = 100;
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+        }
+
+        private void CWDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CathedralWardChance >= .1f)
+            {
+                CathedralWardChance -= .1f;
+
+                if (CathedralWardChance < 0)
+                {
+                    CathedralWardChance = 0;
+                }
+
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+            else
+            {
+                CathedralWardChance = 0;
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+        }
+
+        private void CWDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CathedralWardChance >= 1)
+            {
+                CathedralWardChance -= 1f;
+
+                if (CathedralWardChance < 0)
+                {
+                    CathedralWardChance = 0;
+                }
+
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+            else
+            {
+                CathedralWardChance = 0;
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+        }
+
+        private void CWUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (CathedralWardChance < 100)
+            {
+                CathedralWardChance += 10f;
+
+                if (CathedralWardChance > 100)
+                {
+                    CathedralWardChance = 100;
+                }
+
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+            else
+            {
+                CathedralWardChance = 100;
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+        }
+
+        private void CWDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (CathedralWardChance >= 10)
+            {
+                CathedralWardChance -= 10f;
+
+                if (CathedralWardChance < 0)
+                {
+                    CathedralWardChance = 0;
+                }
+
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+            else
+            {
+                CathedralWardChance = 0;
+                CathedralWardLabel.Content = String.Format("{0:0.00}", CathedralWardChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void UCUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (UpperCathedralWardChance < 100)
+            {
+                UpperCathedralWardChance += .1f;
+
+                if (UpperCathedralWardChance > 100)
+                {
+                    UpperCathedralWardChance = 100;
+                }
+
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+            else
+            {
+                UpperCathedralWardChance = 100;
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+        }
+
+        private void UCUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (UpperCathedralWardChance < 100)
+            {
+                UpperCathedralWardChance += 1f;
+
+                if (UpperCathedralWardChance > 100)
+                {
+                    UpperCathedralWardChance = 100;
+                }
+
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+            else
+            {
+                UpperCathedralWardChance = 100;
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+        }
+
+        private void UCDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (UpperCathedralWardChance >= .1f)
+            {
+                UpperCathedralWardChance -= .1f;
+
+                if (UpperCathedralWardChance < 0)
+                {
+                    UpperCathedralWardChance = 0;
+                }
+
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+            else
+            {
+                UpperCathedralWardChance = 0;
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+        }
+
+        private void UCDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (UpperCathedralWardChance >= 1)
+            {
+                UpperCathedralWardChance -= 1f;
+
+                if (UpperCathedralWardChance < 0)
+                {
+                    UpperCathedralWardChance = 0;
+                }
+
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+            else
+            {
+                UpperCathedralWardChance = 0;
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+        }
+
+        private void UCUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (UpperCathedralWardChance < 100)
+            {
+                UpperCathedralWardChance += 10f;
+
+                if (UpperCathedralWardChance > 100)
+                {
+                    UpperCathedralWardChance = 100;
+                }
+
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+            else
+            {
+                UpperCathedralWardChance = 100;
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+        }
+
+        private void UCDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (UpperCathedralWardChance >= 10)
+            {
+                UpperCathedralWardChance -= 10f;
+
+                if (UpperCathedralWardChance < 0)
+                {
+                    UpperCathedralWardChance = 0;
+                }
+
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+            else
+            {
+                UpperCathedralWardChance = 0;
+                UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void MUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (NightmareOfMensisChance < 100)
+            {
+                NightmareOfMensisChance += .1f;
+
+                if (NightmareOfMensisChance > 100)
+                {
+                    NightmareOfMensisChance = 100;
+                }
+
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+            else
+            {
+                NightmareOfMensisChance = 100;
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+        }
+
+        private void MUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (NightmareOfMensisChance < 100)
+            {
+                NightmareOfMensisChance += 1f;
+
+                if (NightmareOfMensisChance > 100)
+                {
+                    NightmareOfMensisChance = 100;
+                }
+
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+            else
+            {
+                NightmareOfMensisChance = 100;
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+        }
+
+        private void MDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (NightmareOfMensisChance >= .1f)
+            {
+                NightmareOfMensisChance -= .1f;
+
+                if (NightmareOfMensisChance < 0)
+                {
+                    NightmareOfMensisChance = 0;
+                }
+
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+            else
+            {
+                NightmareOfMensisChance = 0;
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+        }
+
+        private void MDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (NightmareOfMensisChance >= 1)
+            {
+                NightmareOfMensisChance -= 1f;
+
+                if (NightmareOfMensisChance < 0)
+                {
+                    NightmareOfMensisChance = 0;
+                }
+
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+            else
+            {
+                NightmareOfMensisChance = 0;
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+        }
+
+        private void MUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (NightmareOfMensisChance < 100)
+            {
+                NightmareOfMensisChance += 10f;
+
+                if (NightmareOfMensisChance > 100)
+                {
+                    NightmareOfMensisChance = 100;
+                }
+
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+            else
+            {
+                NightmareOfMensisChance = 100;
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+        }
+
+        private void MDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (NightmareOfMensisChance >= 10)
+            {
+                NightmareOfMensisChance -= 10f;
+
+                if (NightmareOfMensisChance < 0)
+                {
+                    NightmareOfMensisChance = 0;
+                }
+
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+            else
+            {
+                NightmareOfMensisChance = 0;
+                MensisLabel.Content = String.Format("{0:0.00}", NightmareOfMensisChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void YUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (YahargulChance < 100)
+            {
+                YahargulChance += .1f;
+
+                if (YahargulChance > 100)
+                {
+                    YahargulChance = 100;
+                }
+
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+            else
+            {
+                YahargulChance = 100;
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+        }
+
+        private void YUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (YahargulChance < 100)
+            {
+                YahargulChance += 1f;
+
+                if (YahargulChance > 100)
+                {
+                    YahargulChance = 100;
+                }
+
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+            else
+            {
+                YahargulChance = 100;
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+        }
+
+        private void YDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (YahargulChance >= .1f)
+            {
+                YahargulChance -= .1f;
+
+                if (YahargulChance < 0)
+                {
+                    YahargulChance = 0;
+                }
+
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+            else
+            {
+                YahargulChance = 0;
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+        }
+
+        private void YDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (YahargulChance >= 1)
+            {
+                YahargulChance -= 1f;
+
+                if (YahargulChance < 0)
+                {
+                    YahargulChance = 0;
+                }
+
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+            else
+            {
+                YahargulChance = 0;
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+        }
+
+        private void YUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (YahargulChance < 100)
+            {
+                YahargulChance += 10f;
+
+                if (YahargulChance > 100)
+                {
+                    YahargulChance = 100;
+                }
+
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+            else
+            {
+                YahargulChance = 100;
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+        }
+
+        private void YDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (YahargulChance >= 10)
+            {
+                YahargulChance -= 10f;
+
+                if (YahargulChance < 0)
+                {
+                    YahargulChance = 0;
+                }
+
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+            else
+            {
+                YahargulChance = 0;
+                YahargulLabel.Content = String.Format("{0:0.00}", YahargulChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void FUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (FrontierChance < 100)
+            {
+                FrontierChance += .1f;
+
+                if (FrontierChance > 100)
+                {
+                    FrontierChance = 100;
+                }
+
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+            else
+            {
+                FrontierChance = 100;
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void FUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (FrontierChance < 100)
+            {
+                FrontierChance += 1f;
+
+                if (FrontierChance > 100)
+                {
+                    FrontierChance = 100;
+                }
+
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+            else
+            {
+                FrontierChance = 100;
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void FDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (FrontierChance >= .1f)
+            {
+                FrontierChance -= .1f;
+
+                if (FrontierChance < 0)
+                {
+                    FrontierChance = 0;
+                }
+
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+            else
+            {
+                FrontierChance = 0;
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void FDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (FrontierChance >= 1)
+            {
+                FrontierChance -= 1f;
+
+                if (FrontierChance < 0)
+                {
+                    FrontierChance = 0;
+                }
+
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+            else
+            {
+                FrontierChance = 0;
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void FUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (FrontierChance < 100)
+            {
+                FrontierChance += 10f;
+
+                if (FrontierChance > 100)
+                {
+                    FrontierChance = 100;
+                }
+
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+            else
+            {
+                FrontierChance = 100;
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void FDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (FrontierChance >= 10)
+            {
+                FrontierChance -= 10f;
+
+                if (FrontierChance < 0)
+                {
+                    FrontierChance = 0;
+                }
+
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+            else
+            {
+                FrontierChance = 0;
+                FrontierLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void RUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (ResearchHallChance < 100)
+            {
+                ResearchHallChance += .1f;
+
+                if (ResearchHallChance > 100)
+                {
+                    ResearchHallChance = 100;
+                }
+
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+            else
+            {
+                ResearchHallChance = 100;
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+        }
+
+        private void RUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (ResearchHallChance < 100)
+            {
+                ResearchHallChance += 1f;
+
+                if (ResearchHallChance > 100)
+                {
+                    ResearchHallChance = 100;
+                }
+
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+            else
+            {
+                ResearchHallChance = 100;
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+        }
+
+        private void RDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (ResearchHallChance >= .1f)
+            {
+                ResearchHallChance -= .1f;
+
+                if (ResearchHallChance < 0)
+                {
+                    ResearchHallChance = 0;
+                }
+
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+            else
+            {
+                ResearchHallChance = 0;
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+        }
+
+        private void RDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (ResearchHallChance >= 1)
+            {
+                ResearchHallChance -= 1f;
+
+                if (ResearchHallChance < 0)
+                {
+                    ResearchHallChance = 0;
+                }
+
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+            else
+            {
+                ResearchHallChance = 0;
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+        }
+
+        private void RUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (ResearchHallChance < 100)
+            {
+                ResearchHallChance += 10f;
+
+                if (ResearchHallChance > 100)
+                {
+                    ResearchHallChance = 100;
+                }
+
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+            else
+            {
+                ResearchHallChance = 100;
+                ResearchLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void RDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (ResearchHallChance >= 10)
+            {
+                ResearchHallChance -= 10f;
+
+                if (ResearchHallChance < 0)
+                {
+                    ResearchHallChance = 0;
+                }
+
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+            else
+            {
+                ResearchHallChance = 0;
+                ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void OYUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (OldYharnamChance < 100)
+            {
+                OldYharnamChance += .1f;
+
+                if (OldYharnamChance > 100)
+                {
+                    OldYharnamChance = 100;
+                }
+
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+            else
+            {
+                OldYharnamChance = 100;
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+        }
+
+        private void OYUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (OldYharnamChance < 100)
+            {
+                OldYharnamChance += 1f;
+
+                if (OldYharnamChance > 100)
+                {
+                    OldYharnamChance = 100;
+                }
+
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+            else
+            {
+                OldYharnamChance = 100;
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+        }
+
+        private void OYDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (OldYharnamChance >= .1f)
+            {
+                OldYharnamChance -= .1f;
+
+                if (OldYharnamChance < 0)
+                {
+                    OldYharnamChance = 0;
+                }
+
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+            else
+            {
+                OldYharnamChance = 0;
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+        }
+
+        private void OYDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (OldYharnamChance >= 1)
+            {
+                OldYharnamChance -= 1f;
+
+                if (OldYharnamChance < 0)
+                {
+                    OldYharnamChance = 0;
+                }
+
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+            else
+            {
+                OldYharnamChance = 0;
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+        }
+
+        private void OYUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (OldYharnamChance < 100)
+            {
+                OldYharnamChance += 10f;
+
+                if (OldYharnamChance > 100)
+                {
+                    OldYharnamChance = 100;
+                }
+
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+            else
+            {
+                OldYharnamChance = 100;
+                OldYharnamLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void OYDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (OldYharnamChance >= 10)
+            {
+                OldYharnamChance -= 10f;
+
+                if (OldYharnamChance < 0)
+                {
+                    OldYharnamChance = 0;
+                }
+
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+            else
+            {
+                OldYharnamChance = 0;
+                OldYharnamLabel.Content = String.Format("{0:0.00}", OldYharnamChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void CYUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CentralYharnamChance < 100)
+            {
+                CentralYharnamChance += .1f;
+
+                if (CentralYharnamChance > 100)
+                {
+                    CentralYharnamChance = 100;
+                }
+
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+            else
+            {
+                CentralYharnamChance = 100;
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+        }
+
+        private void CYUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CentralYharnamChance < 100)
+            {
+                CentralYharnamChance += 1f;
+
+                if (CentralYharnamChance > 100)
+                {
+                    CentralYharnamChance = 100;
+                }
+
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+            else
+            {
+                CentralYharnamChance = 100;
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+        }
+
+        private void CYDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CentralYharnamChance >= .1f)
+            {
+                CentralYharnamChance -= .1f;
+
+                if (CentralYharnamChance < 0)
+                {
+                    CentralYharnamChance = 0;
+                }
+
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+            else
+            {
+                CentralYharnamChance = 0;
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+        }
+
+        private void CYDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CentralYharnamChance >= 1)
+            {
+                CentralYharnamChance -= 1f;
+
+                if (CentralYharnamChance < 0)
+                {
+                    CentralYharnamChance = 0;
+                }
+
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+            else
+            {
+                CentralYharnamChance = 0;
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+        }
+
+        private void CYUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (CentralYharnamChance < 100)
+            {
+                CentralYharnamChance += 10f;
+
+                if (CentralYharnamChance > 100)
+                {
+                    CentralYharnamChance = 100;
+                }
+
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+            else
+            {
+                CentralYharnamChance = 100;
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void CYDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (CentralYharnamChance >= 10)
+            {
+                CentralYharnamChance -= 10f;
+
+                if (CentralYharnamChance < 0)
+                {
+                    CentralYharnamChance = 0;
+                }
+
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+            else
+            {
+                CentralYharnamChance = 0;
+                CentralYharnamLabel.Content = String.Format("{0:0.00}", CentralYharnamChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void CUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CainhurstChance < 100)
+            {
+                CainhurstChance += .1f;
+
+                if (CainhurstChance > 100)
+                {
+                    CainhurstChance = 100;
+                }
+
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+            else
+            {
+                CainhurstChance = 100;
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+        }
+
+        private void CUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CainhurstChance < 100)
+            {
+                CainhurstChance += 1f;
+
+                if (CainhurstChance > 100)
+                {
+                    CainhurstChance = 100;
+                }
+
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+            else
+            {
+                CainhurstChance = 100;
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+        }
+
+        private void CDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CainhurstChance >= .1f)
+            {
+                CainhurstChance -= .1f;
+
+                if (CainhurstChance < 0)
+                {
+                    CainhurstChance = 0;
+                }
+
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+            else
+            {
+                CainhurstChance = 0;
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+        }
+
+        private void CDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (CainhurstChance >= 1)
+            {
+                CainhurstChance -= 1f;
+
+                if (CainhurstChance < 0)
+                {
+                    CainhurstChance = 0;
+                }
+
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+            else
+            {
+                CainhurstChance = 0;
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+        }
+
+        private void CUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (CainhurstChance < 100)
+            {
+                CainhurstChance += 10f;
+
+                if (CainhurstChance > 100)
+                {
+                    CainhurstChance = 100;
+                }
+
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+            else
+            {
+                CainhurstChance = 100;
+                CainhurstLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void CDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (CainhurstChance >= 10)
+            {
+                CainhurstChance -= 10f;
+
+                if (CainhurstChance < 0)
+                {
+                    CainhurstChance = 0;
+                }
+
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+            else
+            {
+                CainhurstChance = 0;
+                CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void WUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (WoodsChance < 100)
+            {
+                WoodsChance += .1f;
+
+                if (WoodsChance > 100)
+                {
+                    WoodsChance = 100;
+                }
+
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+            else
+            {
+                WoodsChance = 100;
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+        }
+
+        private void WUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (WoodsChance < 100)
+            {
+                WoodsChance += 1f;
+
+                if (WoodsChance > 100)
+                {
+                    WoodsChance = 100;
+                }
+
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+            else
+            {
+                WoodsChance = 100;
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+        }
+
+        private void WDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (WoodsChance >= .1f)
+            {
+                WoodsChance -= .1f;
+
+                if (WoodsChance < 0)
+                {
+                    WoodsChance = 0;
+                }
+
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+            else
+            {
+                WoodsChance = 0;
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+        }
+
+        private void WDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (WoodsChance >= 1)
+            {
+                WoodsChance -= 1f;
+
+                if (WoodsChance < 0)
+                {
+                    WoodsChance = 0;
+                }
+
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+            else
+            {
+                WoodsChance = 0;
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+        }
+
+        private void WUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (WoodsChance < 100)
+            {
+                WoodsChance += 10f;
+
+                if (WoodsChance > 100)
+                {
+                    WoodsChance = 100;
+                }
+
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+            else
+            {
+                WoodsChance = 100;
+                WoodsLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void WDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (WoodsChance >= 10)
+            {
+                WoodsChance -= 10f;
+
+                if (WoodsChance < 0)
+                {
+                    WoodsChance = 0;
+                }
+
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+            else
+            {
+                WoodsChance = 0;
+                WoodsLabel.Content = String.Format("{0:0.00}", WoodsChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void BUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (ByrgenwerthChance < 100)
+            {
+                ByrgenwerthChance += .1f;
+
+                if (ByrgenwerthChance > 100)
+                {
+                    ByrgenwerthChance = 100;
+                }
+
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+            else
+            {
+                ByrgenwerthChance = 100;
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+        }
+
+        private void BUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (ByrgenwerthChance < 100)
+            {
+                ByrgenwerthChance += 1f;
+
+                if (ByrgenwerthChance > 100)
+                {
+                    ByrgenwerthChance = 100;
+                }
+
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+            else
+            {
+                ByrgenwerthChance = 100;
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+        }
+
+        private void BDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (ByrgenwerthChance >= .1f)
+            {
+                ByrgenwerthChance -= .1f;
+
+                if (ByrgenwerthChance < 0)
+                {
+                    ByrgenwerthChance = 0;
+                }
+
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+            else
+            {
+                ByrgenwerthChance = 0;
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+        }
+
+        private void BDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (ByrgenwerthChance >= 1)
+            {
+                ByrgenwerthChance -= 1f;
+
+                if (ByrgenwerthChance < 0)
+                {
+                    ByrgenwerthChance = 0;
+                }
+
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+            else
+            {
+                ByrgenwerthChance = 0;
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+        }
+
+        private void BUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (ByrgenwerthChance < 100)
+            {
+                ByrgenwerthChance += 10f;
+
+                if (ByrgenwerthChance > 100)
+                {
+                    ByrgenwerthChance = 100;
+                }
+
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+            else
+            {
+                ByrgenwerthChance = 100;
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void BDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (ByrgenwerthChance >= 10)
+            {
+                ByrgenwerthChance -= 10f;
+
+                if (ByrgenwerthChance < 0)
+                {
+                    ByrgenwerthChance = 0;
+                }
+
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+            else
+            {
+                ByrgenwerthChance = 0;
+                ByrgenwerthLabel.Content = String.Format("{0:0.00}", ByrgenwerthChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void HUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HuntersNightmareChance < 100)
+            {
+                HuntersNightmareChance += .1f;
+
+                if (HuntersNightmareChance > 100)
+                {
+                    HuntersNightmareChance = 100;
+                }
+
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+            else
+            {
+                HuntersNightmareChance = 100;
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+        }
+
+        private void HUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HuntersNightmareChance < 100)
+            {
+                HuntersNightmareChance += 1f;
+
+                if (HuntersNightmareChance > 100)
+                {
+                    HuntersNightmareChance = 100;
+                }
+
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+            else
+            {
+                HuntersNightmareChance = 100;
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+        }
+
+        private void HDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HuntersNightmareChance >= .1f)
+            {
+                HuntersNightmareChance -= .1f;
+
+                if (HuntersNightmareChance < 0)
+                {
+                    HuntersNightmareChance = 0;
+                }
+
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+            else
+            {
+                HuntersNightmareChance = 0;
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+        }
+
+        private void HDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HuntersNightmareChance >= 1)
+            {
+                HuntersNightmareChance -= 1f;
+
+                if (HuntersNightmareChance < 0)
+                {
+                    HuntersNightmareChance = 0;
+                }
+
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+            else
+            {
+                HuntersNightmareChance = 0;
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+        }
+
+        private void HUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (HuntersNightmareChance < 100)
+            {
+                HuntersNightmareChance += 10f;
+
+                if (HuntersNightmareChance > 100)
+                {
+                    HuntersNightmareChance = 100;
+                }
+
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+            else
+            {
+                HuntersNightmareChance = 100;
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void HDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (HuntersNightmareChance >= 10)
+            {
+                HuntersNightmareChance -= 10f;
+
+                if (HuntersNightmareChance < 0)
+                {
+                    HuntersNightmareChance = 0;
+                }
+
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+            else
+            {
+                HuntersNightmareChance = 0;
+                HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        private void FHUPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HamletChance < 100)
+            {
+                HamletChance += .1f;
+
+                if (HamletChance > 100)
+                {
+                    HamletChance = 100;
+                }
+
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+            else
+            {
+                HamletChance = 100;
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+        }
+
+        private void FHUO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HamletChance < 100)
+            {
+                HamletChance += 1f;
+
+                if (HamletChance > 100)
+                {
+                    HamletChance = 100;
+                }
+
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+            else
+            {
+                HamletChance = 100;
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+        }
+
+        private void FHDPO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HamletChance >= .1f)
+            {
+                HamletChance -= .1f;
+
+                if (HamletChance < 0)
+                {
+                    HamletChance = 0;
+                }
+
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+            else
+            {
+                HamletChance = 0;
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+        }
+
+        private void FHDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (HamletChance >= 1)
+            {
+                HamletChance -= 1f;
+
+                if (HamletChance < 0)
+                {
+                    HamletChance = 0;
+                }
+
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+            else
+            {
+                HamletChance = 0;
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+        }
+
+        private void FHUT_Click(object sender, RoutedEventArgs e)
+        {
+            if (HamletChance < 100)
+            {
+                HamletChance += 10f;
+
+                if (HamletChance > 100)
+                {
+                    HamletChance = 100;
+                }
+
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+            else
+            {
+                HamletChance = 100;
+                FishingHamletLabel.Content = String.Format("{0:0.00}", FrontierChance);
+            }
+        }
+
+        private void FHDT_Click(object sender, RoutedEventArgs e)
+        {
+            if (HamletChance >= 10)
+            {
+                HamletChance -= 10f;
+
+                if (HamletChance < 0)
+                {
+                    HamletChance = 0;
+                }
+
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+            else
+            {
+                HamletChance = 0;
+                FishingHamletLabel.Content = String.Format("{0:0.00}", HamletChance);
+            }
+        }
+
+        private void KeepGunsBox_Checked(object sender, RoutedEventArgs e)
+        {
+            keepGuns = KeepGunsBox.IsChecked.Value;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
     }
 }

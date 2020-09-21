@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         ResizeMode="NoResize"
-        Background="DarkGray"
+        Background="Gray"
         xmlns:local="clr-namespace:MSB_Test"
         mc:Ignorable="d"
-        Title="Bloodborne Randomizer" Height="590" Width="782" Icon="/menu_knowledge_04215.png">
+        Title="Bloodborne Randomizer" Height="590" Width="967" Icon="/menu_knowledge_04215.png">
     <Grid x:Name="RandomizeMusicBox" Margin="18,10,10,-16">
         <Grid.RowDefinitions>
             <RowDefinition Height="218*"/>
@@ -17,33 +17,159 @@
         <CheckBox ToolTip="Include chalice enemies in enemy randomization pool. This will also randomize enemies in the chalice maps." x:Name="ChaliceEnemies" Content="Include Chalice Enemies" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" Checked="Chalice_Checked" Height="15" Width="147"/>
         <CheckBox ToolTip="Randomize bosses in all maps, excluding chalice maps." x:Name="BossCheckBox" Content="Randomize Bosses" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Checked="BossCheckBox_Checked" Height="15" Width="118"/>
         <CheckBox ToolTip="Randomly select an enemy to be replaced by a boss." x:Name="InsertBosses" Content="Enemies Can Be Bosses" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Checked="InsertBosses_Checked" Height="15" Width="143"/>
-        <Slider x:Name="bossSlider" HorizontalAlignment="Left" Margin="42,230,0,0" VerticalAlignment="Top" Width="690" ValueChanged="Slider_ValueChanged" Height="18" Grid.RowSpan="2"/>
-        <Label x:Name="sliderValue" Content="0" HorizontalAlignment="Left" Margin="0,226,0,0" VerticalAlignment="Top" Height="26" Width="42" Grid.RowSpan="2"/>
         <CheckBox ToolTip="Include chalice bosses in enemy randomization pool. This will also randomize bosses in the chalice maps." x:Name="ChaliceBoss" Content="Include Chalice Bosses" HorizontalAlignment="Left" Margin="10,131,0,0" VerticalAlignment="Top" Checked="ChaliceBoss_Checked" Height="15" Width="139"/>
         <Label Content="Percentage Chance an Enemy Will Be a Boss" HorizontalAlignment="Left" Margin="0,195,0,0" VerticalAlignment="Top" Height="26" Width="257" FontWeight="Bold" FontStyle="Normal"/>
         <CheckBox ToolTip="Customize the enemies that will appear in all maps." x:Name="OopsAllCheck" Content="Enemies" HorizontalAlignment="Left" Margin="110,131,0,0" VerticalAlignment="Top" Checked="OopsAllCheck_Checked" Height="15" Width="79" Grid.Row="1"/>
-        <TextBox x:Name="OopsAllStringName" TextWrapping="Wrap" TextChanged="OopsAllStringName_TextChanged" Margin="84,166,0,92" Grid.Row="1"/>
-        <Label Content="Percentage Chance an Enemy Will Be a Chalice Enemy" HorizontalAlignment="Left" Margin="0,28,0,0" VerticalAlignment="Top" Height="26" Width="313" Grid.Row="1" FontWeight="Bold"/>
-        <Label x:Name="ChaliceSliderValue" Content="0" HorizontalAlignment="Left" Margin="0,59,0,0" Grid.Row="1" VerticalAlignment="Top" Width="42"/>
-        <Slider x:Name="ChaliceSliderThing" HorizontalAlignment="Left" Margin="42,62,0,0" Grid.Row="1" VerticalAlignment="Top" Width="690" ValueChanged="ChaliceSliderThing_ValueChanged"/>
-        <TextBox x:Name="OopsBoss" Margin="84,208,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="29" TextChanged="OopsBoss_TextChanged" Grid.Row="1"/>
+        <TextBox x:Name="OopsAllStringName" TextWrapping="Wrap" TextChanged="OopsAllStringName_TextChanged" Margin="84,166,10,92" Grid.Row="1"/>
+        <Label Content="Percentage Chance an Enemy Will Be a Chalice Enemy" HorizontalAlignment="Left" Margin="0,36,0,0" VerticalAlignment="Top" Height="26" Width="313" Grid.Row="1" FontWeight="Bold"/>
+        <TextBox x:Name="OopsBoss" Margin="84,208,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="29" TextChanged="OopsBoss_TextChanged" Grid.Row="1"/>
         <Label Content="Enemies:" HorizontalAlignment="Left" Margin="21,171,0,0" VerticalAlignment="Top" Grid.Row="1"/>
         <Label Content="Bosses:" HorizontalAlignment="Left" Margin="25,210,0,0" VerticalAlignment="Top" Grid.Row="1"/>
         <CheckBox ToolTip="Customize the bosses that will appear in all maps." x:Name="OopsAllBossesCheck" Content="Bosses" HorizontalAlignment="Left" Margin="214,131,0,0" VerticalAlignment="Top" Checked="OopsAllBossesCheck_Checked" Grid.Row="1"/>
         <CheckBox ToolTip="Randomize enemies in all maps, excluding chalice maps." x:Name="RandomizeEnemiesCheck" Content="Randomize Enemies" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" Checked="RandomizeEnemiesCheck_Checked"/>
         <CheckBox ToolTip="Randomize the NPCs in all maps." x:Name="AddNPCS" Content="Randomize NPCs" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Checked="AddNPCS_Checked"/>
         <CheckBox ToolTip="Randomize non-key items in all maps." x:Name="ArmorRandomizerCheckBox" Content="Randomize Non-Key Overworld Items" HorizontalAlignment="Left" Margin="185,91,0,0" VerticalAlignment="Top" Checked="ArmorRandomizerCheckBox_Checked"/>
-        <ProgressBar x:Name="TotalProgressBar" HorizontalAlignment="Left" Height="18" Margin="10,267,0,0" Grid.Row="1" VerticalAlignment="Top" Width="697" ValueChanged="TotalProgressBar_ValueChanged"/>
+        <ProgressBar x:Name="TotalProgressBar" HorizontalAlignment="Left" Height="18" Margin="10,267,0,0" Grid.Row="1" VerticalAlignment="Top" Width="908" ValueChanged="TotalProgressBar_ValueChanged"/>
         <Label x:Name="CurrentTaskLabel" Content="CURRENT TASK" HorizontalAlignment="Left" Margin="10,239,0,0" Grid.Row="1" VerticalAlignment="Top" Width="638"/>
-        <Button x:Name="TEST" Content="RANDOMIZE" HorizontalAlignment="Left" Margin="6,0,0,0" VerticalAlignment="Top" Click="TEST_Click" Width="144" Height="36"/>
-        <Label x:Name="TotalTime" Content="0:00" HorizontalAlignment="Left" Margin="675,239,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Button x:Name="TEST" Content="RANDOMIZE" HorizontalAlignment="Left" Margin="6,-5,0,0" VerticalAlignment="Top" Click="TEST_Click" Width="144" Height="36"/>
+        <Label x:Name="TotalTime" Content="0:00" HorizontalAlignment="Left" Margin="886,242,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Label Content="Customize Run" HorizontalAlignment="Left" Margin="17,124,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <CheckBox ToolTip="Include bosses from group boss fights as a single boss. Witches, Shadows, Emissary, Failures, and One Reborn." x:Name="LesserBossesBox" Content="Include Lesser Bosses in Boss Fight Pool " HorizontalAlignment="Left" Margin="185,71,0,0" VerticalAlignment="Top" Checked="LesserBossesBox_Checked"/>
-        <CheckBox ToolTip="Keep Bell Maidens from being changed, keeping the generators working." x:Name="BellMaidenBox" Content="Keep Bell Maidens the Same" HorizontalAlignment="Left" Margin="185,51,0,0" VerticalAlignment="Top" Checked="BellMaidenBox_Checked"/>
+        <CheckBox ToolTip="Keep Bell Maidens from being changed, keeping the generators working." x:Name="BellMaidenBox" Content="Keep Bell Maidens the Same" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top" Checked="BellMaidenBox_Checked"/>
         <CheckBox ToolTip="Randomize key items in all maps." x:Name="RandomizeKeyItemsBox" Content="Randomize Key Overworld Items (With Logic)" HorizontalAlignment="Left" Margin="185,111,0,0" VerticalAlignment="Top" Checked="RandomizeKeyItemsBox_Checked"/>
         <CheckBox ToolTip="Randomize items that will appear in all shops." x:Name="RandomizeShopBox" Content="Randomize Shop Items" HorizontalAlignment="Left" Margin="185,131,0,0" VerticalAlignment="Top" Checked="RandomizeShopBox_Checked"/>
         <CheckBox ToolTip="Randomize items that drop from enemies." x:Name="EnemyDropBox" Content="Randomize Enemy Drops" HorizontalAlignment="Left" Margin="185,151,0,0" VerticalAlignment="Top" Checked="EnemyDropBox_Checked"/>
-        <CheckBox ToolTip="Randomize the workshop tools in the normal maps. Blood gem tool and rune tool." x:Name="WorkshopBox" Content="Randomize Workshop Tools" HorizontalAlignment="Left" Margin="451,51,0,0" VerticalAlignment="Top" Checked="WorkshopBox_Checked"/>
+        <CheckBox ToolTip="Randomize the workshop tools in the normal maps. Blood gem tool and rune tool." x:Name="WorkshopBox" Content="Randomize Workshop Tools" HorizontalAlignment="Left" Margin="185,51,0,0" VerticalAlignment="Top" Checked="WorkshopBox_Checked"/>
         <Label Content="Randomizer will exit when finished. Find logs in &quot;dvdroot_ps4\Mod Files\Logs. Don't Delete\&quot;" HorizontalAlignment="Left" Margin="156,0,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Rectangle HorizontalAlignment="Left" Height="360" Margin="457,31,0,0" Stroke="Black" VerticalAlignment="Top" Width="461" Grid.RowSpan="2"/>
+        <Button x:Name="BossUpPointOne" Content="&gt;" HorizontalAlignment="Left" Margin="156,228,0,0" VerticalAlignment="Top" Height="22" Width="14" Grid.RowSpan="2" Click="BossUpPointOne_Click"/>
+        <Button x:Name="BossUpOne" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="175,228,0,0" VerticalAlignment="Top" Height="22" Width="19" Grid.RowSpan="2" Click="BossUpOne_Click"/>
+        <Button x:Name="BossUpPointOne_Copy" Content="&lt;" HorizontalAlignment="Left" Margin="66,228,0,0" VerticalAlignment="Top" Height="22" Width="14" Grid.RowSpan="2" Click="BossUpPointOne_Copy_Click"/>
+        <Button x:Name="BossUpOne_Copy" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="43,228,0,0" VerticalAlignment="Top" Height="22" Width="19" Grid.RowSpan="2" Click="BossUpOne_Copy_Click"/>
+        <Label x:Name="BossPercentageLabel" Content="0.00" HorizontalAlignment="Left" Margin="92,226,0,0" VerticalAlignment="Top" Height="28" Grid.RowSpan="2" Width="52"/>
+        <Label x:Name="ChalicePercentLabel" Content="0.00" HorizontalAlignment="Left" Margin="92,72,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Button x:Name="ChaliceUpPointOne" Content="&gt;" HorizontalAlignment="Left" Margin="156,72,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.454,-0.039" Width="14" Height="22" Grid.Row="1" Click="ChaliceUpPointOne_Click"/>
+        <Button x:Name="ChaliceUpOne" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="175,72,0,0" Grid.Row="1" VerticalAlignment="Top" Height="22" Width="19" Click="ChaliceUpOne_Click"/>
+        <Button x:Name="ChaliceUpPointOne_Copy" Content="&lt;" HorizontalAlignment="Left" Margin="66,72,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.454,-0.039" Width="14" Height="22" Grid.Row="1" Click="ChaliceUpPointOne_Copy_Click"/>
+        <Button x:Name="ChaliceUpOne_Copy" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="42,72,0,0" Grid.Row="1" VerticalAlignment="Top" Height="22" Width="19" Click="ChaliceUpOne_Copy_Click"/>
+        <Label Content="Hemwick Charnel Lane" HorizontalAlignment="Left" Margin="456,31,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Old Yharnam" HorizontalAlignment="Left" Margin="722,33,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Cathedral Ward" HorizontalAlignment="Left" Margin="456,78,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Central Yharnam" HorizontalAlignment="Left" Margin="723,78,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Upper Cathedral Ward" HorizontalAlignment="Left" Margin="457,125,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Forsaken Castle Cainhurst" HorizontalAlignment="Left" Margin="722,125,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="NIghtmare Of Mensis" HorizontalAlignment="Left" Margin="457,179,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Forbidden Woods" HorizontalAlignment="Left" Margin="723,179,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Yahar'gul, Unseen Village " HorizontalAlignment="Left" Margin="456,232,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.RowSpan="2"/>
+        <Label Content="Byrgenwerth + Lecture Building" HorizontalAlignment="Left" Margin="722,232,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.RowSpan="2"/>
+        <Label Content="Nightmare Frontier" HorizontalAlignment="Left" Margin="456,49,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.Row="1"/>
+        <Label Content="Hunter's Nightmare" HorizontalAlignment="Left" Margin="723,49,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.Row="1"/>
+        <Label Content="Research Hall" HorizontalAlignment="Left" Margin="456,102,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.Row="1"/>
+        <Label Content="Fishing Hamlet" HorizontalAlignment="Left" Margin="723,102,0,0" VerticalAlignment="Top" FontWeight="Bold" Grid.Row="1"/>
+        <Label x:Name="HemwickLabel" Content="100.00" HorizontalAlignment="Left" Margin="537,53,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="HCDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="495,56,0,0" VerticalAlignment="Top" Click="HCDO_Click"/>
+        <Button x:Name="BossUpTen" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="199,228,0,0" VerticalAlignment="Top" Grid.RowSpan="2" Height="22" Click="BossUpTen_Click"/>
+        <Button x:Name="ChaliceUpTen" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="199,72,0,0" VerticalAlignment="Top" Height="22" Grid.Row="1" Click="ChaliceUpTen_Click"/>
+        <Button x:Name="ChaliceDownTen" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="8,72,0,0" VerticalAlignment="Top" Height="22" Grid.Row="1" Click="ChaliceDownTen_Click"/>
+        <Button x:Name="BossDownTen" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top" Height="22" Grid.RowSpan="2" Click="BossDownTen_Click"/>
+        <Button x:Name="HCDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="461,56,0,0" VerticalAlignment="Top" Click="HCDT_Click"/>
+        <Button x:Name="HCDPO" Content="&lt;" HorizontalAlignment="Left" Margin="520,56,0,0" VerticalAlignment="Top" Click="HCDPO_Click"/>
+        <Button x:Name="HCUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="600,56,0,0" VerticalAlignment="Top" Click="HCUO_Click"/>
+        <Button x:Name="HCUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="625,56,0,0" VerticalAlignment="Top" Click="HCUT_Click"/>
+        <Button x:Name="HCUPO" Content="&gt;" HorizontalAlignment="Left" Margin="583,56,0,0" VerticalAlignment="Top" Click="HCUPO_Click"/>
+        <Label x:Name="CathedralWardLabel" Content="100.00" HorizontalAlignment="Left" Margin="537,101,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="CWDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="495,104,0,0" VerticalAlignment="Top" Click="CWDO_Click"/>
+        <Button x:Name="CWDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="461,104,0,0" VerticalAlignment="Top" Click="CWDT_Click"/>
+        <Button x:Name="CWDPO" Content="&lt;" HorizontalAlignment="Left" Margin="520,104,0,0" VerticalAlignment="Top" Click="CWDPO_Click"/>
+        <Button x:Name="CWUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="600,104,0,0" VerticalAlignment="Top" Click="CWUO_Click"/>
+        <Button x:Name="CWUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="625,104,0,0" VerticalAlignment="Top" Click="CWUT_Click"/>
+        <Button x:Name="CWUPO" Content="&gt;" HorizontalAlignment="Left" Margin="583,104,0,0" VerticalAlignment="Top" Click="CWUPO_Click"/>
+        <Label x:Name="UpperCathedralLabel" Content="100.00" HorizontalAlignment="Left" Margin="537,148,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="UCDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="495,151,0,0" VerticalAlignment="Top" Click="UCDO_Click"/>
+        <Button x:Name="UCDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="461,151,0,0" VerticalAlignment="Top" Click="UCDT_Click"/>
+        <Button x:Name="UCDPO" Content="&lt;" HorizontalAlignment="Left" Margin="520,151,0,0" VerticalAlignment="Top" Click="UCDPO_Click"/>
+        <Button x:Name="UCUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="600,151,0,0" VerticalAlignment="Top" Click="UCUO_Click"/>
+        <Button x:Name="UCUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="625,151,0,0" VerticalAlignment="Top" Click="UCUT_Click"/>
+        <Button x:Name="UCUPO" Content="&gt;" HorizontalAlignment="Left" Margin="583,151,0,0" VerticalAlignment="Top" Click="UCUPO_Click"/>
+        <Label x:Name="MensisLabel" Content="100.00" HorizontalAlignment="Left" Margin="537,202,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="MDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="495,205,0,0" VerticalAlignment="Top" Click="MDO_Click"/>
+        <Button x:Name="MDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="461,205,0,0" VerticalAlignment="Top" Click="MDT_Click"/>
+        <Button x:Name="MDPO" Content="&lt;" HorizontalAlignment="Left" Margin="520,205,0,0" VerticalAlignment="Top" Click="MDPO_Click"/>
+        <Button x:Name="MUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="600,205,0,0" VerticalAlignment="Top" Click="MUO_Click"/>
+        <Button x:Name="MUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="625,205,0,0" VerticalAlignment="Top" Click="MUT_Click"/>
+        <Button x:Name="MUPO" Content="&gt;" HorizontalAlignment="Left" Margin="583,205,0,0" VerticalAlignment="Top" Click="MUPO_Click"/>
+        <Label x:Name="YahargulLabel" Content="100.00" HorizontalAlignment="Left" Margin="537,18,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <Button x:Name="YDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="495,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="YDO_Click"/>
+        <Button x:Name="YDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="461,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="YDT_Click"/>
+        <Button x:Name="YDPO" Content="&lt;" HorizontalAlignment="Left" Margin="520,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="YDPO_Click"/>
+        <Button x:Name="YUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="600,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="YUO_Click"/>
+        <Button x:Name="YUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="625,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="YUT_Click"/>
+        <Button x:Name="YUPO" Content="&gt;" HorizontalAlignment="Left" Margin="583,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="YUPO_Click"/>
+        <Label x:Name="FrontierLabel" Content="100.00" HorizontalAlignment="Left" Margin="537,72,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <Button x:Name="FDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="495,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FDO_Click"/>
+        <Button x:Name="FDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="461,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FDT_Click"/>
+        <Button x:Name="FDPO" Content="&lt;" HorizontalAlignment="Left" Margin="520,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FDPO_Click"/>
+        <Button x:Name="FUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="600,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FUO_Click"/>
+        <Button x:Name="FUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="625,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FUT_Click"/>
+        <Button x:Name="FUPO" Content="&gt;" HorizontalAlignment="Left" Margin="583,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FUPO_Click"/>
+        <Label x:Name="ResearchLabel" Content="100.00" HorizontalAlignment="Left" Margin="537,125,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <Button x:Name="RDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="495,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="RDO_Click"/>
+        <Button x:Name="RDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="461,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="RDT_Click"/>
+        <Button x:Name="RDPO" Content="&lt;" HorizontalAlignment="Left" Margin="520,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="RDPO_Click"/>
+        <Button x:Name="RUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="600,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="RUO_Click"/>
+        <Button x:Name="RUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="625,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="RUT_Click"/>
+        <Button x:Name="RUPO" Content="&gt;" HorizontalAlignment="Left" Margin="583,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="RUPO_Click"/>
+        <Label x:Name="OldYharnamLabel" Content="100.00" HorizontalAlignment="Left" Margin="798,53,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="OYDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="756,56,0,0" VerticalAlignment="Top" Click="OYDO_Click"/>
+        <Button x:Name="OYDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="722,56,0,0" VerticalAlignment="Top" Click="OYDT_Click"/>
+        <Button x:Name="OYDPO" Content="&lt;" HorizontalAlignment="Left" Margin="781,56,0,0" VerticalAlignment="Top" Click="OYDPO_Click"/>
+        <Button x:Name="OYUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="861,56,0,0" VerticalAlignment="Top" Click="OYUO_Click"/>
+        <Button x:Name="OYUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="886,56,0,0" VerticalAlignment="Top" Click="OYUT_Click"/>
+        <Button x:Name="OYUPO" Content="&gt;" HorizontalAlignment="Left" Margin="844,56,0,0" VerticalAlignment="Top" Click="OYUPO_Click"/>
+        <Label x:Name="CentralYharnamLabel" Content="100.00" HorizontalAlignment="Left" Margin="798,98,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="CYDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="756,101,0,0" VerticalAlignment="Top" Click="CYDO_Click"/>
+        <Button x:Name="CYDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="722,101,0,0" VerticalAlignment="Top" Click="CYDT_Click"/>
+        <Button x:Name="CYDPO" Content="&lt;" HorizontalAlignment="Left" Margin="781,101,0,0" VerticalAlignment="Top" Click="CYDPO_Click"/>
+        <Button x:Name="CYUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="861,101,0,0" VerticalAlignment="Top" Click="CYUO_Click"/>
+        <Button x:Name="CYUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="886,101,0,0" VerticalAlignment="Top" Click="CYUT_Click"/>
+        <Button x:Name="CYUPO" Content="&gt;" HorizontalAlignment="Left" Margin="844,101,0,0" VerticalAlignment="Top" Click="CYUPO_Click"/>
+        <Label x:Name="CainhurstLabel" Content="100.00" HorizontalAlignment="Left" Margin="798,148,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="CDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="756,151,0,0" VerticalAlignment="Top" Click="CDO_Click"/>
+        <Button x:Name="CDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="722,151,0,0" VerticalAlignment="Top" Click="CDT_Click"/>
+        <Button x:Name="CDPO" Content="&lt;" HorizontalAlignment="Left" Margin="781,151,0,0" VerticalAlignment="Top" Click="CDPO_Click"/>
+        <Button x:Name="CUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="861,151,0,0" VerticalAlignment="Top" Click="CUO_Click"/>
+        <Button x:Name="CUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="886,151,0,0" VerticalAlignment="Top" Click="CUT_Click"/>
+        <Button x:Name="CUPO" Content="&gt;" HorizontalAlignment="Left" Margin="844,151,0,0" VerticalAlignment="Top" Click="CUPO_Click"/>
+        <Label x:Name="WoodsLabel" Content="100.00" HorizontalAlignment="Left" Margin="798,202,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="WDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="756,205,0,0" VerticalAlignment="Top" Click="WDO_Click"/>
+        <Button x:Name="WDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="722,205,0,0" VerticalAlignment="Top" Click="WDT_Click"/>
+        <Button x:Name="WDPO" Content="&lt;" HorizontalAlignment="Left" Margin="781,205,0,0" VerticalAlignment="Top" Click="WDPO_Click"/>
+        <Button x:Name="WUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="861,205,0,0" VerticalAlignment="Top" Click="WUO_Click"/>
+        <Button x:Name="WUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="886,205,0,0" VerticalAlignment="Top" Click="WUT_Click"/>
+        <Button x:Name="WUPO" Content="&gt;" HorizontalAlignment="Left" Margin="844,205,0,0" VerticalAlignment="Top" Click="WUPO_Click"/>
+        <Label x:Name="ByrgenwerthLabel" Content="100.00" HorizontalAlignment="Left" Margin="798,18,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <Button x:Name="BDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="756,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="BDO_Click"/>
+        <Button x:Name="BDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="722,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="BDT_Click"/>
+        <Button x:Name="BDPO" Content="&lt;" HorizontalAlignment="Left" Margin="781,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="BDPO_Click"/>
+        <Button x:Name="BUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="861,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="BUO_Click"/>
+        <Button x:Name="BUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="886,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="BUT_Click"/>
+        <Button x:Name="BUPO" Content="&gt;" HorizontalAlignment="Left" Margin="844,21,0,0" VerticalAlignment="Top" Grid.Row="1" Click="BUPO_Click"/>
+        <Label x:Name="HuntersNightmareLabel" Content="100.00" HorizontalAlignment="Left" Margin="798,72,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <Button x:Name="HDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="756,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="HDO_Click"/>
+        <Button x:Name="HDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="722,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="HDT_Click"/>
+        <Button x:Name="HDPO" Content="&lt;" HorizontalAlignment="Left" Margin="781,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="HDPO_Click"/>
+        <Button x:Name="HUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="861,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="HUO_Click"/>
+        <Button x:Name="HUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="886,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="HUT_Click"/>
+        <Button x:Name="HUPO" Content="&gt;" HorizontalAlignment="Left" Margin="844,75,0,0" VerticalAlignment="Top" Grid.Row="1" Click="HUPO_Click"/>
+        <Label x:Name="FishingHamletLabel" Content="100.00" HorizontalAlignment="Left" Margin="798,125,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <Button x:Name="FHDO" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="756,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FHDO_Click"/>
+        <Button x:Name="FHDT" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Margin="722,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FHDT_Click"/>
+        <Button x:Name="FHDPO" Content="&lt;" HorizontalAlignment="Left" Margin="781,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FHDPO_Click"/>
+        <Button x:Name="FHUO" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="861,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FHUO_Click"/>
+        <Button x:Name="FHUT" Content="&gt;&gt;&gt;" HorizontalAlignment="Left" Margin="886,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FHUT_Click"/>
+        <Button x:Name="FHUPO" Content="&gt;" HorizontalAlignment="Left" Margin="844,128,0,0" VerticalAlignment="Top" Grid.Row="1" Click="FHUPO_Click"/>
+        <Label Content="PERCENT OF ENEMIES RANDOMIZED" HorizontalAlignment="Left" Margin="712,8,0,0" VerticalAlignment="Top"/>
+        <Rectangle HorizontalAlignment="Left" Height="18" Margin="712,13,0,0" Stroke="Black" VerticalAlignment="Top" Width="206"/>
+        <CheckBox ToolTip="Keeps the pistol and blunderbuss as starting items." x:Name="KeepGunsBox" Content="Keep Regular Guns at Beginning of Game" HorizontalAlignment="Left" Margin="185,171,0,0" VerticalAlignment="Top" Checked="KeepGunsBox_Checked"/>
     </Grid>
 </Window>

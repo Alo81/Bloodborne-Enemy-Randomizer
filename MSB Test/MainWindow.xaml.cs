@@ -25,6 +25,22 @@ namespace MSB_Test
         string paramDefPath;
         string currentTask;
         bool keepGuns;
+        bool dummyEnemyBool;
+        bool bossHemwick;
+        bool bossCathedralWard;
+        bool bossUpperCathedralWard;
+        bool bossMensis;
+        bool bossYahargul;
+        bool bossFrontier;
+        bool bossResearchHall;
+        bool bossOldYharnam;
+        bool bossCentralYharnam;
+        bool bossCainhurst;
+        bool bossForbiddenWoods;
+        bool bossByrgenwerthLecture;
+        bool bossNightmare;
+        bool bossHamlet;
+        bool bossChalices;
         List<long> longList2 = new List<long>();
         List<string> logList2 = new List<string>();
         List<string> unusedList = new List<string>();
@@ -39,6 +55,8 @@ namespace MSB_Test
         List<int> combinedItemLotList = new List<int>();
         List<MSBB.Part.Enemy> addedEnemyList = new List<MSBB.Part.Enemy>();
         List<MSBB.Part.Enemy> addedBossesList = new List<MSBB.Part.Enemy>();
+        List<MSBB.Part.DummyEnemy> dummyEnemyList = new List<MSBB.Part.DummyEnemy>();
+        List<string> dummyEnemyStringList = new List<string>();
         List<string> logList = new List<string>();
         List<long> maxSizeList = new List<long>();
         List<long> npcParams = new List<long>();
@@ -99,6 +117,7 @@ namespace MSB_Test
         string insertedBossPath;
         string randomizedNPCPath;
         string randomizedItemLotPath;
+        string dummyFilePath;
         bool oopsAll;
         List<string> oopsAllList = new List<string>();
         string oopsAllString;
@@ -134,6 +153,23 @@ namespace MSB_Test
             ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
 
             RandomizeKeyItemsBox.IsEnabled = false;
+
+            /*
+            HemwickCheckBox.IsChecked = true;
+            CathedralWardBossBox.IsChecked = true;
+            UpperCathedralBossBox.IsChecked = false;
+            MensisBossBox.IsChecked = true;
+            FrontierBossBox.IsChecked = true;
+            YahargulBossBox.IsChecked = true;
+            ResearchHallBossBox.IsChecked = false;
+            OldYharnamBossBox.IsChecked = true;
+            CentralYharnamBossBox.IsChecked = true;
+            CainhurstBossBox.IsChecked = false;
+            ByrgenwerthBossBox.IsChecked = true;
+            WoodsBossBox.IsChecked = true;
+            NightmareBossBox.IsChecked = true;
+            HamletBossBox.IsChecked = true;
+            */
 
             chaliceBossParams.Add("10313090");
             chaliceBossParams.Add("110304090");
@@ -985,6 +1021,202 @@ namespace MSB_Test
         {
             this.Dispatcher.Invoke(() =>
             {
+                if (ChaliceBossBox.IsChecked == true)
+                {
+                    bossChalices = true;
+                }
+                else bossChalices = false;
+
+                if (HamletBossBox.IsChecked == true)
+                {
+                    bossHamlet = true;
+                }
+                else bossHamlet = false;
+
+                if (NightmareBossBox.IsChecked == true)
+                {
+                    bossNightmare = true;
+                }
+                else bossNightmare = false;
+
+                if (WoodsBossBox.IsChecked == true)
+                {
+                    bossForbiddenWoods = true;
+                }
+                else bossForbiddenWoods = false;
+
+                if (ByrgenwerthBossBox.IsChecked == true)
+                {
+                    bossByrgenwerthLecture = true;
+                }
+                else bossByrgenwerthLecture = false;
+
+                if (CainhurstBossBox.IsChecked == true)
+                {
+                    bossCainhurst = true;
+                }
+                else bossCainhurst = false;
+
+                if (CentralYharnamBossBox.IsChecked == true)
+                {
+                    bossCentralYharnam = true;
+                }
+                else bossCentralYharnam = false;
+
+                if (OldYharnamBossBox.IsChecked == true)
+                {
+                    bossOldYharnam = true;
+                }
+                else bossOldYharnam = false;
+
+                if (ResearchHallBossBox.IsChecked == true)
+                {
+                    bossResearchHall = true;
+                }
+                else bossResearchHall = false;
+
+                if (YahargulBossBox.IsChecked == true)
+                {
+                    bossYahargul = true;
+                }
+                else bossYahargul = false;
+
+                if (FrontierBossBox.IsChecked == true)
+                {
+                    bossFrontier = true;
+                }
+                else bossFrontier = false;
+
+                if (MensisBossBox.IsChecked == true)
+                {
+                    bossMensis = true;
+                }
+                else bossMensis = false;
+
+                if (UpperCathedralBossBox.IsChecked == true)
+                {
+                    bossUpperCathedralWard = true;
+                }
+                else bossUpperCathedralWard = false;
+
+                if (CathedralWardBossBox.IsChecked == true)
+                {
+                    bossCathedralWard = true;
+                }
+                else bossCathedralWard = false;
+
+                if (HemwickCheckBox.IsChecked == true)
+                {
+                    bossHemwick = true;
+                }
+                else bossHemwick = false;
+
+                if (DummyEnemyBox.IsChecked == true)
+                {
+                    dummyEnemyBool = true;
+                }
+                else dummyEnemyBool = false;
+
+                if (KeepGunsBox.IsChecked == true)
+                {
+                    keepGuns = true;
+                }
+                else keepGuns = false;
+
+                if (ArmorRandomizerCheckBox.IsChecked == true)
+                {
+                    randomizeItemLots = true;
+                }
+                else randomizeItemLots = false;
+
+                if (AddNPCS.IsChecked == true)
+                {
+                    includeNPCs = true;
+                }
+                else includeNPCs = false;
+
+                if (RandomizeEnemiesCheck.IsChecked == true)
+                {
+                    randomizeEnemiesBool = true;
+                }
+                else randomizeEnemiesBool = false;
+
+                if (OopsAllBossesCheck.IsChecked == true)
+                {
+                    oopsAllBosses = true;
+                    includeBosses = true;
+                }
+                else
+                {
+                    oopsAllBosses = false;
+                }
+
+                if (BossCheckBox.IsChecked == true)
+                {
+                    includeBosses = true;
+                }
+                else includeBosses = false;
+
+                if (OopsAllCheck.IsChecked == true)
+                {
+                    oopsAll = true;
+                }
+                else oopsAll = false;
+
+                if (InsertBosses.IsChecked == true)
+                {
+                    insertBossesBool = true;
+                }
+                else insertBossesBool = false;
+
+                if (ChaliceBossBox.IsChecked == true)
+                {
+                    chaliceBosses = true;
+                }
+                else chaliceBosses = false;
+
+                if (ChaliceEnemies.IsChecked == true)
+                {
+                    chaliceEnemies = true;
+                }
+                else chaliceEnemies = false;
+
+                if (BellMaidenBox.IsChecked == true)
+                {
+                    bellMaidenBool = true;
+                }
+                else bellMaidenBool = false;
+
+                if (LesserBossesBox.IsChecked == true)
+                {
+                    lesserBossesBool = true;
+                }
+                else lesserBossesBool = false;
+
+                if (RandomizeKeyItemsBox.IsChecked == true)
+                {
+                    keyItemRandomizeBool = true;
+                }
+                else keyItemRandomizeBool = false;
+
+                if (RandomizeShopBox.IsChecked == true)
+                {
+                    shopBool = true;
+                }
+                else shopBool = false;
+
+                if (EnemyDropBox.IsChecked == true)
+                {
+                    enemyDropBool = true;
+                }
+                else enemyDropBool = false;
+
+                if (WorkshopBox.IsChecked == true)
+                {
+                    workshopBool = true;
+                }
+                else workshopBool = false;
+
                 TEST.IsEnabled = false;
                 RandomizeEnemiesCheck.IsEnabled = false;
                 BossCheckBox.IsEnabled = false;
@@ -1761,6 +1993,14 @@ namespace MSB_Test
 
                 }
 
+                dateNow = DateTime.Now.ToString("h:mm:ss tt");
+                butts = dateNow.Replace(":", "-");
+                dummyFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + butts + "-DummyLog.txt";
+                using (FileStream sw = File.Create(dummyFilePath))
+                {
+
+                }
+
             if (includeBosses)
             {
                 this.Dispatcher.Invoke(() =>
@@ -1771,19 +2011,22 @@ namespace MSB_Test
                 });
 
                 Random rando = new Random();
-                int thisOne = rando.Next(0, 2);
+                int thisOne = rando.Next(0, 3);
 
-                if(thisOne == 0)
+                if (!oopsAllBosses)
                 {
-                    AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
-                }
-                else if(thisOne == 1)
-                {
-                    AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
-                }
-                else if(thisOne == 2)
-                {
-                    AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
+                    if (thisOne == 0)
+                    {
+                        AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
+                    }
+                    else if (thisOne == 1)
+                    {
+                        AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
+                    }
+                    else if (thisOne == 2)
+                    {
+                        AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
+                    }
                 }
 
                 using (StreamWriter writetext = File.AppendText(bossLogFilePath))
@@ -1823,9 +2066,12 @@ namespace MSB_Test
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx", unusedPlusBossList);
 
-                AddTheRest(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx", unusedPlusBossList);
-                AddTheRest(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx", unusedPlusBossList);
-                AddTheRest(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
+                if (!oopsAllBosses)
+                {
+                    AddTheRest(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx", unusedPlusBossList);
+                    AddTheRest(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx", unusedPlusBossList);
+                    AddTheRest(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
+                }
 
                 if (chaliceBosses || oopsAllBosses)
                 {
@@ -1880,53 +2126,94 @@ namespace MSB_Test
                     UpdateUI();
                 });
 
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx", unusedPlusBossList);
-                //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx", unusedPlusBossList);
-                //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
-                //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
-                InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx", unusedPlusBossList);
+                if (bossHemwick)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx", unusedPlusBossList);
+                }
+                if (bossOldYharnam)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx", unusedPlusBossList);
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx", unusedPlusBossList);
+                }
+                if (bossCathedralWard)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx", unusedPlusBossList);
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx", unusedPlusBossList);
+                }
+                if (bossCentralYharnam)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx", unusedPlusBossList);
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx", unusedPlusBossList);
+                }
+                if (bossUpperCathedralWard)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx", unusedPlusBossList);
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
+                }
+                if (bossCainhurst)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx", unusedPlusBossList);
+                }
+                if (bossMensis)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx", unusedPlusBossList);
+                }
+                if (bossForbiddenWoods)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx", unusedPlusBossList);
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx", unusedPlusBossList);
+                }
+                if (bossYahargul)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx", unusedPlusBossList);
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx", unusedPlusBossList);
+                }
+                if (bossByrgenwerthLecture)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx", unusedPlusBossList);
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx", unusedPlusBossList);
+                }
+                if (bossFrontier)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx", unusedPlusBossList);
+                }
+                if (bossNightmare)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
+                }
+                if (bossResearchHall)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx", unusedPlusBossList);
+                }
+                if (bossHamlet)
+                {
+                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx", unusedPlusBossList);
+                }
+
                 if (chaliceBosses)
                 {
-                    
-                    //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx", nonoList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx", unusedPlusBossList);
-                    //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx", nonoList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx", unusedPlusBossList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx", unusedPlusBossList);
-                    //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx", nonoList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx", unusedPlusBossList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx", unusedPlusBossList);
-                    //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx", nonoList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx", unusedPlusBossList);
-                    //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx", nonoList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx", unusedPlusBossList);
-                    //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx", nonoList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx", unusedPlusBossList);
-                    //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx", nonoList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", unusedPlusBossList);
-                    //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", nonoList);
-                    InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", unusedPlusBossList);
-                        
+                    if (bossChalices)
+                    {
+                        //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx", nonoList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx", unusedPlusBossList);
+                        //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx", nonoList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx", unusedPlusBossList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx", unusedPlusBossList);
+                        //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx", nonoList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx", unusedPlusBossList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx", unusedPlusBossList);
+                        //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx", nonoList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx", unusedPlusBossList);
+                        //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx", nonoList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx", unusedPlusBossList);
+                        //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx", nonoList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx", unusedPlusBossList);
+                        //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx", nonoList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", unusedPlusBossList);
+                        //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", nonoList);
+                        InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", unusedPlusBossList);
+                    }
                 }
             }
 
@@ -2089,7 +2376,7 @@ namespace MSB_Test
 
                 this.Dispatcher.Invoke(() =>
                 {
-                    totalPercent = 95;
+                    totalPercent = 90;
                     currentTask = "Randomizing Items...";
                     UpdateUI();
                 });
@@ -2137,6 +2424,68 @@ namespace MSB_Test
             using (FileStream sw1 = File.Create(scaleLogFile))
             {
 
+            }
+
+            this.Dispatcher.Invoke(() =>
+            {
+                totalPercent = 95;
+                currentTask = "Randomizing Cutscene Models...";
+                UpdateUI();
+            });
+
+            if (dummyEnemyBool)
+            {
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
             }
 
             this.Dispatcher.Invoke(() =>
@@ -2892,7 +3241,7 @@ namespace MSB_Test
                         tempNpcParamInt = int.Parse(tempNpcParam);
                         tempThinkIdInt = int.Parse(tempThinkId);
                         Random ass = new Random();
-                        float assass = ass.Next(0,100);
+                        float assass = ass.Next(0,101);
                         if (assass <= bossPercentage)
                         {
                             using (StreamWriter writetext = File.AppendText(insertedBossPath))
@@ -3344,6 +3693,7 @@ namespace MSB_Test
             }
 
             tempGUY.Write(currentMap);
+            tempGUY.Write(currentMap);
         }
 
         private void AddTheRest(string currentMap, List<string> nonoList)
@@ -3366,6 +3716,7 @@ namespace MSB_Test
                         string thisEnemy = combinedBossList2[randomNumber];
                         combinedBossList2.RemoveAt(randomNumber);
 
+
                         string tempNpcParam;
                         string tempThinkId;
                         string modelName;
@@ -3380,6 +3731,19 @@ namespace MSB_Test
 
                         tempNpcParamInt = int.Parse(tempNpcParam);
                         tempThinkIdInt = int.Parse(tempThinkId);
+
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        {
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
+
+                            tempnpcint = thisEnemy.IndexOf("*");
+                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                            tempNpcParamInt = int.Parse(tempNpcParam);
+                            tempThinkIdInt = int.Parse(tempThinkId);
+                        }
 
                         tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
@@ -3432,6 +3796,19 @@ namespace MSB_Test
                         tempNpcParamInt = int.Parse(tempNpcParam);
                         tempThinkIdInt = int.Parse(tempThinkId);
 
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        {
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
+
+                            tempnpcint = thisEnemy.IndexOf("*");
+                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                            tempNpcParamInt = int.Parse(tempNpcParam);
+                            tempThinkIdInt = int.Parse(tempThinkId);
+                        }
+
                         tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
@@ -3480,6 +3857,19 @@ namespace MSB_Test
 
                         tempNpcParamInt = int.Parse(tempNpcParam);
                         tempThinkIdInt = int.Parse(tempThinkId);
+
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        {
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
+
+                            tempnpcint = thisEnemy.IndexOf("*");
+                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                            tempNpcParamInt = int.Parse(tempNpcParam);
+                            tempThinkIdInt = int.Parse(tempThinkId);
+                        }
 
                         tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
@@ -3532,6 +3922,19 @@ namespace MSB_Test
                         tempNpcParamInt = int.Parse(tempNpcParam);
                         tempThinkIdInt = int.Parse(tempThinkId);
 
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        {
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
+
+                            tempnpcint = thisEnemy.IndexOf("*");
+                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                            tempNpcParamInt = int.Parse(tempNpcParam);
+                            tempThinkIdInt = int.Parse(tempThinkId);
+                        }
+
                         tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
@@ -3581,6 +3984,19 @@ namespace MSB_Test
                         tempNpcParamInt = int.Parse(tempNpcParam);
                         tempThinkIdInt = int.Parse(tempThinkId);
 
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        {
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
+
+                            tempnpcint = thisEnemy.IndexOf("*");
+                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                            tempNpcParamInt = int.Parse(tempNpcParam);
+                            tempThinkIdInt = int.Parse(tempThinkId);
+                        }
+
                         tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
@@ -3629,6 +4045,19 @@ namespace MSB_Test
 
                         tempNpcParamInt = int.Parse(tempNpcParam);
                         tempThinkIdInt = int.Parse(tempThinkId);
+
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        {
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
+
+                            tempnpcint = thisEnemy.IndexOf("*");
+                            tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                            tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                            modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                            tempNpcParamInt = int.Parse(tempNpcParam);
+                            tempThinkIdInt = int.Parse(tempThinkId);
+                        }
 
                         tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
@@ -3831,6 +4260,36 @@ namespace MSB_Test
                                     tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                                     tempGUY.Parts.Enemies[i].ModelName = modelName;
 
+                                    while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                                    {
+                                        random = rand.Next(0, chaliceBossString.Count);
+                                        thisEnemy = chaliceBossString[random];
+                                        removalNumber = random;
+
+                                        tempnpcint = thisEnemy.IndexOf("*");
+                                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                                        tempNpcParamInt = int.Parse(tempNpcParam);
+                                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                                        addCounter++;
+                                        if (addCounter >= chaliceBossString.Count)
+                                        {
+                                            //enemyDataRandomized.Add(secondaryBosses[random]);
+                                            addCounter = 0;
+                                        }
+                                    }
+
+                                    string npc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                                    string think = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                                    string mo = tempGUY.Parts.Enemies[i].ModelName;
+                                    string entityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                                    tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                                    tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                                    tempGUY.Parts.Enemies[i].ModelName = modelName;
+
                                     using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                                     {
                                         writetext.WriteLine(bossCount);
@@ -3882,10 +4341,10 @@ namespace MSB_Test
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
 
-                            /*
+                            
                             if(currentMap.Contains("m24_00"))
                             {
-                                while(modelName.Contains("4500") || modelName.Contains("4520"))
+                                while(modelName.Contains("4500"))
                                 {
                                     random = rand.Next(0, combinedBossList.Count);
                                     thisEnemy = combinedBossList[random];
@@ -3895,12 +4354,12 @@ namespace MSB_Test
                                     modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
                                 }
                             }
-                            */
+                            
 
                             
                             if (currentMap.Contains("m24_02"))
                             {
-                                while (modelName.Contains("5100") || modelName.Contains("8050") || modelName.Contains("4520"))
+                                while (modelName.Contains("5100") || modelName.Contains("8050") || modelName.Contains("4520") || modelName.Contains("4500"))
                                 {
                                     random = rand.Next(0, combinedBossList.Count);
                                     thisEnemy = combinedBossList[random];
@@ -4590,7 +5049,7 @@ namespace MSB_Test
                         if (changeData && enemyDataRandomized.Count > 0)
                         {
                             Random rand = new Random();
-                            float chaliceRandom = rand.Next(0, 100);
+                            float chaliceRandom = rand.Next(0, 101);
                             int randomChalice = 0;
                             if (chaliceEnemies)
                             {
@@ -5168,6 +5627,89 @@ namespace MSB_Test
                     itemLotList.Add(tempGuy.Events.Treasures[i].ItemLot1);
                 }
             }
+        }
+
+        private void GenerateDummyEnemyList(string currentMap)
+        {
+            var tempGuy = MSBB.Read(currentMap);
+
+            for(int i = 0; i < tempGuy.Parts.DummyEnemies.Count; i ++)
+            {
+                if(tempGuy.Parts.DummyEnemies[i].Description == "【カットシーン用】")
+                {
+                    dummyEnemyList.Add(tempGuy.Parts.DummyEnemies[i]);
+                }
+            }
+
+            for (int i = 0; i < dummyEnemyList.Count; i++)
+            {
+                dummyEnemyStringList.Add(dummyEnemyList[i].NPCParamID.ToString() + "*" + dummyEnemyList[i].ThinkParamID.ToString() + "*" + dummyEnemyList[i].ModelName);
+            }
+        }
+
+        private void RandomizeDummyEnemies(string currentMap)
+        {
+            var tempGuy = MSBB.Read(currentMap);
+
+            for(int i = 0; i < tempGuy.Parts.DummyEnemies.Count; i ++)
+            {
+                if (tempGuy.Parts.DummyEnemies[i].Description == "【カットシーン用】")
+                {
+                    Random rand = new Random();
+
+                    int randomNumber = rand.Next(0, dummyEnemyStringList.Count);
+                    string thisEnemy = dummyEnemyStringList[randomNumber];
+
+                    int removalNumber;
+
+                    removalNumber = randomNumber;
+
+                    string tempNpcParam;
+                    string tempThinkId;
+                    string modelName;
+
+                    int tempNpcParamInt;
+                    int tempThinkIdInt;
+
+                    int tempnpcint = thisEnemy.IndexOf("*");
+                    tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                    tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                    modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                    tempNpcParamInt = int.Parse(tempNpcParam);
+                    tempThinkIdInt = int.Parse(tempThinkId);
+
+                    thisnpc = tempGuy.Parts.DummyEnemies[i].NPCParamID.ToString();
+                    thisthink = tempGuy.Parts.DummyEnemies[i].ThinkParamID.ToString();
+                    thismo = tempGuy.Parts.DummyEnemies[i].ModelName;
+                    thisentityID = tempGuy.Parts.DummyEnemies[i].EntityID.ToString();
+
+                    tempGuy.Parts.DummyEnemies[i].NPCParamID = tempNpcParamInt;
+                    tempGuy.Parts.DummyEnemies[i].ThinkParamID = tempThinkIdInt;
+                    tempGuy.Parts.DummyEnemies[i].ModelName = modelName;
+
+                    using (StreamWriter writetext = File.AppendText(dummyFilePath))
+                    {
+                        writetext.WriteLine(currentMap);
+                        writetext.WriteLine(i + " Number in map list");
+                        writetext.WriteLine("Old Model");
+                        writetext.WriteLine(thisnpc + " npcParam");
+                        writetext.WriteLine(thisthink + " thinkID");
+                        writetext.WriteLine(thismo + " model");
+                        writetext.WriteLine(thisentityID);
+
+                        writetext.WriteLine("New Model");
+                        writetext.WriteLine(tempNpcParam + " npcParam");
+                        writetext.WriteLine(tempThinkId + " thinkID");
+                        writetext.WriteLine(modelName + " model");
+                        writetext.WriteLine(Environment.NewLine);
+                    }
+
+                    dummyEnemyStringList.RemoveAt(removalNumber);
+                }
+            }
+
+            tempGuy.Write(currentMap);
         }
 
         private void RandomizeItemLots(string currentMap)
@@ -7336,6 +7878,86 @@ namespace MSB_Test
         private void KeepGunsBox_Checked(object sender, RoutedEventArgs e)
         {
             keepGuns = KeepGunsBox.IsChecked.Value;
+        }
+
+        private void DummyEnemyBox_Checked(object sender, RoutedEventArgs e)
+        {
+            dummyEnemyBool = DummyEnemyBox.IsChecked.Value;
+        }
+
+        private void HemwickCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossHemwick = HemwickCheckBox.IsChecked.Value;
+        }
+
+        private void CathedralWardBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossCathedralWard = CathedralWardBossBox.IsChecked.Value;
+        }
+
+        private void UpperCathedralBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossUpperCathedralWard = UpperCathedralBossBox.IsChecked.Value;
+        }
+
+        private void MensisBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossMensis = MensisBossBox.IsChecked.Value;
+        }
+
+        private void FrontierBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossFrontier = FrontierBossBox.IsChecked.Value;
+        }
+
+        private void YahargulBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossYahargul = YahargulBossBox.IsChecked.Value;
+        }
+
+        private void ResearchHallBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossResearchHall = ResearchHallBossBox.IsChecked.Value;
+        }
+
+        private void OldYharnamBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossOldYharnam = OldYharnamBossBox.IsChecked.Value;
+        }
+
+        private void CentralYharnamBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossCentralYharnam = CentralYharnamBossBox.IsChecked.Value;
+        }
+
+        private void CainhurstBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossCainhurst = CainhurstBossBox.IsChecked.Value;
+        }
+
+        private void ByrgenwerthBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossByrgenwerthLecture = ByrgenwerthBossBox.IsChecked.Value;
+        }
+
+        private void WoodsBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossForbiddenWoods = WoodsBossBox.IsChecked.Value;
+        }
+
+        private void NightmareBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossNightmare = NightmareBossBox.IsChecked.Value;
+        }
+
+        private void HamletBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossHamlet = HamletBossBox.IsChecked.Value;
+        }
+
+        private void ChaliceBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bossChalices = ChaliceBossBox.IsChecked.Value;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////

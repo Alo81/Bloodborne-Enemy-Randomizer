@@ -18,6 +18,11 @@ namespace MSB_Test
     /// </summary>
     public partial class MainWindow : Window
     {
+        string new2000 = "";
+        string new2001 = "";
+        string new2002 = "";
+        string new2010 = "";
+        string new2011 = "";
         bool GOBAdded = false;
         int totalTime;
         int totalPercent;
@@ -41,6 +46,7 @@ namespace MSB_Test
         bool bossNightmare;
         bool bossHamlet;
         bool bossChalices;
+        string modelFilePath;
         List<long> longList2 = new List<long>();
         List<string> logList2 = new List<string>();
         List<string> unusedList = new List<string>();
@@ -85,6 +91,7 @@ namespace MSB_Test
         bool bellMaidenBool;
         bool keyItemRandomizeBool;
         bool workshopBool;
+        bool allChalices;
         string thisnpc;
         string thismo;
         string thisthink;
@@ -118,6 +125,7 @@ namespace MSB_Test
         string randomizedNPCPath;
         string randomizedItemLotPath;
         string dummyFilePath;
+        string chaliceMapPaths;
         bool oopsAll;
         List<string> oopsAllList = new List<string>();
         string oopsAllString;
@@ -152,6 +160,7 @@ namespace MSB_Test
             HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
             ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
 
+            DummyEnemyBox.IsEnabled = false;
             RandomizeKeyItemsBox.IsEnabled = false;
 
             /*
@@ -217,8 +226,6 @@ namespace MSB_Test
             unusedList.Add("c0");
             unusedList.Add("c1020");
             unusedList.Add("c1030");
-            unusedList.Add("c1040");
-            unusedList.Add("c1070");
             unusedList.Add("c1080");
             unusedList.Add("c2030");
             unusedList.Add("c2300");
@@ -250,7 +257,6 @@ namespace MSB_Test
             unusedList.Add("c9030");
             unusedList.Add("c2501");
             unusedList.Add("c2571");
-            unusedList.Add("c1130_0000");
             unusedList.Add("c8030_0000");
             unusedList.Add("c8040_0000");
             unusedList.Add("c9020_0000");
@@ -1144,7 +1150,6 @@ namespace MSB_Test
                 if (OopsAllBossesCheck.IsChecked == true)
                 {
                     oopsAllBosses = true;
-                    includeBosses = true;
                 }
                 else
                 {
@@ -1154,6 +1159,7 @@ namespace MSB_Test
                 if (BossCheckBox.IsChecked == true)
                 {
                     includeBosses = true;
+                    chaliceBosses = true;
                 }
                 else includeBosses = false;
 
@@ -1168,12 +1174,6 @@ namespace MSB_Test
                     insertBossesBool = true;
                 }
                 else insertBossesBool = false;
-
-                if (ChaliceBossBox.IsChecked == true)
-                {
-                    chaliceBosses = true;
-                }
-                else chaliceBosses = false;
 
                 if (ChaliceEnemies.IsChecked == true)
                 {
@@ -1446,6 +1446,7 @@ namespace MSB_Test
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+
             if (File.Exists(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx"))
             {
                 mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
@@ -1503,27 +1504,30 @@ namespace MSB_Test
 
             for (int i = 0; i < mapList.Count; i++)
             {
-                var tempMapRead = MSBB.Read(mapList[i] + ".bak");
-
-                long maxSizeLong = 0;
-
-                for (int j = 0; j < tempMapRead.Parts.Enemies.Count; j++)
+                if (File.Exists(mapList[i] + ".bak"))
                 {
-                    for (int k = 0; k < nameList.Count; k++)
+                    var tempMapRead = MSBB.Read(mapList[i] + ".bak");
+
+                    long maxSizeLong = 0;
+
+                    for (int j = 0; j < tempMapRead.Parts.Enemies.Count; j++)
                     {
-                        if (tempMapRead.Parts.Enemies[j].ModelName.Contains(nameList[k]))
+                        for (int k = 0; k < nameList.Count; k++)
                         {
-                            maxSizeLong += sizeList[k];
-                            k = nameList.Count + 1;
+                            if (tempMapRead.Parts.Enemies[j].ModelName.Contains(nameList[k]))
+                            {
+                                maxSizeLong += sizeList[k];
+                                k = nameList.Count + 1;
+                            }
                         }
                     }
-                }
 
-                //maxSizeList.Add(maxSizeLong);
+                    //maxSizeList.Add(maxSizeLong);
 
-                using (StreamWriter writetext = File.AppendText(sizeFilePath))
-                {
-                    writetext.WriteLine("MAX SIZE " + mapList[i] + " " + maxSizeLong + " " + tempMapRead.Parts.Enemies.Count);
+                    using (StreamWriter writetext = File.AppendText(sizeFilePath))
+                    {
+                        //writetext.WriteLine("MAX SIZE " + mapList[i] + " " + maxSizeLong + " " + tempMapRead.Parts.Enemies.Count);
+                    }
                 }
             }
 
@@ -1536,7 +1540,10 @@ namespace MSB_Test
                 File.Copy(paramPath + ".bak", paramPath);
             }
 
-            File.Delete(paramPath + ".bak");
+            if (File.Exists(paramPath + ".bak"))
+            {
+                File.Delete(paramPath + ".bak");
+            }
             File.Copy(paramPath, paramPath + ".bak");
 
             if (File.Exists(eventFileList[0] + ".bak"))
@@ -1564,6 +1571,21 @@ namespace MSB_Test
             //if(seedString == "" || seedString == "Insert Seed.... Numbers Only")
             Random rand = new Random();
 
+            for(int i = 0; i < mapList.Count; i ++)
+            {
+                if(!File.Exists(mapList[i] + ".bak"))
+                {
+                    File.Copy(mapList[i], mapList[i] + ".bak");
+                }
+
+                else if(File.Exists(mapList[i] + ".bak"))
+                {
+                    File.Delete(mapList[i]);
+                    File.Copy(mapList[i] + ".bak", mapList[i]);
+                }
+            }
+
+            /*
             if (File.Exists(mapList[0] + ".bak"))
             {
                 for (int i = 0; i < mapList.Count; i++)
@@ -1582,6 +1604,14 @@ namespace MSB_Test
             {
                 File.Copy(mapList[i], mapList[i] + ".bak");
             }
+            */
+            string dateNo = DateTime.Now.ToString("h:mm:ss tt");
+            string butt = dateNo.Replace(":", "-");
+            modelFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + butt + "-ModelLog.txt";
+            using (FileStream sw = File.Create(modelFilePath))
+            {
+
+            }
 
             //setting models in list to paste into all maps
             for (int i = 0; i < mapList.Count; i++)
@@ -1599,6 +1629,15 @@ namespace MSB_Test
             for (int i = 0; i < tempMap.Models.Enemies.Count; i++)
             {
                 modelList.Add(tempMap.Models.Enemies[i]);
+            }
+
+            for(int i = 0; i < modelList.Count; i ++)
+            {
+                using (StreamWriter writetext = File.AppendText(modelFilePath))
+                {
+                    //writetext.WriteLine("NAME " + modelList[i].Name);
+                    //writetext.WriteLine("PLCH " + modelList[i].Placeholder);
+                }
             }
 
             for (int i = 0; i < mapList.Count; i++)
@@ -1752,6 +1791,16 @@ namespace MSB_Test
                     //DoStuff(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", nonoList);
                     GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", unusedPlusBossList);
                     //DoStuff(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", nonoList);
+                    /*
+                    GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_00.msb.dcx", unusedPlusBossList);
+                    GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_33.msb.dcx", unusedPlusBossList);
+                    GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_36.msb.dcx", unusedPlusBossList);
+                    GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_45.msb.dcx", unusedPlusBossList);
+                    GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_99.msb.dcx", unusedPlusBossList);
+                    GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_01_02_00\\m29_01_02_03.msb.dcx", unusedPlusBossList);
+                    GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_01_99_00\\m29_01_99_99.msb.dcx", unusedPlusBossList);
+                    GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_09_00_00\\m29_09_00_00.msb.dcx", unusedPlusBossList);
+                    */
                     if (GOBAdded)
                     {
                         GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx", unusedPlusBossList);
@@ -1848,6 +1897,17 @@ namespace MSB_Test
                 Randomize(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", unusedPlusBossList);
                 //Randomize(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", nonoList);
                 Randomize(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", unusedPlusBossList);
+                /*
+                Randomize(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_00.msb.dcx", unusedPlusBossList);
+                Randomize(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_33.msb.dcx", unusedPlusBossList);
+                Randomize(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_36.msb.dcx", unusedPlusBossList);
+                Randomize(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_45.msb.dcx", unusedPlusBossList);
+                Randomize(filePath + "\\map\\mapstudio\\" + "m29_01_00_00\\m29_01_00_99.msb.dcx", unusedPlusBossList);
+                Randomize(filePath + "\\map\\mapstudio\\" + "m29_01_02_00\\m29_01_02_03.msb.dcx", unusedPlusBossList);
+                Randomize(filePath + "\\map\\mapstudio\\" + "m29_01_99_00\\m29_01_99_99.msb.dcx", unusedPlusBossList);
+                Randomize(filePath + "\\map\\mapstudio\\" + "m29_09_00_00\\m29_09_00_00.msb.dcx", unusedPlusBossList);
+                */
+                
                 if (GOBAdded)
                 {
                     Randomize(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx", unusedPlusBossList);
@@ -2257,7 +2317,16 @@ namespace MSB_Test
                 GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
                 GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
                 GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
-
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
+                GenerateNPCList(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
 
                 for (int i = 0; i < npcEnemyList.Count; i++)
                 {
@@ -2428,68 +2497,6 @@ namespace MSB_Test
 
             this.Dispatcher.Invoke(() =>
             {
-                totalPercent = 95;
-                currentTask = "Randomizing Cutscene Models...";
-                UpdateUI();
-            });
-
-            if (dummyEnemyBool)
-            {
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
-                GenerateDummyEnemyList(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
-
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
-                RandomizeDummyEnemies(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
-            }
-
-            this.Dispatcher.Invoke(() =>
-            {
                 totalPercent = 98;
                 currentTask = "Scaling All Enemies And Bosses...";
                 UpdateUI();
@@ -2578,6 +2585,7 @@ namespace MSB_Test
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+            
             if (GOBAdded)
             {
                 mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
@@ -2599,13 +2607,6 @@ namespace MSB_Test
                             k = nameList.Count + 1;
                         }
                     }
-                }
-
-                //maxSizeList.Add(maxSizeLong);
-
-                using (StreamWriter writetext = File.AppendText(sizeFilePath))
-                {
-                    writetext.WriteLine("MAX SIZE " + mapList[i] + " " + maxSizeLong + " " + tempMapRead.Parts.Enemies.Count);
                 }
             }
 
@@ -2652,6 +2653,7 @@ namespace MSB_Test
             Environment.Exit(0);
         }
 
+        
         private void RandomizeShopItems()
         {
             var paramdefs = new List<PARAMDEF>();
@@ -2674,6 +2676,7 @@ namespace MSB_Test
             }
 
             PARAM shopLineupParams = parms["ShopLineupParam"];
+            PARAM weaponParams = parms["EquipParamWeapon"];
 
             Random rand = new Random();
 
@@ -2980,6 +2983,34 @@ namespace MSB_Test
 
                         }
 
+                        if(shopLineupParams.Rows[i].ID.ToString() == "2000")
+                        {
+                            new2000 = shopWeaponList[randomNumber];
+                        }
+
+                        if (shopLineupParams.Rows[i].ID.ToString() == "2001")
+                        {
+                            new2001 = shopWeaponList[randomNumber];
+                        }
+
+                        if (shopLineupParams.Rows[i].ID.ToString() == "2002")
+                        {
+                            new2002 = shopWeaponList[randomNumber];
+                        }
+
+                        if (!keepGuns)
+                        {
+                            if (shopLineupParams.Rows[i].ID.ToString() == "2010")
+                            {
+                                new2010 = shopWeaponList[randomNumber];
+                            }
+
+                            if (shopLineupParams.Rows[i].ID.ToString() == "2011")
+                            {
+                                new2011 = shopWeaponList[randomNumber];
+                            }
+                        }
+
                         using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
                         {
                             writetext.WriteLine("Old Shop Item");
@@ -3025,6 +3056,122 @@ namespace MSB_Test
                         shopConsumableList.RemoveAt(randomNumber);
                     }
                 }
+            }
+
+            //for(int i = 0; i < )
+
+            //7000000 8 7 0 0
+            //5000000 9 8 0 0
+            //22000000 7 9 0 0
+            //14000000 7 9 5 0
+            //6000000 7 9 5 0
+
+            //2000
+            //2001
+            //2002
+            //2010
+            //2011
+
+            //79
+            //80
+            //81
+            //82
+
+            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+            {
+                writetext.WriteLine("Starting Required Stat Changing...");
+            }
+
+            byte nine = 9;
+            byte eight = 8;
+            byte seven = 7;
+            byte five = 5;
+            byte zero = 0;
+
+            for (int i = 0; i < weaponParams.Rows.Count; i ++)
+            {
+                if(weaponParams.Rows[i].ID.ToString() == new2000)
+                {
+                    using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                    {
+                        writetext.WriteLine("New starting item");
+                        writetext.WriteLine(weaponParams.Rows[i].ID);
+                    }
+
+                    //7000000 8 7 0 0
+                    weaponParams.Rows[i].Cells[80].Value = eight;
+                    weaponParams.Rows[i].Cells[81].Value = seven;
+                    weaponParams.Rows[i].Cells[82].Value = zero;
+                    weaponParams.Rows[i].Cells[83].Value = zero;
+                }
+
+                if (weaponParams.Rows[i].ID.ToString() == new2001)
+                {
+                    using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                    {
+                        writetext.WriteLine("New starting item");
+                        writetext.WriteLine(weaponParams.Rows[i].ID);
+                    }
+
+                    //5000000 9 8 0 0
+                    weaponParams.Rows[i].Cells[80].Value = nine;
+                    weaponParams.Rows[i].Cells[81].Value = eight;
+                    weaponParams.Rows[i].Cells[82].Value = zero;
+                    weaponParams.Rows[i].Cells[83].Value = zero;
+                }
+
+                if (weaponParams.Rows[i].ID.ToString() == new2002)
+                {
+                    using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                    {
+                        writetext.WriteLine("New starting item");
+                        writetext.WriteLine(weaponParams.Rows[i].ID);
+                    }
+
+                    //22000000 7 9 0 0
+                    weaponParams.Rows[i].Cells[80].Value = seven;
+                    weaponParams.Rows[i].Cells[81].Value = nine;
+                    weaponParams.Rows[i].Cells[82].Value = zero;
+                    weaponParams.Rows[i].Cells[83].Value = zero;
+                }
+
+                if (!keepGuns)
+                {
+                    if (weaponParams.Rows[i].ID.ToString() == new2010)
+                    {
+                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        {
+                            writetext.WriteLine("New starting item");
+                            writetext.WriteLine(weaponParams.Rows[i].ID);
+                        }
+
+                        //14000000 7 9 5 0
+                        weaponParams.Rows[i].Cells[80].Value = seven;
+                        weaponParams.Rows[i].Cells[81].Value = nine;
+                        weaponParams.Rows[i].Cells[82].Value = five;
+                        weaponParams.Rows[i].Cells[83].Value = zero;
+                    }
+
+                    if (weaponParams.Rows[i].ID.ToString() == new2011)
+                    {
+                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        {
+                            writetext.WriteLine("New starting item");
+                            writetext.WriteLine(weaponParams.Rows[i].ID);
+                        }
+
+                        //6000000 7 9 5 0
+                        weaponParams.Rows[i].Cells[80].Value = seven;
+                        weaponParams.Rows[i].Cells[81].Value = nine;
+                        weaponParams.Rows[i].Cells[82].Value = five;
+                        weaponParams.Rows[i].Cells[83].Value = zero;
+                    }
+                }
+            }
+
+            using(StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+            {
+                writetext.WriteLine("Ending Required Stat Changing...");
             }
 
             foreach (BinderFile file in parambnd.Files)
@@ -3543,7 +3690,9 @@ namespace MSB_Test
 
             for(int i = 0; i < tempGUY.Parts.Enemies.Count; i ++)
             {
-                if(currentMap.Contains("m24_01"))
+                
+
+                if (currentMap.Contains("m24_01"))
                 {
                     if(tempGUY.Parts.Enemies[i].Name.Contains("c2710_0000"))
                     {

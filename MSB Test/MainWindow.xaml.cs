@@ -3088,6 +3088,36 @@ namespace MSB_Test
             byte five = 5;
             byte zero = 0;
 
+            List<string> new2000StringList = new List<string>();
+            List<string> new2001StringList = new List<string>();
+            List<string> new2002StringList = new List<string>();
+            List<string> new2010StringList = new List<string>();
+            List<string> new2011StringList = new List<string>();
+
+            int new2000Int = int.Parse(new2000);
+            int new2001Int = int.Parse(new2001);
+            int new2002Int = int.Parse(new2002);
+            int new2010Int = int.Parse(new2010);
+            int new2011Int = int.Parse(new2011);
+
+            for (int i = 0; i < 10; i ++)
+            {
+                new2000Int += 100;
+                new2000StringList.Add(new2000Int.ToString());
+
+                new2001Int += 100;
+                new2001StringList.Add(new2001Int.ToString());
+
+                new2002Int += 100;
+                new2002StringList.Add(new2002Int.ToString());
+
+                new2010Int += 100;
+                new2010StringList.Add(new2010Int.ToString());
+
+                new2011Int += 100;
+                new2011StringList.Add(new2011Int.ToString());
+            }
+
             for (int i = 0; i < weaponParams.Rows.Count; i ++)
             {
                 if(weaponParams.Rows[i].ID.ToString() == new2000)
@@ -3165,6 +3195,121 @@ namespace MSB_Test
                         weaponParams.Rows[i].Cells[81].Value = nine;
                         weaponParams.Rows[i].Cells[82].Value = five;
                         weaponParams.Rows[i].Cells[83].Value = zero;
+                    }
+                }
+            }
+
+            //scaling the rest of the items (+ items)
+
+            //1
+            for(int i = 0; i < new2000StringList.Count; i ++)
+            {
+                for (int j = 0; j < weaponParams.Rows.Count; j++)
+                {
+                    if (weaponParams.Rows[j].ID.ToString() == new2000StringList[i])
+                    {
+                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        {
+                            writetext.WriteLine("New starting item");
+                            writetext.WriteLine(weaponParams.Rows[j].ID);
+                        }
+
+                        //7000000 8 7 0 0
+                        weaponParams.Rows[j].Cells[80].Value = eight;
+                        weaponParams.Rows[j].Cells[81].Value = seven;
+                        weaponParams.Rows[j].Cells[82].Value = zero;
+                        weaponParams.Rows[j].Cells[83].Value = zero;
+                    }
+                }
+            }
+
+            //2
+            for(int i = 0; i < new2001StringList.Count; i ++)
+            {
+                for (int j = 0; j < weaponParams.Rows.Count; j++)
+                {
+                    if (weaponParams.Rows[j].ID.ToString() == new2001StringList[i])
+                    {
+                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        {
+                            writetext.WriteLine("New starting item");
+                            writetext.WriteLine(weaponParams.Rows[j].ID);
+                        }
+
+                        //5000000 9 8 0 0
+                        weaponParams.Rows[j].Cells[80].Value = nine;
+                        weaponParams.Rows[j].Cells[81].Value = eight;
+                        weaponParams.Rows[j].Cells[82].Value = zero;
+                        weaponParams.Rows[j].Cells[83].Value = zero;
+                    }
+                }
+            }
+
+            //3
+            for(int i = 0; i < new2002StringList.Count; i ++)
+            {
+                for (int j = 0; j < weaponParams.Rows.Count; j++)
+                {
+                    if (weaponParams.Rows[j].ID.ToString() == new2002StringList[i])
+                    {
+                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        {
+                            writetext.WriteLine("New starting item");
+                            writetext.WriteLine(weaponParams.Rows[j].ID);
+                        }
+
+                        //22000000 7 9 0 0
+                        weaponParams.Rows[j].Cells[80].Value = seven;
+                        weaponParams.Rows[j].Cells[81].Value = nine;
+                        weaponParams.Rows[j].Cells[82].Value = zero;
+                        weaponParams.Rows[j].Cells[83].Value = zero;
+                    }
+                }
+            }
+
+            if (!keepGuns)
+            {
+                //4
+                for (int i = 0; i < new2010StringList.Count; i++)
+                {
+                    for (int j = 0; j < weaponParams.Rows.Count; j++)
+                    {
+                        if (weaponParams.Rows[j].ID.ToString() == new2010StringList[i])
+                        {
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New starting item");
+                                writetext.WriteLine(weaponParams.Rows[j].ID);
+                            }
+
+                            //14000000 7 9 5 0
+                            weaponParams.Rows[j].Cells[80].Value = seven;
+                            weaponParams.Rows[j].Cells[81].Value = nine;
+                            weaponParams.Rows[j].Cells[82].Value = five;
+                            weaponParams.Rows[j].Cells[83].Value = zero;
+                        }
+                    }
+                }
+
+                //5
+                for(int i = 0; i < new2011StringList.Count; i ++)
+                {
+                    for (int j = 0; j < weaponParams.Rows.Count; j++)
+                    {
+                        if (weaponParams.Rows[j].ID.ToString() == new2011StringList[i])
+                        {
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New starting item");
+                                writetext.WriteLine(weaponParams.Rows[j].ID);
+                            }
+
+                            //6000000 7 9 5 0
+                            weaponParams.Rows[j].Cells[80].Value = seven;
+                            weaponParams.Rows[j].Cells[81].Value = nine;
+                            weaponParams.Rows[j].Cells[82].Value = five;
+                            weaponParams.Rows[j].Cells[83].Value = zero;
+                        }
                     }
                 }
             }

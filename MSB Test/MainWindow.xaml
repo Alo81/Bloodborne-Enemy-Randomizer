@@ -171,7 +171,6 @@
         <Label Content="PERCENT OF ENEMIES RANDOMIZED" HorizontalAlignment="Left" Margin="914,8,0,0" VerticalAlignment="Top"/>
         <Rectangle HorizontalAlignment="Left" Height="18" Margin="914,13,0,0" Stroke="Black" VerticalAlignment="Top" Width="208"/>
         <CheckBox ToolTip="Keeps the pistol and blunderbuss as starting items." x:Name="KeepGunsBox" Content="Keep Regular Guns at Beginning of Game" HorizontalAlignment="Left" Margin="290,171,0,0" VerticalAlignment="Top" Checked="KeepGunsBox_Checked"/>
-        <CheckBox x:Name="DummyEnemyBox" Content="Randomize Cutscene Models (UNTESTED)" HorizontalAlignment="Left" Margin="290,190,0,0" VerticalAlignment="Top" Checked="DummyEnemyBox_Checked"/>
         <Rectangle HorizontalAlignment="Left" Height="31" Margin="694,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="203"/>
         <Label Content="Tick the check box next to a map to choose " HorizontalAlignment="Left" Margin="691,-3,0,0" VerticalAlignment="Top" FontSize="10" Height="23"/>
         <Label Content="which maps bosses can replace enemies in" HorizontalAlignment="Left" Margin="691,9,0,0" VerticalAlignment="Top" FontSize="10"/>
@@ -190,5 +189,9 @@
         <CheckBox x:Name="NightmareBossBox" Content="" HorizontalAlignment="Left" Margin="1104,58,0,0" Grid.Row="1" VerticalAlignment="Top" Checked="NightmareBossBox_Checked"/>
         <CheckBox x:Name="HamletBossBox" Content="" HorizontalAlignment="Left" Margin="1104,111,0,0" Grid.Row="1" VerticalAlignment="Top" Checked="HamletBossBox_Checked"/>
         <CheckBox x:Name="ChaliceBossBox" Content="Bosses Can Replace Enemies (Chalice Dungeons)" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Checked="ChaliceBossBox_Checked"/>
+        <Slider x:Name="EnemySizeSlider" HorizontalAlignment="Left" Height="31" Margin="10,241,0,0" VerticalAlignment="Top" Width="598" Grid.RowSpan="2" Minimum="1" Value="1" ValueChanged="EnemySizeSlider_ValueChanged" SmallChange="1" LargeChange="1" TickFrequency="1"/>
+        <Label x:Name="SliderSizeLabel" Content="{Binding ElementName=EnemySizeSlider, Path=Value}" HorizontalAlignment="Left" Margin="433,210,0,0" VerticalAlignment="Top" Height="26" Width="33"/>
+        <Label Content="Upper limit of filesize for enemy replacing original enemy. Original enemy size * " HorizontalAlignment="Left" Margin="8,210,0,0" VerticalAlignment="Top" Height="31"/>
+        <Label Content="Leave at 1 for minimal crashing." HorizontalAlignment="Left" Margin="466,210,0,0" VerticalAlignment="Top" Height="31"/>
     </Grid>
 </Window>

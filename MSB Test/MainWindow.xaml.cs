@@ -46,6 +46,7 @@ namespace MSB_Test
         bool bossNightmare;
         bool bossHamlet;
         bool bossChalices;
+        double sizeOfEnemy;
         string modelFilePath;
         List<long> longList2 = new List<long>();
         List<string> logList2 = new List<string>();
@@ -159,8 +160,15 @@ namespace MSB_Test
             CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
             HuntersNightmareLabel.Content = String.Format("{0:0.00}", HuntersNightmareChance);
             ResearchLabel.Content = String.Format("{0:0.00}", ResearchHallChance);
-
-            DummyEnemyBox.IsEnabled = false;
+            MessageBox.Show("READ THIS BEFORE CLOSING THE MESSAGE BOX. Using the new slider: Leaving the slider at 1 will minimize crashing. Putting it at 10 will make the randomizer run as it did before. " +
+                "What the slider actually does: Every enemy that is in the game has a value in Megabytes (MB), and the randomizer will now look at that value and replace that enemy with another enemy that " +
+                "has an equal or lesser MB value. The slider determines this value ----MB value of original enemy * SliderValue = New MB value limit to replace----. So setting the value to 1 will be the most " +
+                "optimal, this will retain the upper MBvalue limit that the new enemy can be (being the actual MBvalue of the original enemy). Setting the slider at a higher value will, therefore, increase the " +
+                " upper MBvalue that a new enemy can have. At 10, the upper MBvalue limit will be (MBvalue of original enemy * 10). " +
+                "Leaving the slider at a smaller value will lessen the variety of enemies you will see. The higher the value, the greater variety you wil see, but more crashing may happen due to memory issues. " +
+                "I have found that a value of 1-1.5 will work with minimal crashing. \r\n \r\n The Ludwig fight and the Failures fight will work correctly. It is recommended that you " +
+                "Save and quit then continue before the Ludwig and Failures fights. This will stop a crash from happening during the second phase of the Ludwig fight and the beginning of the " +
+                "Failures fight. Rom no longer fights back, the last update broke a lot of boss fights, but it made rom switch phases and fight. I took that out of this version to fix every other boss fight.");
             RandomizeKeyItemsBox.IsEnabled = false;
 
             /*
@@ -282,6 +290,8 @@ namespace MSB_Test
             unusedList.Add("c5130_0000");
             unusedList.Add("c4031_0000");
             unusedList.Add("c4520_0000");
+            unusedList.Add("c1190");
+            unusedList.Add("c1180");
 
             bossList.Add("5090");
             bossList.Add("c2090_0003");
@@ -1116,12 +1126,6 @@ namespace MSB_Test
                     bossHemwick = true;
                 }
                 else bossHemwick = false;
-
-                if (DummyEnemyBox.IsChecked == true)
-                {
-                    dummyEnemyBool = true;
-                }
-                else dummyEnemyBool = false;
 
                 if (KeepGunsBox.IsChecked == true)
                 {
@@ -3097,8 +3101,14 @@ namespace MSB_Test
             int new2000Int = int.Parse(new2000);
             int new2001Int = int.Parse(new2001);
             int new2002Int = int.Parse(new2002);
-            int new2010Int = int.Parse(new2010);
-            int new2011Int = int.Parse(new2011);
+            int new2010Int = 0;
+            int new2011Int = 0;
+
+            if(!keepGuns)
+            {
+                new2010Int = int.Parse(new2010);
+                new2011Int = int.Parse(new2011);
+            }
 
             for (int i = 0; i < 10; i ++)
             {
@@ -3111,11 +3121,14 @@ namespace MSB_Test
                 new2002Int += 100;
                 new2002StringList.Add(new2002Int.ToString());
 
-                new2010Int += 100;
-                new2010StringList.Add(new2010Int.ToString());
+                if (!keepGuns)
+                {
+                    new2010Int += 100;
+                    new2010StringList.Add(new2010Int.ToString());
 
-                new2011Int += 100;
-                new2011StringList.Add(new2011Int.ToString());
+                    new2011Int += 100;
+                    new2011StringList.Add(new2011Int.ToString());
+                }
             }
 
             for (int i = 0; i < weaponParams.Rows.Count; i ++)
@@ -5399,7 +5412,7 @@ namespace MSB_Test
 
                             if (currentMap.Contains("m24_02") || currentMap.Contains("m35"))
                             {
-                                while (newModelValue >= (originalModelValue) && tries < 30)
+                                while (newModelValue > (originalModelValue) && tries < 30)
                                 {
                                     if (chaliceEnemies)
                                     {
@@ -5443,7 +5456,7 @@ namespace MSB_Test
                             }
                             else
                             {
-                                while (newModelValue > (originalModelValue + 20000000) && tries < 30)
+                                while (newModelValue > (originalModelValue * sizeOfEnemy) && tries < 30000)
                                 {
                                     if (chaliceEnemies)
                                     {
@@ -8174,11 +8187,6 @@ namespace MSB_Test
             keepGuns = KeepGunsBox.IsChecked.Value;
         }
 
-        private void DummyEnemyBox_Checked(object sender, RoutedEventArgs e)
-        {
-            dummyEnemyBool = DummyEnemyBox.IsChecked.Value;
-        }
-
         private void HemwickCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             bossHemwick = HemwickCheckBox.IsChecked.Value;
@@ -8252,6 +8260,11 @@ namespace MSB_Test
         private void ChaliceBossBox_Checked(object sender, RoutedEventArgs e)
         {
             bossChalices = ChaliceBossBox.IsChecked.Value;
+        }
+
+        private void EnemySizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            sizeOfEnemy = EnemySizeSlider.Value;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////

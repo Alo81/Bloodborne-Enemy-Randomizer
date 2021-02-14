@@ -193,5 +193,13 @@
         <Label x:Name="SliderSizeLabel" Content="{Binding ElementName=EnemySizeSlider, Path=Value}" HorizontalAlignment="Left" Margin="433,210,0,0" VerticalAlignment="Top" Height="26" Width="33"/>
         <Label Content="Upper limit of filesize for enemy replacing original enemy. Original enemy size * " HorizontalAlignment="Left" Margin="8,210,0,0" VerticalAlignment="Top" Height="31"/>
         <Label Content="Leave at 1 for minimal crashing." HorizontalAlignment="Left" Margin="466,210,0,0" VerticalAlignment="Top" Height="31"/>
+        <CheckBox x:Name="StartingWeaponsRandomizeBox" Content="Randomize Starting Weapons" HorizontalAlignment="Left" Margin="290,190,0,0" VerticalAlignment="Top" Checked="StartingWeaponsRandomizeBox_Checked"/>
+        <CheckBox x:Name="EasyMultiBossesBox" Content="Easy Shadows" HorizontalAlignment="Left" Margin="290,32,0,0" VerticalAlignment="Top" Checked="EasyMultiBossesBox_Checked"/>
+        <CheckBox x:Name="EasyFailuresBox" Content="Easy Living Failures" HorizontalAlignment="Left" Margin="389,32,0,0" VerticalAlignment="Top" Checked="EasyFailuresBox_Checked"/>
+        <CheckBox x:Name="VFXChange" Content="Super Aggro" HorizontalAlignment="Left" Margin="555,53,0,0" VerticalAlignment="Top" Checked="VFXChange_Checked"/>
+        <CheckBox x:Name="FaceBox" Content="Face Data" HorizontalAlignment="Left" Margin="555,72,0,0" VerticalAlignment="Top" Checked="FaceBox_Checked"/>
+        <CheckBox x:Name="GemsAndRunesBox" Content="Gems + Runes" HorizontalAlignment="Left" Margin="555,91,0,0" VerticalAlignment="Top" Checked="GemsAndRunesBox_Checked"/>
+        <CheckBox x:Name="TalkBox" Content="Talk Data" HorizontalAlignment="Left" Margin="555,111,0,0" VerticalAlignment="Top" Checked="TalkBox_Checked"/>
+        <CheckBox x:Name="BloodBox" Content="Blood Decals" HorizontalAlignment="Left" Margin="555,131,0,0" VerticalAlignment="Top" Checked="BloodBox_Checked"/>
     </Grid>
 </Window>

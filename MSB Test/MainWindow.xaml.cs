@@ -18,6 +18,17 @@ namespace MSB_Test
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<long> masterList = new List<long>();
+        List<long> RandList = new List<long>();
+        List<PARAM.Cell> cellList = new List<PARAM.Cell>();
+        List<string> cellListString = new List<string>();
+
+        List<List<string>> listOfLists = new List<List<string>>();
+        List<List<PARAM.Cell>> listOfCellLists = new List<List<PARAM.Cell>>();
+
+        List<PARAM.Cell> paramList = new List<PARAM.Cell>();
+        List<PARAM.Cell> randParamList = new List<PARAM.Cell>();
+
         string new2000 = "";
         string new2001 = "";
         string new2002 = "";
@@ -29,8 +40,13 @@ namespace MSB_Test
         string paramPath;
         string paramDefPath;
         string currentTask;
+        bool addedStoneGuyBool;
+        int stoneGuyParam;
+        int stoneGuyThink;
+        string stoneGuyModelName;
+        string tempStoneEnemyString;
+        MSBB.Part.Enemy stoneGuyEnemy;
         bool keepGuns;
-        bool dummyEnemyBool;
         bool bossHemwick;
         bool bossCathedralWard;
         bool bossUpperCathedralWard;
@@ -46,6 +62,14 @@ namespace MSB_Test
         bool bossNightmare;
         bool bossHamlet;
         bool bossChalices;
+        bool easyMultiBossesBool;
+        bool easyFailuresBool;
+        bool startingWeaponsOnlyBool;
+        bool vfxBool;
+        bool talkBool;
+        bool bloodBool;
+        bool gemBool;
+        bool faceBool;
         double sizeOfEnemy;
         string modelFilePath;
         List<long> longList2 = new List<long>();
@@ -92,7 +116,6 @@ namespace MSB_Test
         bool bellMaidenBool;
         bool keyItemRandomizeBool;
         bool workshopBool;
-        bool allChalices;
         string thisnpc;
         string thismo;
         string thisthink;
@@ -126,7 +149,6 @@ namespace MSB_Test
         string randomizedNPCPath;
         string randomizedItemLotPath;
         string dummyFilePath;
-        string chaliceMapPaths;
         bool oopsAll;
         List<string> oopsAllList = new List<string>();
         string oopsAllString;
@@ -155,6 +177,8 @@ namespace MSB_Test
         public MainWindow()
         {
             InitializeComponent();
+
+            TalkBox.IsEnabled = false;
 
             UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
             CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
@@ -846,6 +870,21 @@ namespace MSB_Test
                 {
                     addEnemy = true;
 
+                if (!addedStoneGuyBool)
+                {
+                    if (tempGUY.Parts.Enemies[i].ModelName.Contains("c2521"))
+                    {
+                        stoneGuyEnemy = tempGUY.Parts.Enemies[i];
+                        tempStoneEnemyString = (stoneGuyEnemy.NPCParamID.ToString() + "*" + stoneGuyEnemy.ThinkParamID.ToString() + "*" + stoneGuyEnemy.ModelName);
+                        int tempnpcint = tempStoneEnemyString.IndexOf("*");
+                        string tempNpcParam = tempStoneEnemyString.Substring(0, tempnpcint);
+                        string tempThinkId = tempStoneEnemyString.Substring(tempnpcint + 1, tempStoneEnemyString.LastIndexOf("*") - tempnpcint - 1);
+                        stoneGuyModelName = tempStoneEnemyString.Substring(tempStoneEnemyString.LastIndexOf("*") + 1, 5);
+                        stoneGuyParam = int.Parse(tempNpcParam);
+                        stoneGuyThink = int.Parse(tempThinkId);
+                    }
+                }
+
                     if (!oopsAll)
                     {
                         for (int j = 0; j < noNoList.Count; j++)
@@ -950,6 +989,8 @@ namespace MSB_Test
                     }
 
                 }
+
+
 
             if (!oopsAll)
             {
@@ -1221,7 +1262,56 @@ namespace MSB_Test
                 }
                 else workshopBool = false;
 
+                if (EasyMultiBossesBox.IsChecked == true)
+                {
+                    easyMultiBossesBool = true;
+                }
+                else easyMultiBossesBool = false;
+
+                if (EasyFailuresBox.IsChecked == true)
+                {
+                    easyFailuresBool = true;
+                }
+                else easyFailuresBool = false;
+
+                if (StartingWeaponsRandomizeBox.IsChecked == true)
+                {
+                    startingWeaponsOnlyBool = true;
+                }
+                else startingWeaponsOnlyBool = false;
+
+                if (VFXChange.IsChecked == true)
+                {
+                    vfxBool = true;
+                }
+                else vfxBool = false;
+
+                if (TalkBox.IsChecked == true)
+                {
+                    talkBool = true;
+                }
+                else talkBool = false;
+
+                if (GemsAndRunesBox.IsChecked == true)
+                {
+                    gemBool = true;
+                }
+                else gemBool = false;
+
+                if (BloodBox.IsChecked == true)
+                {
+                    bloodBool = true;
+                }
+                else bloodBool = false;
+
+                if (FaceBox.IsChecked == true)
+                {
+                    faceBool = true;
+                }
+                else faceBool = false;
+
                 TEST.IsEnabled = false;
+                TalkBox.IsEnabled = false;
                 RandomizeEnemiesCheck.IsEnabled = false;
                 BossCheckBox.IsEnabled = false;
                 InsertBosses.IsEnabled = false;
@@ -2340,14 +2430,14 @@ namespace MSB_Test
 
                 for(int i = 0; i < npcList.Count; i ++)
                 {
-                    if (npcList[i].Contains("*6300") || npcList[i].Contains("*6301") || npcList[i].Contains("*6380")
-                        || npcList[i].Contains("*6310") || npcList[i].Contains("*6340") || npcList[i].Contains("*6350")
-                        || npcList[i].Contains("*6360") || npcList[i].Contains("*6400") || npcList[i].Contains("*6410")
-                        || npcList[i].Contains("*6160") || npcList[i].Contains("*6161") || npcList[i].Contains("*6162")
-                        || npcList[i].Contains("*6430") || npcList[i].Contains("*6420") || npcList[i].Contains("*6545")
-                        || npcList[i].Contains("*6390") || npcList[i].Contains("*6395") || npcList[i].Contains("*6450")
-                        || npcList[i].Contains("*6580") || npcList[i].Contains("*6585") || npcList[i].Contains("*6610")
-                        || npcList[i].Contains("*6520") || npcList[i].Contains("*6570") || npcList[i].Contains("*6630"))
+                    if (npcList[i].Contains("*6300") || npcList[i].Contains("*6310")
+                        || npcList[i].Contains("*6340") || npcList[i].Contains("*6350") || npcList[i].Contains("*6360")
+                        || npcList[i].Contains("*6390") || npcList[i].Contains("*6395") || npcList[i].Contains("*6400")
+                        || npcList[i].Contains("*6410") || npcList[i].Contains("*6420") || npcList[i].Contains("*6430")
+                        || npcList[i].Contains("*6440") || npcList[i].Contains("*6450") || npcList[i].Contains("*6520")
+                        || npcList[i].Contains("*6570") || npcList[i].Contains("*6580") || npcList[i].Contains("*6585")
+                        || npcList[i].Contains("*6610") || npcList[i].Contains("*6630") || npcList[i].Contains("*7070")
+                        || npcList[i].Contains("*7075"))
                     {
                         hostileNpcList.Add(npcList[i]);
                     }
@@ -2486,9 +2576,41 @@ namespace MSB_Test
                 RandomizeItemDrops();
             }
 
-            if(shopBool)
+            if(shopBool || startingWeaponsOnlyBool)
             {
                 RandomizeShopItems();
+            }
+
+            if(vfxBool)
+            {
+                AiSoundParamRandomizer();
+                //VfxRandomizer("GemGenParam");
+                //VfxRandomizer("Wind");
+                //VfxRandomizer("KnockBackParam");
+                //VfxRandomizer("Bullet");
+                //BulletRandomizer();
+                //VfxRandomizer("AiSoundParam");
+            }
+
+            if(faceBool)
+            {
+                VfxRandomizer("FaceGenParam");
+                VfxRandomizer("FaceParam");
+            }
+
+            if(bloodBool)
+            {
+                DecalRandomizer();
+            }
+
+            if(gemBool)
+            {
+                GemGenParamRandomizer();
+            }
+
+            if (talkBool)
+            {
+                TalkRandomizer();
             }
 
             string dateNoww = DateTime.Now.ToString("h:mm:ss tt");
@@ -2657,6 +2779,10 @@ namespace MSB_Test
             Environment.Exit(0);
         }
 
+        private void RandomizeStartingWeapons()
+        {
+            
+        }
         
         private void RandomizeShopItems()
         {
@@ -2941,123 +3067,132 @@ namespace MSB_Test
                 {
                     if (shopLineupParams.Rows[i].Cells[7].Value.ToString() == "0" && shopWeaponList.Count > 0)
                     {
-                        int randomNumber = rand.Next(0, shopWeaponList.Count);
-
-                        while(shopWeaponList[randomNumber].Contains(shopLineupParams.Rows[i].Cells[0].ToString()))
+                        if (startingWeaponsOnlyBool)
                         {
-                            randomNumber = rand.Next(0, shopWeaponList.Count);
-                        }
+                            int randomNumber = rand.Next(0, shopWeaponList.Count);
 
-                        if(shopLineupParams.Rows[i].Cells[0].ToString().Contains("7000000")
-                            || shopLineupParams.Rows[i].Cells[0].ToString().Contains("5000000")
-                            || shopLineupParams.Rows[i].Cells[0].ToString().Contains("22000000"))
-                        {
-                            bool rightHand = false;
-
-                            while(!rightHand)
+                            while (shopWeaponList[randomNumber].Contains(shopLineupParams.Rows[i].Cells[0].ToString()))
                             {
-                                if(!rightHandList.Contains(shopWeaponList[randomNumber]))
+                                randomNumber = rand.Next(0, shopWeaponList.Count);
+                            }
+
+                            if (shopLineupParams.Rows[i].Cells[0].ToString().Contains("7000000")
+                                || shopLineupParams.Rows[i].Cells[0].ToString().Contains("5000000")
+                                || shopLineupParams.Rows[i].Cells[0].ToString().Contains("22000000"))
+                            {
+                                bool rightHand = false;
+
+                                while (!rightHand)
                                 {
-                                    randomNumber = rand.Next(0, shopWeaponList.Count);
+                                    if (!rightHandList.Contains(shopWeaponList[randomNumber]))
+                                    {
+                                        randomNumber = rand.Next(0, shopWeaponList.Count);
+                                    }
+                                    else
+                                    {
+                                        rightHand = true;
+                                    }
                                 }
-                                else
+
+                            }
+
+                            if (shopLineupParams.Rows[i].Cells[0].ToString().Contains("14000000")
+                                || shopLineupParams.Rows[i].Cells[0].ToString().Contains("6000000"))
+                            {
+                                bool leftHand = false;
+
+                                while (!leftHand)
                                 {
-                                    rightHand = true;
+                                    if (!leftHandList.Contains(shopWeaponList[randomNumber]))
+                                    {
+                                        randomNumber = rand.Next(0, shopWeaponList.Count);
+                                    }
+                                    else
+                                    {
+                                        leftHand = true;
+                                    }
+                                }
+
+                            }
+
+                            if (shopLineupParams.Rows[i].ID.ToString() == "2000")
+                            {
+                                new2000 = shopWeaponList[randomNumber];
+                            }
+
+                            if (shopLineupParams.Rows[i].ID.ToString() == "2001")
+                            {
+                                new2001 = shopWeaponList[randomNumber];
+                            }
+
+                            if (shopLineupParams.Rows[i].ID.ToString() == "2002")
+                            {
+                                new2002 = shopWeaponList[randomNumber];
+                            }
+
+                            if (!keepGuns)
+                            {
+                                if (shopLineupParams.Rows[i].ID.ToString() == "2010")
+                                {
+                                    new2010 = shopWeaponList[randomNumber];
+                                }
+
+                                if (shopLineupParams.Rows[i].ID.ToString() == "2011")
+                                {
+                                    new2011 = shopWeaponList[randomNumber];
                                 }
                             }
 
-                        }
-
-                        if (shopLineupParams.Rows[i].Cells[0].ToString().Contains("14000000")
-                            || shopLineupParams.Rows[i].Cells[0].ToString().Contains("6000000"))
-                        {
-                            bool leftHand = false;
-
-                            while(!leftHand)
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
                             {
-                                if (!leftHandList.Contains(shopWeaponList[randomNumber]))
-                                {
-                                    randomNumber = rand.Next(0, shopWeaponList.Count);
-                                }
-                                else
-                                {
-                                    leftHand = true;
-                                }
+                                writetext.WriteLine("Old Shop Item");
+                                writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
+                                writetext.WriteLine("New Shop Item");
+                                writetext.WriteLine(shopWeaponList[randomNumber]);
                             }
 
+                            shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopWeaponList[randomNumber]);
+
+                            shopWeaponList.RemoveAt(randomNumber);
                         }
-
-                        if(shopLineupParams.Rows[i].ID.ToString() == "2000")
-                        {
-                            new2000 = shopWeaponList[randomNumber];
-                        }
-
-                        if (shopLineupParams.Rows[i].ID.ToString() == "2001")
-                        {
-                            new2001 = shopWeaponList[randomNumber];
-                        }
-
-                        if (shopLineupParams.Rows[i].ID.ToString() == "2002")
-                        {
-                            new2002 = shopWeaponList[randomNumber];
-                        }
-
-                        if (!keepGuns)
-                        {
-                            if (shopLineupParams.Rows[i].ID.ToString() == "2010")
-                            {
-                                new2010 = shopWeaponList[randomNumber];
-                            }
-
-                            if (shopLineupParams.Rows[i].ID.ToString() == "2011")
-                            {
-                                new2011 = shopWeaponList[randomNumber];
-                            }
-                        }
-
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                        {
-                            writetext.WriteLine("Old Shop Item");
-                            writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
-                            writetext.WriteLine("New Shop Item");
-                            writetext.WriteLine(shopWeaponList[randomNumber]);
-                        }
-
-                        shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopWeaponList[randomNumber]);
-
-                        shopWeaponList.RemoveAt(randomNumber);
                     }
                     else if (shopLineupParams.Rows[i].Cells[7].Value.ToString() == "1" && shopArmorList.Count > 0)
                     {
-                        int randomNumber = rand.Next(0, shopArmorList.Count);
-
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        if (shopBool)
                         {
-                            writetext.WriteLine("Old Shop Item");
-                            writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
-                            writetext.WriteLine("New Shop Item");
-                            writetext.WriteLine(shopArmorList[randomNumber]);
+                            int randomNumber = rand.Next(0, shopArmorList.Count);
+
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("Old Shop Item");
+                                writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
+                                writetext.WriteLine("New Shop Item");
+                                writetext.WriteLine(shopArmorList[randomNumber]);
+                            }
+
+                            shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopArmorList[randomNumber]);
+
+                            shopArmorList.RemoveAt(randomNumber);
                         }
-
-                        shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopArmorList[randomNumber]);
-
-                        shopArmorList.RemoveAt(randomNumber);
                     }
                     else if (shopLineupParams.Rows[i].Cells[7].Value.ToString() == "3" && shopConsumableList.Count > 0)
                     {
-                        int randomNumber = rand.Next(0, shopConsumableList.Count);
-
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                        if (shopBool)
                         {
-                            writetext.WriteLine("Old Shop Item");
-                            writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
-                            writetext.WriteLine("New Shop Item");
-                            writetext.WriteLine(shopConsumableList[randomNumber]);
+                            int randomNumber = rand.Next(0, shopConsumableList.Count);
+
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("Old Shop Item");
+                                writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
+                                writetext.WriteLine("New Shop Item");
+                                writetext.WriteLine(shopConsumableList[randomNumber]);
+                            }
+
+                            shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopConsumableList[randomNumber]);
+
+                            shopConsumableList.RemoveAt(randomNumber);
                         }
-
-                        shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopConsumableList[randomNumber]);
-
-                        shopConsumableList.RemoveAt(randomNumber);
                     }
                 }
             }
@@ -3080,236 +3215,147 @@ namespace MSB_Test
             //80
             //81
             //82
-
-            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+            if (startingWeaponsOnlyBool)
             {
-                writetext.WriteLine("Starting Required Stat Changing...");
-            }
+                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                {
+                    writetext.WriteLine("Starting Required Stat Changing...");
+                }
 
-            byte nine = 9;
-            byte eight = 8;
-            byte seven = 7;
-            byte five = 5;
-            byte zero = 0;
+                byte nine = 9;
+                byte eight = 8;
+                byte seven = 7;
+                byte five = 5;
+                byte zero = 0;
 
-            List<string> new2000StringList = new List<string>();
-            List<string> new2001StringList = new List<string>();
-            List<string> new2002StringList = new List<string>();
-            List<string> new2010StringList = new List<string>();
-            List<string> new2011StringList = new List<string>();
+                List<string> new2000StringList = new List<string>();
+                List<string> new2001StringList = new List<string>();
+                List<string> new2002StringList = new List<string>();
+                List<string> new2010StringList = new List<string>();
+                List<string> new2011StringList = new List<string>();
 
-            int new2000Int = int.Parse(new2000);
-            int new2001Int = int.Parse(new2001);
-            int new2002Int = int.Parse(new2002);
-            int new2010Int = 0;
-            int new2011Int = 0;
-
-            if(!keepGuns)
-            {
-                new2010Int = int.Parse(new2010);
-                new2011Int = int.Parse(new2011);
-            }
-
-            for (int i = 0; i < 10; i ++)
-            {
-                new2000Int += 100;
-                new2000StringList.Add(new2000Int.ToString());
-
-                new2001Int += 100;
-                new2001StringList.Add(new2001Int.ToString());
-
-                new2002Int += 100;
-                new2002StringList.Add(new2002Int.ToString());
+                int new2000Int = int.Parse(new2000);
+                int new2001Int = int.Parse(new2001);
+                int new2002Int = int.Parse(new2002);
+                int new2010Int = 0;
+                int new2011Int = 0;
 
                 if (!keepGuns)
                 {
-                    new2010Int += 100;
-                    new2010StringList.Add(new2010Int.ToString());
-
-                    new2011Int += 100;
-                    new2011StringList.Add(new2011Int.ToString());
+                    new2010Int = int.Parse(new2010);
+                    new2011Int = int.Parse(new2011);
                 }
-            }
 
-            for (int i = 0; i < weaponParams.Rows.Count; i ++)
-            {
-                if(weaponParams.Rows[i].ID.ToString() == new2000)
+                for (int i = 0; i < 10; i++)
                 {
-                    using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                    new2000Int += 100;
+                    new2000StringList.Add(new2000Int.ToString());
+
+                    new2001Int += 100;
+                    new2001StringList.Add(new2001Int.ToString());
+
+                    new2002Int += 100;
+                    new2002StringList.Add(new2002Int.ToString());
+
+                    if (!keepGuns)
                     {
-                        writetext.WriteLine("New starting item");
-                        writetext.WriteLine(weaponParams.Rows[i].ID);
-                    }
+                        new2010Int += 100;
+                        new2010StringList.Add(new2010Int.ToString());
 
-                    //7000000 8 7 0 0
-                    weaponParams.Rows[i].Cells[80].Value = eight;
-                    weaponParams.Rows[i].Cells[81].Value = seven;
-                    weaponParams.Rows[i].Cells[82].Value = zero;
-                    weaponParams.Rows[i].Cells[83].Value = zero;
+                        new2011Int += 100;
+                        new2011StringList.Add(new2011Int.ToString());
+                    }
                 }
 
-                if (weaponParams.Rows[i].ID.ToString() == new2001)
+                for (int i = 0; i < weaponParams.Rows.Count; i++)
                 {
-                    using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                    {
-                        writetext.WriteLine("New starting item");
-                        writetext.WriteLine(weaponParams.Rows[i].ID);
-                    }
-
-                    //5000000 9 8 0 0
-                    weaponParams.Rows[i].Cells[80].Value = nine;
-                    weaponParams.Rows[i].Cells[81].Value = eight;
-                    weaponParams.Rows[i].Cells[82].Value = zero;
-                    weaponParams.Rows[i].Cells[83].Value = zero;
-                }
-
-                if (weaponParams.Rows[i].ID.ToString() == new2002)
-                {
-                    using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                    {
-                        writetext.WriteLine("New starting item");
-                        writetext.WriteLine(weaponParams.Rows[i].ID);
-                    }
-
-                    //22000000 7 9 0 0
-                    weaponParams.Rows[i].Cells[80].Value = seven;
-                    weaponParams.Rows[i].Cells[81].Value = nine;
-                    weaponParams.Rows[i].Cells[82].Value = zero;
-                    weaponParams.Rows[i].Cells[83].Value = zero;
-                }
-
-                if (!keepGuns)
-                {
-                    if (weaponParams.Rows[i].ID.ToString() == new2010)
+                    if (weaponParams.Rows[i].ID.ToString() == new2000)
                     {
                         using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
                         {
                             writetext.WriteLine("New starting item");
                             writetext.WriteLine(weaponParams.Rows[i].ID);
-                        }
-
-                        //14000000 7 9 5 0
-                        weaponParams.Rows[i].Cells[80].Value = seven;
-                        weaponParams.Rows[i].Cells[81].Value = nine;
-                        weaponParams.Rows[i].Cells[82].Value = five;
-                        weaponParams.Rows[i].Cells[83].Value = zero;
-                    }
-
-                    if (weaponParams.Rows[i].ID.ToString() == new2011)
-                    {
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                        {
-                            writetext.WriteLine("New starting item");
-                            writetext.WriteLine(weaponParams.Rows[i].ID);
-                        }
-
-                        //6000000 7 9 5 0
-                        weaponParams.Rows[i].Cells[80].Value = seven;
-                        weaponParams.Rows[i].Cells[81].Value = nine;
-                        weaponParams.Rows[i].Cells[82].Value = five;
-                        weaponParams.Rows[i].Cells[83].Value = zero;
-                    }
-                }
-            }
-
-            //scaling the rest of the items (+ items)
-
-            //1
-            for(int i = 0; i < new2000StringList.Count; i ++)
-            {
-                for (int j = 0; j < weaponParams.Rows.Count; j++)
-                {
-                    if (weaponParams.Rows[j].ID.ToString() == new2000StringList[i])
-                    {
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                        {
-                            writetext.WriteLine("New starting item");
-                            writetext.WriteLine(weaponParams.Rows[j].ID);
                         }
 
                         //7000000 8 7 0 0
-                        weaponParams.Rows[j].Cells[80].Value = eight;
-                        weaponParams.Rows[j].Cells[81].Value = seven;
-                        weaponParams.Rows[j].Cells[82].Value = zero;
-                        weaponParams.Rows[j].Cells[83].Value = zero;
+                        weaponParams.Rows[i].Cells[80].Value = eight;
+                        weaponParams.Rows[i].Cells[81].Value = seven;
+                        weaponParams.Rows[i].Cells[82].Value = zero;
+                        weaponParams.Rows[i].Cells[83].Value = zero;
                     }
-                }
-            }
 
-            //2
-            for(int i = 0; i < new2001StringList.Count; i ++)
-            {
-                for (int j = 0; j < weaponParams.Rows.Count; j++)
-                {
-                    if (weaponParams.Rows[j].ID.ToString() == new2001StringList[i])
+                    if (weaponParams.Rows[i].ID.ToString() == new2001)
                     {
                         using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
                         {
                             writetext.WriteLine("New starting item");
-                            writetext.WriteLine(weaponParams.Rows[j].ID);
+                            writetext.WriteLine(weaponParams.Rows[i].ID);
                         }
 
                         //5000000 9 8 0 0
-                        weaponParams.Rows[j].Cells[80].Value = nine;
-                        weaponParams.Rows[j].Cells[81].Value = eight;
-                        weaponParams.Rows[j].Cells[82].Value = zero;
-                        weaponParams.Rows[j].Cells[83].Value = zero;
+                        weaponParams.Rows[i].Cells[80].Value = nine;
+                        weaponParams.Rows[i].Cells[81].Value = eight;
+                        weaponParams.Rows[i].Cells[82].Value = zero;
+                        weaponParams.Rows[i].Cells[83].Value = zero;
                     }
-                }
-            }
 
-            //3
-            for(int i = 0; i < new2002StringList.Count; i ++)
-            {
-                for (int j = 0; j < weaponParams.Rows.Count; j++)
-                {
-                    if (weaponParams.Rows[j].ID.ToString() == new2002StringList[i])
+                    if (weaponParams.Rows[i].ID.ToString() == new2002)
                     {
                         using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
                         {
                             writetext.WriteLine("New starting item");
-                            writetext.WriteLine(weaponParams.Rows[j].ID);
+                            writetext.WriteLine(weaponParams.Rows[i].ID);
                         }
 
                         //22000000 7 9 0 0
-                        weaponParams.Rows[j].Cells[80].Value = seven;
-                        weaponParams.Rows[j].Cells[81].Value = nine;
-                        weaponParams.Rows[j].Cells[82].Value = zero;
-                        weaponParams.Rows[j].Cells[83].Value = zero;
+                        weaponParams.Rows[i].Cells[80].Value = seven;
+                        weaponParams.Rows[i].Cells[81].Value = nine;
+                        weaponParams.Rows[i].Cells[82].Value = zero;
+                        weaponParams.Rows[i].Cells[83].Value = zero;
                     }
-                }
-            }
 
-            if (!keepGuns)
-            {
-                //4
-                for (int i = 0; i < new2010StringList.Count; i++)
-                {
-                    for (int j = 0; j < weaponParams.Rows.Count; j++)
+                    if (!keepGuns)
                     {
-                        if (weaponParams.Rows[j].ID.ToString() == new2010StringList[i])
+                        if (weaponParams.Rows[i].ID.ToString() == new2010)
                         {
                             using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
                             {
                                 writetext.WriteLine("New starting item");
-                                writetext.WriteLine(weaponParams.Rows[j].ID);
+                                writetext.WriteLine(weaponParams.Rows[i].ID);
                             }
 
                             //14000000 7 9 5 0
-                            weaponParams.Rows[j].Cells[80].Value = seven;
-                            weaponParams.Rows[j].Cells[81].Value = nine;
-                            weaponParams.Rows[j].Cells[82].Value = five;
-                            weaponParams.Rows[j].Cells[83].Value = zero;
+                            weaponParams.Rows[i].Cells[80].Value = seven;
+                            weaponParams.Rows[i].Cells[81].Value = nine;
+                            weaponParams.Rows[i].Cells[82].Value = five;
+                            weaponParams.Rows[i].Cells[83].Value = zero;
+                        }
+
+                        if (weaponParams.Rows[i].ID.ToString() == new2011)
+                        {
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New starting item");
+                                writetext.WriteLine(weaponParams.Rows[i].ID);
+                            }
+
+                            //6000000 7 9 5 0
+                            weaponParams.Rows[i].Cells[80].Value = seven;
+                            weaponParams.Rows[i].Cells[81].Value = nine;
+                            weaponParams.Rows[i].Cells[82].Value = five;
+                            weaponParams.Rows[i].Cells[83].Value = zero;
                         }
                     }
                 }
 
-                //5
-                for(int i = 0; i < new2011StringList.Count; i ++)
+                //scaling the rest of the items (+ items)
+
+                //1
+                for (int i = 0; i < new2000StringList.Count; i++)
                 {
                     for (int j = 0; j < weaponParams.Rows.Count; j++)
                     {
-                        if (weaponParams.Rows[j].ID.ToString() == new2011StringList[i])
+                        if (weaponParams.Rows[j].ID.ToString() == new2000StringList[i])
                         {
                             using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
                             {
@@ -3317,16 +3363,106 @@ namespace MSB_Test
                                 writetext.WriteLine(weaponParams.Rows[j].ID);
                             }
 
-                            //6000000 7 9 5 0
-                            weaponParams.Rows[j].Cells[80].Value = seven;
-                            weaponParams.Rows[j].Cells[81].Value = nine;
-                            weaponParams.Rows[j].Cells[82].Value = five;
+                            //7000000 8 7 0 0
+                            weaponParams.Rows[j].Cells[80].Value = eight;
+                            weaponParams.Rows[j].Cells[81].Value = seven;
+                            weaponParams.Rows[j].Cells[82].Value = zero;
                             weaponParams.Rows[j].Cells[83].Value = zero;
                         }
                     }
                 }
-            }
 
+                //2
+                for (int i = 0; i < new2001StringList.Count; i++)
+                {
+                    for (int j = 0; j < weaponParams.Rows.Count; j++)
+                    {
+                        if (weaponParams.Rows[j].ID.ToString() == new2001StringList[i])
+                        {
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New starting item");
+                                writetext.WriteLine(weaponParams.Rows[j].ID);
+                            }
+
+                            //5000000 9 8 0 0
+                            weaponParams.Rows[j].Cells[80].Value = nine;
+                            weaponParams.Rows[j].Cells[81].Value = eight;
+                            weaponParams.Rows[j].Cells[82].Value = zero;
+                            weaponParams.Rows[j].Cells[83].Value = zero;
+                        }
+                    }
+                }
+
+                //3
+                for (int i = 0; i < new2002StringList.Count; i++)
+                {
+                    for (int j = 0; j < weaponParams.Rows.Count; j++)
+                    {
+                        if (weaponParams.Rows[j].ID.ToString() == new2002StringList[i])
+                        {
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New starting item");
+                                writetext.WriteLine(weaponParams.Rows[j].ID);
+                            }
+
+                            //22000000 7 9 0 0
+                            weaponParams.Rows[j].Cells[80].Value = seven;
+                            weaponParams.Rows[j].Cells[81].Value = nine;
+                            weaponParams.Rows[j].Cells[82].Value = zero;
+                            weaponParams.Rows[j].Cells[83].Value = zero;
+                        }
+                    }
+                }
+
+                if (!keepGuns)
+                {
+                    //4
+                    for (int i = 0; i < new2010StringList.Count; i++)
+                    {
+                        for (int j = 0; j < weaponParams.Rows.Count; j++)
+                        {
+                            if (weaponParams.Rows[j].ID.ToString() == new2010StringList[i])
+                            {
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("New starting item");
+                                    writetext.WriteLine(weaponParams.Rows[j].ID);
+                                }
+
+                                //14000000 7 9 5 0
+                                weaponParams.Rows[j].Cells[80].Value = seven;
+                                weaponParams.Rows[j].Cells[81].Value = nine;
+                                weaponParams.Rows[j].Cells[82].Value = five;
+                                weaponParams.Rows[j].Cells[83].Value = zero;
+                            }
+                        }
+                    }
+
+                    //5
+                    for (int i = 0; i < new2011StringList.Count; i++)
+                    {
+                        for (int j = 0; j < weaponParams.Rows.Count; j++)
+                        {
+                            if (weaponParams.Rows[j].ID.ToString() == new2011StringList[i])
+                            {
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("New starting item");
+                                    writetext.WriteLine(weaponParams.Rows[j].ID);
+                                }
+
+                                //6000000 7 9 5 0
+                                weaponParams.Rows[j].Cells[80].Value = seven;
+                                weaponParams.Rows[j].Cells[81].Value = nine;
+                                weaponParams.Rows[j].Cells[82].Value = five;
+                                weaponParams.Rows[j].Cells[83].Value = zero;
+                            }
+                        }
+                    }
+                }
+            }
             using(StreamWriter writetext = File.AppendText(randomizedItemLotPath))
             {
                 writetext.WriteLine("Ending Required Stat Changing...");
@@ -4078,125 +4214,143 @@ namespace MSB_Test
                 {
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0001"))
                     {
-                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                        thismo = tempGUY.Parts.Enemies[i].ModelName;
-                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
-
-                        Random rand = new Random();
-                        int randomNumber = rand.Next(0, combinedBossList2.Count);
-                        string thisEnemy = combinedBossList2[randomNumber];
-                        combinedBossList2.RemoveAt(randomNumber);
-
-                        string tempNpcParam;
-                        string tempThinkId;
-                        string modelName;
-
-                        int tempNpcParamInt;
-                        int tempThinkIdInt;
-
-                        int tempnpcint = thisEnemy.IndexOf("*");
-                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                        tempNpcParamInt = int.Parse(tempNpcParam);
-                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        if (!easyMultiBossesBool)
                         {
-                            randomNumber = rand.Next(0, combinedBossList2.Count);
-                            thisEnemy = combinedBossList2[randomNumber];
+                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                            thismo = tempGUY.Parts.Enemies[i].ModelName;
+                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                            tempnpcint = thisEnemy.IndexOf("*");
+                            Random rand = new Random();
+                            int randomNumber = rand.Next(0, combinedBossList2.Count);
+                            string thisEnemy = combinedBossList2[randomNumber];
+                            combinedBossList2.RemoveAt(randomNumber);
+
+                            string tempNpcParam;
+                            string tempThinkId;
+                            string modelName;
+
+                            int tempNpcParamInt;
+                            int tempThinkIdInt;
+
+                            int tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
+
+                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                            {
+                                randomNumber = rand.Next(0, combinedBossList2.Count);
+                                thisEnemy = combinedBossList2[randomNumber];
+
+                                tempnpcint = thisEnemy.IndexOf("*");
+                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                                tempNpcParamInt = int.Parse(tempNpcParam);
+                                tempThinkIdInt = int.Parse(tempThinkId);
+                            }
+
+                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                            tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
+
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " model");
+                            }
                         }
-
-                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        else
                         {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
-
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
                         }
                     }
 
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002"))
                     {
-                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                        thismo = tempGUY.Parts.Enemies[i].ModelName;
-                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
-
-                        Random rand = new Random();
-                        int randomNumber = rand.Next(0, combinedBossList2.Count);
-                        string thisEnemy = combinedBossList2[randomNumber];
-                        combinedBossList2.RemoveAt(randomNumber);
-
-                        string tempNpcParam;
-                        string tempThinkId;
-                        string modelName;
-
-                        int tempNpcParamInt;
-                        int tempThinkIdInt;
-
-                        int tempnpcint = thisEnemy.IndexOf("*");
-                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                        tempNpcParamInt = int.Parse(tempNpcParam);
-                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        if (!easyMultiBossesBool)
                         {
-                            randomNumber = rand.Next(0, combinedBossList2.Count);
-                            thisEnemy = combinedBossList2[randomNumber];
+                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                            thismo = tempGUY.Parts.Enemies[i].ModelName;
+                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                            tempnpcint = thisEnemy.IndexOf("*");
+                            Random rand = new Random();
+                            int randomNumber = rand.Next(0, combinedBossList2.Count);
+                            string thisEnemy = combinedBossList2[randomNumber];
+                            combinedBossList2.RemoveAt(randomNumber);
+
+                            string tempNpcParam;
+                            string tempThinkId;
+                            string modelName;
+
+                            int tempNpcParamInt;
+                            int tempThinkIdInt;
+
+                            int tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
+
+                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                            {
+                                randomNumber = rand.Next(0, combinedBossList2.Count);
+                                thisEnemy = combinedBossList2[randomNumber];
+
+                                tempnpcint = thisEnemy.IndexOf("*");
+                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                                tempNpcParamInt = int.Parse(tempNpcParam);
+                                tempThinkIdInt = int.Parse(tempThinkId);
+                            }
+
+                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                            tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
+
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " model");
+                            }
                         }
-
-                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        else
                         {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
-
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
                         }
                     }
                 }
@@ -4204,187 +4358,214 @@ namespace MSB_Test
                 {
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0001"))
                     {
-                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                        thismo = tempGUY.Parts.Enemies[i].ModelName;
-                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
-
-                        Random rand = new Random();
-                        int randomNumber = rand.Next(0, combinedBossList2.Count);
-                        string thisEnemy = combinedBossList2[randomNumber];
-                        combinedBossList2.RemoveAt(randomNumber);
-
-                        string tempNpcParam;
-                        string tempThinkId;
-                        string modelName;
-
-                        int tempNpcParamInt;
-                        int tempThinkIdInt;
-
-                        int tempnpcint = thisEnemy.IndexOf("*");
-                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                        tempNpcParamInt = int.Parse(tempNpcParam);
-                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        if (!easyFailuresBool)
                         {
-                            randomNumber = rand.Next(0, combinedBossList2.Count);
-                            thisEnemy = combinedBossList2[randomNumber];
+                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                            thismo = tempGUY.Parts.Enemies[i].ModelName;
+                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                            tempnpcint = thisEnemy.IndexOf("*");
+                            Random rand = new Random();
+                            int randomNumber = rand.Next(0, combinedBossList2.Count);
+                            string thisEnemy = combinedBossList2[randomNumber];
+                            combinedBossList2.RemoveAt(randomNumber);
+
+                            string tempNpcParam;
+                            string tempThinkId;
+                            string modelName;
+
+                            int tempNpcParamInt;
+                            int tempThinkIdInt;
+
+                            int tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
+
+                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                            {
+                                randomNumber = rand.Next(0, combinedBossList2.Count);
+                                thisEnemy = combinedBossList2[randomNumber];
+
+                                tempnpcint = thisEnemy.IndexOf("*");
+                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                                tempNpcParamInt = int.Parse(tempNpcParam);
+                                tempThinkIdInt = int.Parse(tempThinkId);
+                            }
+
+                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                            tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
+
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " model");
+                            }
                         }
-
-                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        else
                         {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
-
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
                         }
                     }
 
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0002"))
                     {
-                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                        thismo = tempGUY.Parts.Enemies[i].ModelName;
-                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
-
-                        Random rand = new Random();
-                        int randomNumber = rand.Next(0, combinedBossList2.Count);
-                        string thisEnemy = combinedBossList2[randomNumber];
-                        combinedBossList2.RemoveAt(randomNumber);
-
-                        string tempNpcParam;
-                        string tempThinkId;
-                        string modelName;
-
-                        int tempNpcParamInt;
-                        int tempThinkIdInt;
-
-                        int tempnpcint = thisEnemy.IndexOf("*");
-                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                        tempNpcParamInt = int.Parse(tempNpcParam);
-                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        if (!easyFailuresBool)
                         {
-                            randomNumber = rand.Next(0, combinedBossList2.Count);
-                            thisEnemy = combinedBossList2[randomNumber];
+                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                            thismo = tempGUY.Parts.Enemies[i].ModelName;
+                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                            tempnpcint = thisEnemy.IndexOf("*");
+                            Random rand = new Random();
+                            int randomNumber = rand.Next(0, combinedBossList2.Count);
+                            string thisEnemy = combinedBossList2[randomNumber];
+                            combinedBossList2.RemoveAt(randomNumber);
+
+                            string tempNpcParam;
+                            string tempThinkId;
+                            string modelName;
+
+                            int tempNpcParamInt;
+                            int tempThinkIdInt;
+
+                            int tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
+
+                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                            {
+                                randomNumber = rand.Next(0, combinedBossList2.Count);
+                                thisEnemy = combinedBossList2[randomNumber];
+
+                                tempnpcint = thisEnemy.IndexOf("*");
+                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                                tempNpcParamInt = int.Parse(tempNpcParam);
+                                tempThinkIdInt = int.Parse(tempThinkId);
+                            }
+
+                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                            tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
+
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " model");
+                            }
                         }
-
-                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        else
                         {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
-
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
                         }
                     }
 
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0003"))
                     {
-                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                        thismo = tempGUY.Parts.Enemies[i].ModelName;
-                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
-
-                        Random rand = new Random();
-                        int randomNumber = rand.Next(0, combinedBossList2.Count);
-                        string thisEnemy = combinedBossList2[randomNumber];
-                        combinedBossList2.RemoveAt(randomNumber);
-
-                        string tempNpcParam;
-                        string tempThinkId;
-                        string modelName;
-
-                        int tempNpcParamInt;
-                        int tempThinkIdInt;
-
-                        int tempnpcint = thisEnemy.IndexOf("*");
-                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                        tempNpcParamInt = int.Parse(tempNpcParam);
-                        tempThinkIdInt = int.Parse(tempThinkId);
-
-                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                        if (!easyFailuresBool)
                         {
-                            randomNumber = rand.Next(0, combinedBossList2.Count);
-                            thisEnemy = combinedBossList2[randomNumber];
+                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                            thismo = tempGUY.Parts.Enemies[i].ModelName;
+                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                            tempnpcint = thisEnemy.IndexOf("*");
+                            Random rand = new Random();
+                            int randomNumber = rand.Next(0, combinedBossList2.Count);
+                            string thisEnemy = combinedBossList2[randomNumber];
+                            combinedBossList2.RemoveAt(randomNumber);
+
+                            string tempNpcParam;
+                            string tempThinkId;
+                            string modelName;
+
+                            int tempNpcParamInt;
+                            int tempThinkIdInt;
+
+                            int tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
+
+                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
+                            {
+                                randomNumber = rand.Next(0, combinedBossList2.Count);
+                                thisEnemy = combinedBossList2[randomNumber];
+
+                                tempnpcint = thisEnemy.IndexOf("*");
+                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                                tempNpcParamInt = int.Parse(tempNpcParam);
+                                tempThinkIdInt = int.Parse(tempThinkId);
+                            }
+
+                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                            tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
+
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " model");
+                            }
                         }
-
-                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                        tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                        else
                         {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
-
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
                         }
                     }
                 }
@@ -4661,9 +4842,20 @@ namespace MSB_Test
                                     modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
                                 }
                             }
-                            
 
-                            
+                            if (currentMap.Contains("m34_00"))
+                            {
+                                while (modelName.Contains("3060"))
+                                {
+                                    random = rand.Next(0, combinedBossList.Count);
+                                    thisEnemy = combinedBossList[random];
+                                    tempnpcint = thisEnemy.IndexOf("*");
+                                    tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                                    tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                                    modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+                                }
+                            }
+
                             if (currentMap.Contains("m24_02"))
                             {
                                 while (modelName.Contains("5100") || modelName.Contains("8050") || modelName.Contains("4520") || modelName.Contains("4500"))
@@ -8060,6 +8252,2129 @@ namespace MSB_Test
             }
         }
 
+        private void AiSoundParamRandomizer()
+        {
+            Random rand = new Random();
+
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM currentParam = parms["AiSoundParam"];
+
+            float one;
+            float two;
+            byte three;
+            byte four;
+            byte five;
+            byte six;
+            byte seven;
+
+            for(int i = 0; i < currentParam.Rows.Count; i++)
+            {
+                switch (i)
+                {
+                    case 0: //0
+                        one = 30;
+                        two = 1;
+                        three = 0;
+                        four = 1;
+                        five = 0;
+                        six = 0;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 1: //1000
+                        one = 10;
+                        two = 1;
+                        three = 0;
+                        four = 1;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 2: //1010
+                        one = 40;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 3: //1020
+                        one = 40;
+                        two = 15;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 4: //1030
+                        one = 5;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 5: //1040
+                        one = 15;
+                        two = 12;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 200;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 6: //1050
+                        one = 40;
+                        two = 3;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 1;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 7: //1060
+                        one = 15;
+                        two = 1;
+                        three = 0;
+                        four = 1;
+                        five = 4;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 8: //1070
+                        one = 20;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 1;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 9: //2000
+                        one = 10;
+                        two = 6;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 10: //2010
+                        one = 0;
+                        two = 3;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 20;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 11: //2020
+                        one = 70;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 1;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 12: //2100
+                        one = 20;
+                        two = 15;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 13: //2110
+                        one = 100;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 14: //2120
+                        one = 80;
+                        two = 5;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 30;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 15: //3000
+                        one = 13;
+                        two = 2;
+                        three = 0;
+                        four = 1;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 16: //3010
+                        one = 13;
+                        two = 5;
+                        three = 0;
+                        four = 0;
+                        five = 4;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 17: //3020
+                        one = 20;
+                        two = 5;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 18: //4000
+                        one = 15;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 19: //4001
+                        one = 30;
+                        two = 10;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 20: //4002
+                        one = 2.5f;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 21: //4003
+                        one = 7;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 22: //4010
+                        one = 10;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 23: //5000
+                        one = 40;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 1;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 24: //5100
+                        one = 20;
+                        two = 15;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 25: //5101
+                        one = 10;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 26: //5102
+                        one = 25;
+                        two = 2;
+                        three = 0;
+                        four = 1;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 27: //5103
+                        one = 20;
+                        two = 6;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 28: //5104
+                        one = 0;
+                        two = 0.5f;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 29: //5105
+                        one = 5;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 30: //5106
+                        one = 40;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 31: //5107
+                        one = 15;
+                        two = 3;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 30;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 32: //5108
+                        one = 10;
+                        two = 4;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 33: //5109
+                        one = 7;
+                        two = 3;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 34: //5110
+                        one = 15;
+                        two = 4;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 35: //5111
+                        one = 5;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 4;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 36: //5112
+                        one = 15;
+                        two = 0.5f;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 37: //5200
+                        one = 30;
+                        two = 5;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 1;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 38: //5201
+                        one = 13;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 39: //5202
+                        one = 15;
+                        two = 0.5f;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 40: //5210
+                        one = 5;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 41: //5211
+                        one = 45;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 42: //5220
+                        one = 20;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 43: //6000
+                        one = 20;
+                        two = 3;
+                        three = 0;
+                        four = 0;
+                        five = 4;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 44: //6001
+                        one = 15;
+                        two = 3;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 45: //6002
+                        one = 20;
+                        two = 1;
+                        three = 0;
+                        four = 1;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 46: //6003
+                        one = 18;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 47: //6004
+                        one = 30;
+                        two = 12;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 48: //6005
+                        one = 20;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 49: //6100
+                        one = 70;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 50: //6200
+                        one = 10;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 200;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 51: //6300
+                        one = 20;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 52: //6400
+                        one = 15;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 53: //6410
+                        one = 2.5f;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 54: //6500
+                        one = 10;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 55: //6510
+                        one = 30;
+                        two = 1;
+                        three = 0;
+                        four = 1;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 56: //6520
+                        one = 15;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 57: //102000
+                        one = 40;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 58: //114000
+                        one = 70;
+                        two = 5;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 20;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 59: //116000
+                        one = 13;
+                        two = 4;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 60: //124000
+                        one = 100;
+                        two = 2;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+
+                    case 61: //301000
+                        one = 20;
+                        two = 1;
+                        three = 0;
+                        four = 0;
+                        five = 0;
+                        six = 100;
+                        seven = 0;
+                        currentParam.Rows[i].Cells[0].Value = one;
+                        currentParam.Rows[i].Cells[1].Value = two;
+                        currentParam.Rows[i].Cells[2].Value = three;
+                        currentParam.Rows[i].Cells[3].Value = four;
+                        currentParam.Rows[i].Cells[4].Value = five;
+                        currentParam.Rows[i].Cells[5].Value = six;
+                        currentParam.Rows[i].Cells[6].Value = seven;
+                        break;
+                    default:
+                        Console.WriteLine("Default case");
+                        break;
+                }
+            }
+
+            using (StreamWriter writetext = File.AppendText(dummyFilePath))
+            {
+                writetext.WriteLine("AiSoundParam");
+
+                for (int i = 0; i < currentParam.Rows.Count; i++)
+                {
+                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+
+                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
+                    {
+                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
+                    }
+                    writetext.WriteLine("");
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
+        }
+
+        private void DecalRandomizer()
+        {
+            Random rand = new Random();
+
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM currentParam = parms["DecalParam"];
+
+            List<string> decalList = new List<string>();
+
+            masterList = new List<long>();
+            RandList = new List<long>();
+            cellList = new List<PARAM.Cell>();
+            cellListString = new List<string>();
+
+            paramList = new List<PARAM.Cell>();
+            randParamList = new List<PARAM.Cell>();
+
+            listOfCellLists = new List<List<PARAM.Cell>>();
+
+            for (int i = 0; i < currentParam.Rows.Count; i++)
+            {
+                cellList = new List<PARAM.Cell>();
+                cellList = currentParam.Rows[i].Cells.ToList();
+                listOfCellLists.Add(cellList);
+            }
+
+            for (int i = 0; i < listOfCellLists[0].Count; i++)
+            {
+                paramList = new List<PARAM.Cell>();
+                randParamList = new List<PARAM.Cell>();
+
+                for (int j = 0; j < listOfCellLists.Count; j++)
+                {
+                    paramList.Add(listOfCellLists[j][i]);
+                }
+
+                while (paramList.Count > 0)
+                {
+                    int index = rand.Next(0, paramList.Count); 
+                    randParamList.Add(paramList[index]);
+                    paramList.RemoveAt(index);
+                }
+
+                for (int j = 0; j < randParamList.Count; j++)
+                {
+                    string tempString = listOfCellLists[j][i].ToString();
+                    int spaceInd = tempString.IndexOf(" ");
+                    tempString = tempString.Substring(spaceInd + 1, tempString.Length - spaceInd - 1);
+                    int equalInd = tempString.IndexOf("=");
+                    tempString = tempString.Substring(0, equalInd - 1);
+                    currentParam.Rows[j][tempString].Value = randParamList[j].Value;
+                }
+            }
+
+            using (StreamWriter writetext = File.AppendText(dummyFilePath))
+            {
+                writetext.WriteLine("DecalParam");
+
+                for (int i = 0; i < currentParam.Rows.Count; i++)
+                {
+                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+
+                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
+                    {
+                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
+                    }
+                    writetext.WriteLine("");
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
+        }
+
+        private void TalkRandomizer()
+        {
+            Random rand = new Random();
+
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM currentParam = parms["TalkParam"];
+            List<PARAM.Row> talkList = new List<PARAM.Row>();
+
+            for (int i = 0; i < currentParam.Rows.Count; i++)
+            {
+                talkList.Add(currentParam.Rows[i]);
+            }
+
+            List<PARAM.Row> randomizedTalkList = new List<PARAM.Row>();
+
+            while(talkList.Count > 0)
+            {
+                int randomNumber = rand.Next(0, talkList.Count -1);
+                randomizedTalkList.Add(talkList[randomNumber]);
+                talkList.RemoveAt(randomNumber);
+            }
+
+            for(int i = 0; i < currentParam.Rows.Count; i ++)
+            {
+                int randomNumber = rand.Next(0, randomizedTalkList.Count - 1);
+
+                currentParam.Rows[i].ID = randomizedTalkList[randomNumber].ID;
+            }
+
+            using (StreamWriter writetext = File.AppendText(dummyFilePath))
+            {
+                writetext.WriteLine("TalkParam");
+
+                for (int i = 0; i < currentParam.Rows.Count; i++)
+                {
+                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+
+                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
+                    {
+                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
+                    }
+                    writetext.WriteLine("");
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
+        }
+
+        private void BulletRandomizer()
+        {
+            Random rand = new Random();
+            List<string> IDlist = new List<string>();
+
+            /*
+            IDlist.Add("461");
+            IDlist.Add("470");
+            IDlist.Add("471");
+            IDlist.Add("500");
+            IDlist.Add("501");
+            IDlist.Add("502");
+            IDlist.Add("503");
+            IDlist.Add("504");
+            IDlist.Add("510");
+            IDlist.Add("511");
+            IDlist.Add("512");
+            IDlist.Add("513");
+            IDlist.Add("514");
+            IDlist.Add("520");
+            IDlist.Add("521");
+            IDlist.Add("522");
+            IDlist.Add("523");
+            IDlist.Add("524");
+            IDlist.Add("530");
+            IDlist.Add("531");
+            IDlist.Add("532");
+            IDlist.Add("533");
+            IDlist.Add("534");
+            IDlist.Add("540");
+            IDlist.Add("541");
+            IDlist.Add("542");
+            IDlist.Add("543");
+            IDlist.Add("544");
+            IDlist.Add("550");
+            IDlist.Add("551");
+            IDlist.Add("552");
+            IDlist.Add("553");
+            IDlist.Add("554");
+            IDlist.Add("600");
+            IDlist.Add("601");
+            IDlist.Add("602");
+            IDlist.Add("610");
+            IDlist.Add("611");
+            IDlist.Add("612");
+            IDlist.Add("620");
+            IDlist.Add("621");
+            IDlist.Add("622");
+            IDlist.Add("630");
+            IDlist.Add("631");
+            IDlist.Add("632");
+            IDlist.Add("700");
+            IDlist.Add("701");
+            IDlist.Add("710");
+            IDlist.Add("711");
+            IDlist.Add("720");
+            IDlist.Add("721");
+            IDlist.Add("722");
+            IDlist.Add("723");
+            IDlist.Add("730");
+            IDlist.Add("731");
+            IDlist.Add("732");
+            IDlist.Add("740");
+            IDlist.Add("750");
+            IDlist.Add("800");
+            IDlist.Add("801");
+            IDlist.Add("802");
+            IDlist.Add("900");
+            IDlist.Add("901");
+            IDlist.Add("902");
+            IDlist.Add("903");
+            IDlist.Add("904");
+            IDlist.Add("960");
+            IDlist.Add("1101");
+            IDlist.Add("1111");
+            IDlist.Add("1121");
+            IDlist.Add("1131");
+            IDlist.Add("1141");
+            IDlist.Add("1151");
+            IDlist.Add("1160");
+            IDlist.Add("25401");
+            IDlist.Add("25402");
+            IDlist.Add("35000");
+            IDlist.Add("35001");
+            IDlist.Add("45011");
+            IDlist.Add("51400");
+            IDlist.Add("52310");
+            IDlist.Add("53901");
+            IDlist.Add("54003");
+            IDlist.Add("54010");
+            IDlist.Add("54013");
+            IDlist.Add("102050");
+            IDlist.Add("102051");
+            IDlist.Add("102052");
+            IDlist.Add("102053");
+            IDlist.Add("102054");
+            IDlist.Add("102059");
+            IDlist.Add("102090");
+            IDlist.Add("102091");
+            IDlist.Add("102092");
+            IDlist.Add("102093");
+            IDlist.Add("102094");
+            IDlist.Add("102095");
+            IDlist.Add("102096");
+            IDlist.Add("102097");
+            IDlist.Add("102098");
+            IDlist.Add("102099");
+            IDlist.Add("113060");
+            IDlist.Add("113070");
+            IDlist.Add("201100");
+            IDlist.Add("201101");
+            IDlist.Add("201102");
+            IDlist.Add("201103");
+            IDlist.Add("201104");
+            IDlist.Add("212360");
+            IDlist.Add("212361");
+            IDlist.Add("212362");
+            IDlist.Add("216030");
+            IDlist.Add("216040");
+            IDlist.Add("216050");
+            IDlist.Add("216060");
+            IDlist.Add("216110");
+            IDlist.Add("216130");
+            IDlist.Add("216150");
+            IDlist.Add("216151");
+            IDlist.Add("216152");
+            IDlist.Add("216160");
+            IDlist.Add("216161");
+            IDlist.Add("216170");
+            IDlist.Add("216171");
+            IDlist.Add("216180");
+            IDlist.Add("216190");
+            IDlist.Add("216191");
+            IDlist.Add("216200");
+            IDlist.Add("216210");
+            IDlist.Add("216211");
+            IDlist.Add("232010");
+            IDlist.Add("232020");
+            IDlist.Add("232021");
+            IDlist.Add("232022");
+            IDlist.Add("232030");
+            IDlist.Add("253000");
+            IDlist.Add("253001");
+            IDlist.Add("253005");
+            IDlist.Add("253006");
+            IDlist.Add("256100");
+            IDlist.Add("256101");
+            IDlist.Add("256102");
+            IDlist.Add("256103");
+            IDlist.Add("260050");
+            IDlist.Add("260055");
+            IDlist.Add("263050");
+            IDlist.Add("263051");
+            IDlist.Add("263052");
+            IDlist.Add("263053");
+            IDlist.Add("263054");
+            IDlist.Add("263059");
+            IDlist.Add("263072");
+            IDlist.Add("263090");
+            IDlist.Add("263091");
+            IDlist.Add("263092");
+            IDlist.Add("263093");
+            IDlist.Add("263094");
+            IDlist.Add("263095");
+            IDlist.Add("263096");
+            IDlist.Add("263097");
+            IDlist.Add("263098");
+            IDlist.Add("263099");
+            IDlist.Add("303280");
+            IDlist.Add("304028");
+            IDlist.Add("304029");
+            IDlist.Add("306000");
+            IDlist.Add("306001");
+            IDlist.Add("306005");
+            IDlist.Add("306035");
+            IDlist.Add("306036");
+            IDlist.Add("306100");
+            IDlist.Add("311200");
+            IDlist.Add("312000");
+            IDlist.Add("312001");
+            IDlist.Add("313021");
+            IDlist.Add("313022");
+            IDlist.Add("313023");
+            IDlist.Add("313024");
+            IDlist.Add("313065");
+            IDlist.Add("313100");
+            IDlist.Add("313701");
+            IDlist.Add("313110");
+            IDlist.Add("313112");
+            IDlist.Add("313120");
+            IDlist.Add("313122");
+            IDlist.Add("313130");
+            IDlist.Add("313132");
+            IDlist.Add("400950");
+            IDlist.Add("400951");
+            IDlist.Add("401500");
+            IDlist.Add("401510");
+            IDlist.Add("405400");
+            IDlist.Add("405401");
+            IDlist.Add("405402");
+            IDlist.Add("405410");
+            IDlist.Add("405411");
+            IDlist.Add("405412");
+            IDlist.Add("405415");
+            IDlist.Add("405416");
+            IDlist.Add("405417");
+            IDlist.Add("405418");
+            IDlist.Add("405420");
+            IDlist.Add("405425");
+            IDlist.Add("405426");
+            IDlist.Add("405427");
+            IDlist.Add("405428");
+            IDlist.Add("405500");
+            IDlist.Add("405501");
+            IDlist.Add("405502");
+            IDlist.Add("405503");
+            IDlist.Add("405504");
+            IDlist.Add("405505");
+            IDlist.Add("405506");
+            IDlist.Add("405507");
+            IDlist.Add("405508");
+            IDlist.Add("405510");
+            IDlist.Add("405511");
+            IDlist.Add("405512");
+            IDlist.Add("405513");
+            IDlist.Add("405514");
+            IDlist.Add("405515");
+            IDlist.Add("405516");
+            IDlist.Add("405517");
+            IDlist.Add("405518");
+            IDlist.Add("405520");
+            IDlist.Add("405521");
+            IDlist.Add("405522");
+            IDlist.Add("405523");
+            IDlist.Add("405524");
+            IDlist.Add("405525");
+            IDlist.Add("405526");
+            IDlist.Add("405527");
+            IDlist.Add("405528");
+            IDlist.Add("405590");
+            IDlist.Add("405591");
+            IDlist.Add("450818");
+            IDlist.Add("450996");
+            IDlist.Add("450997");
+            IDlist.Add("452390");
+            IDlist.Add("453901");
+            IDlist.Add("453902");
+            IDlist.Add("454140");
+            IDlist.Add("454341");
+            IDlist.Add("507600");
+            IDlist.Add("507601");
+            IDlist.Add("507602");
+            IDlist.Add("507603");
+            IDlist.Add("507650");
+            IDlist.Add("507651");
+            IDlist.Add("507652");
+            IDlist.Add("507653");
+            IDlist.Add("507660");
+            IDlist.Add("507661");
+            IDlist.Add("507662");
+            IDlist.Add("507663");
+            IDlist.Add("507670");
+            IDlist.Add("510002");
+            IDlist.Add("510003");
+            IDlist.Add("510004");
+            IDlist.Add("510005");
+            IDlist.Add("510010");
+            IDlist.Add("510011");
+            IDlist.Add("510012");
+            IDlist.Add("510013");
+            IDlist.Add("510020");
+            IDlist.Add("700009");
+            IDlist.Add("710000");
+            IDlist.Add("750200");
+            IDlist.Add("750210");
+            IDlist.Add("750701");
+            IDlist.Add("2400000");
+            IDlist.Add("2400001");
+            IDlist.Add("2400002");
+            IDlist.Add("2400010");
+            IDlist.Add("2400011");
+            IDlist.Add("2400012");
+            IDlist.Add("2400013");
+            IDlist.Add("2400015");
+            IDlist.Add("2400020");
+            IDlist.Add("2400026");
+            IDlist.Add("2400099");
+            IDlist.Add("2400122");
+            IDlist.Add("2700005");
+            IDlist.Add("2700006");
+            IDlist.Add("2900561");
+            IDlist.Add("2900581");
+            IDlist.Add("2900600");
+            IDlist.Add("2900602");
+            IDlist.Add("2900610");
+            IDlist.Add("2900612");
+            IDlist.Add("2900620");
+            IDlist.Add("2900622");
+            IDlist.Add("2900630");
+            IDlist.Add("2900632");
+            IDlist.Add("2900700");
+            IDlist.Add("2900702");
+            IDlist.Add("2900710");
+            IDlist.Add("2900720");
+            IDlist.Add("2900730");
+            IDlist.Add("3500000");
+            IDlist.Add("3500002");
+            */
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM currentParam = parms["Bullet"];
+            List<PARAM.Row> bulletList = new List<PARAM.Row>();
+            /*
+            for(int i = 0; i < currentParam.Rows.Count; i ++)
+            {
+                for(int j = 0; j < IDlist.Count; j ++)
+                {
+                    if(!currentParam.Rows[i].ID.ToString().Contains(IDlist[j]))
+                    {
+                        bulletList.Add(currentParam.Rows[i]);
+                    }
+                }
+            }
+
+            for (int i = 0; i < currentParam.Rows.Count; i ++)
+            {
+                for (int j = 0; j < IDlist.Count; j++)
+                {
+                    if (!currentParam.Rows[i].ID.ToString().Contains(IDlist[j]))
+                    {
+                        int randomNumber = rand.Next(0, bulletList.Count - 1);
+                        currentParam.Rows[i] = bulletList[randomNumber];
+                    }
+                }
+            }*/
+
+            List<PARAM.Row> canonList = new List<PARAM.Row>();
+            List<PARAM.Row> gunList = new List<PARAM.Row>();
+
+            for(int i = 0; i < currentParam.Rows.Count; i ++)
+            {
+                if(currentParam.Rows[i].ID.ToString() == "101")
+                {
+                    canonList.Add(currentParam.Rows[i]);
+                }
+                if (currentParam.Rows[i].ID.ToString() == "721")
+                {
+                    canonList.Add(currentParam.Rows[i]);
+                }
+                if (currentParam.Rows[i].ID.ToString() == "722")
+                {
+                    canonList.Add(currentParam.Rows[i]);
+                }
+                if (currentParam.Rows[i].ID.ToString() == "723")
+                {
+                    canonList.Add(currentParam.Rows[i]);
+                }
+                if (currentParam.Rows[i].ID.ToString() == "730")
+                {
+                    canonList.Add(currentParam.Rows[i]);
+                }
+                if (currentParam.Rows[i].ID.ToString() == "731")
+                {
+                    canonList.Add(currentParam.Rows[i]);
+                }
+                if (currentParam.Rows[i].ID.ToString() == "732")
+                {
+                    canonList.Add(currentParam.Rows[i]);
+                }
+            }
+
+            for (int i = 0; i < currentParam.Rows.Count; i++)
+            {
+                
+                if (currentParam.Rows[i].ID.ToString() == "504")
+                {
+                    currentParam.Rows[i] = canonList[0];
+                }
+                if (currentParam.Rows[i].ID.ToString() == "514")
+                {
+                    currentParam.Rows[i] = canonList[0];
+                }
+                if (currentParam.Rows[i].ID.ToString() == "710001")
+                {
+                    currentParam.Rows[i] = canonList[0];
+                }
+            }
+
+            using (StreamWriter writetext = File.AppendText(dummyFilePath))
+            {
+                writetext.WriteLine("Bullet");
+
+                for (int i = 0; i < currentParam.Rows.Count; i++)
+                {
+                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+
+                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
+                    {
+                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
+                    }
+                    writetext.WriteLine("");
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
+        }
+
+        private void VfxRandomizer(string paramString)
+        {
+            Random rand = new Random();
+
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM currentParam = parms[paramString];
+
+            
+            masterList = new List<long>();
+            RandList = new List<long>();
+            cellList = new List<PARAM.Cell>();
+            cellListString = new List<string>();
+
+            paramList = new List<PARAM.Cell>();
+            randParamList = new List<PARAM.Cell>();
+
+            listOfCellLists = new List<List<PARAM.Cell>>();
+
+            for (int i = 0; i < currentParam.Rows.Count; i++)
+            {
+                cellList = new List<PARAM.Cell>();
+                cellList = currentParam.Rows[i].Cells.ToList();
+                listOfCellLists.Add(cellList);
+            }
+
+            for (int i = 0; i < listOfCellLists[0].Count; i++)
+            {
+                paramList = new List<PARAM.Cell>();
+                randParamList = new List<PARAM.Cell>();
+
+                for (int j = 0; j < listOfCellLists.Count; j++)
+                {
+                    paramList.Add(listOfCellLists[j][i]);
+                }
+
+                while (paramList.Count > 0)
+                {
+                    int index = rand.Next(0, paramList.Count); //pick a random item from the master list
+                    //Console.WriteLine(paramList[index]);
+                    randParamList.Add(paramList[index]); //place it at the end of the randomized list
+                    paramList.RemoveAt(index);
+                }
+
+                for (int j = 0; j < randParamList.Count; j++)
+                {
+                    //Console.WriteLine(randParamList[j].Def);
+                    //Console.WriteLine(randParamList[j].Value);
+                }
+
+                for (int j = 0; j < randParamList.Count; j++)
+                {
+                    string tempString = listOfCellLists[j][i].ToString();
+                    //Console.WriteLine(tempString);
+                    int spaceInd = tempString.IndexOf(" ");
+                    tempString = tempString.Substring(spaceInd + 1, tempString.Length - spaceInd - 1);
+                    //Console.WriteLine(tempString);
+                    int equalInd = tempString.IndexOf("=");
+                    tempString = tempString.Substring(0, equalInd - 1);
+                    //Console.WriteLine(tempString);
+                    //long tempLong = longList[j];
+
+
+                    ////Console.WriteLine(currentParam[j].ID[tempString]);
+                    currentParam.Rows[j][tempString].Value = randParamList[j].Value;
+                    //currentParam.Rows[i].ID = RandList[i];
+                    //Console.WriteLine(randParamList[j]);
+                }
+
+            }
+
+
+            /*
+            PARAM spEffectVfxParam = parms[paramString];
+
+            List<long> columnOneList = new List<long>();
+            List<long> randomizedList = new List<long>();
+
+            for (int i = 0; i < spEffectVfxParam.Rows.Count; i++)
+            {
+                columnOneList.Add(spEffectVfxParam.Rows[i].ID);
+            }
+
+            while(columnOneList.Count > 0)
+            {
+                int randomNumber = rand.Next(0,columnOneList.Count-1);
+                randomizedList.Add(columnOneList[randomNumber]);
+
+                columnOneList.RemoveAt(randomNumber);
+            }
+
+            for(int i = 0; i < spEffectVfxParam.Rows.Count; i ++)
+            {
+                spEffectVfxParam.Rows[i].ID = randomizedList[i];
+                spEffectVfxParam.Rows[i].Cells[0].Value = Convert.ToInt32(randomizedList[i]);
+            }
+            */
+            using (StreamWriter writetext = File.AppendText(dummyFilePath))
+            {
+                writetext.WriteLine(paramString);
+
+                for (int i = 0; i < currentParam.Rows.Count; i ++)
+                {
+                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+
+                    for(int j = 0; j < currentParam.Rows[i].Cells.Count; j ++)
+                    {
+                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
+                    }
+                    writetext.WriteLine("");
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
+        }
+
+        private void GemGenParamRandomizer()
+        {
+            Random rand = new Random();
+
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM currentParam = parms["GemGenParam"];
+
+            List<PARAM.Row> gemGenList = new List<PARAM.Row>();
+            List<string> genOne = new List<string>();
+            List<string> genTwo = new List<string>();
+            List<string> genThree = new List<string>();
+            List<string> genFour = new List<string>();
+
+            UInt32 one;
+            Int32 two;
+            float three;
+            float four;
+
+            for (int i = 0; i < currentParam.Rows.Count; i++)
+            {
+                if (currentParam.Rows[i].Cells[13].Value.ToString() != "-1")
+                {
+                    //1 x 100 0
+                    //gemGenList.Add(currentParam.Rows[i]);
+                    genOne.Add(currentParam.Rows[i].Cells[12].Value.ToString());
+                    genTwo.Add(currentParam.Rows[i].Cells[13].Value.ToString());
+                    genThree.Add(currentParam.Rows[i].Cells[14].Value.ToString());
+                    genFour.Add(currentParam.Rows[i].Cells[15].Value.ToString());
+                }
+
+                if (currentParam.Rows[i].Cells[17].Value.ToString() != "-1")
+                {
+                    //1 x 100 0
+                    //gemGenList.Add(currentParam.Rows[i]);
+                    genOne.Add(currentParam.Rows[i].Cells[16].Value.ToString());
+                    genTwo.Add(currentParam.Rows[i].Cells[17].Value.ToString());
+                    genThree.Add(currentParam.Rows[i].Cells[18].Value.ToString());
+                    genFour.Add(currentParam.Rows[i].Cells[19].Value.ToString());
+                }
+
+                if (currentParam.Rows[i].Cells[21].Value.ToString() != "-1")
+                {
+                    //1 x 100 0
+                    //gemGenList.Add(currentParam.Rows[i]);
+                    genOne.Add(currentParam.Rows[i].Cells[20].Value.ToString());
+                    genTwo.Add(currentParam.Rows[i].Cells[21].Value.ToString());
+                    genThree.Add(currentParam.Rows[i].Cells[22].Value.ToString());
+                    genFour.Add(currentParam.Rows[i].Cells[23].Value.ToString());
+                }
+
+                if (currentParam.Rows[i].Cells[25].Value.ToString() != "-1")
+                {
+                    //1 x 100 0
+                    //gemGenList.Add(currentParam.Rows[i]);
+                    genOne.Add(currentParam.Rows[i].Cells[24].Value.ToString());
+                    genTwo.Add(currentParam.Rows[i].Cells[25].Value.ToString());
+                    genThree.Add(currentParam.Rows[i].Cells[26].Value.ToString());
+                    genFour.Add(currentParam.Rows[i].Cells[27].Value.ToString());
+                }
+
+                if (currentParam.Rows[i].Cells[29].Value.ToString() != "-1")
+                {
+                    //1 x 100 0
+                    //gemGenList.Add(currentParam.Rows[i]);
+                    genOne.Add(currentParam.Rows[i].Cells[28].Value.ToString());
+                    genTwo.Add(currentParam.Rows[i].Cells[29].Value.ToString());
+                    genThree.Add(currentParam.Rows[i].Cells[30].Value.ToString());
+                    genFour.Add(currentParam.Rows[i].Cells[31].Value.ToString());
+                }
+
+                if (currentParam.Rows[i].Cells[33].Value.ToString() != "-1")
+                {
+                    //1 x 100 0
+                    //gemGenList.Add(currentParam.Rows[i]);
+                    genOne.Add(currentParam.Rows[i].Cells[32].Value.ToString());
+                    genTwo.Add(currentParam.Rows[i].Cells[33].Value.ToString());
+                    genThree.Add(currentParam.Rows[i].Cells[34].Value.ToString());
+                    genFour.Add(currentParam.Rows[i].Cells[35].Value.ToString());
+                }
+            }
+
+            for (int i = 0; i < currentParam.Rows.Count; i++)
+            {
+                /*
+                int randomNumber = rand.Next(0, gemGenList.Count - 1);
+
+                currentParam.Rows[i].Cells[12].Value = gemGenList[randomNumber].Cells[12].Value;
+                currentParam.Rows[i].Cells[13].Value = gemGenList[randomNumber].Cells[13].Value;
+                currentParam.Rows[i].Cells[14].Value = gemGenList[randomNumber].Cells[14].Value;
+                currentParam.Rows[i].Cells[15].Value = gemGenList[randomNumber].Cells[15].Value;
+
+                randomNumber = rand.Next(0, gemGenList.Count - 1);
+
+                currentParam.Rows[i].Cells[16].Value = gemGenList[randomNumber].Cells[12].Value;
+                currentParam.Rows[i].Cells[17].Value = gemGenList[randomNumber].Cells[13].Value;
+                currentParam.Rows[i].Cells[18].Value = gemGenList[randomNumber].Cells[14].Value;
+                currentParam.Rows[i].Cells[19].Value = gemGenList[randomNumber].Cells[15].Value;
+
+                randomNumber = rand.Next(0, gemGenList.Count - 1);
+
+                currentParam.Rows[i].Cells[20].Value = gemGenList[randomNumber].Cells[12].Value;
+                currentParam.Rows[i].Cells[21].Value = gemGenList[randomNumber].Cells[13].Value;
+                currentParam.Rows[i].Cells[22].Value = gemGenList[randomNumber].Cells[14].Value;
+                currentParam.Rows[i].Cells[23].Value = gemGenList[randomNumber].Cells[15].Value;
+                
+                randomNumber = rand.Next(0, gemGenList.Count - 1);
+
+                currentParam.Rows[i].Cells[24].Value = gemGenList[randomNumber].Cells[12].Value;
+                currentParam.Rows[i].Cells[25].Value = gemGenList[randomNumber].Cells[13].Value;
+                currentParam.Rows[i].Cells[26].Value = gemGenList[randomNumber].Cells[14].Value;
+                currentParam.Rows[i].Cells[26].Value = gemGenList[randomNumber].Cells[15].Value;
+
+                randomNumber = rand.Next(0, gemGenList.Count - 1);
+
+                currentParam.Rows[i].Cells[28].Value = gemGenList[randomNumber].Cells[12].Value;
+                currentParam.Rows[i].Cells[29].Value = gemGenList[randomNumber].Cells[13].Value;
+                currentParam.Rows[i].Cells[30].Value = gemGenList[randomNumber].Cells[14].Value;
+                currentParam.Rows[i].Cells[31].Value = gemGenList[randomNumber].Cells[15].Value;
+
+                randomNumber = rand.Next(0, gemGenList.Count - 1);
+
+                currentParam.Rows[i].Cells[32].Value = gemGenList[randomNumber].Cells[12].Value;
+                currentParam.Rows[i].Cells[33].Value = gemGenList[randomNumber].Cells[13].Value;
+                currentParam.Rows[i].Cells[34].Value = gemGenList[randomNumber].Cells[14].Value;
+                currentParam.Rows[i].Cells[35].Value = gemGenList[randomNumber].Cells[15].Value;
+                */
+
+                float randomFLoat = rand.Next(0,101);
+                int numOfSlots = 0;
+
+                if(randomFLoat < 60 && randomFLoat > 0)
+                {
+                    numOfSlots = 1;
+                }
+
+                if (randomFLoat < 90 && randomFLoat >= 60)
+                {
+                    numOfSlots = 2;
+                }
+
+                if (randomFLoat < 99 && randomFLoat >= 90)
+                {
+                    numOfSlots = 3;
+                }
+
+                if (randomFLoat < 100 && randomFLoat >= 99)
+                {
+                    numOfSlots = 4;
+                }
+
+                if (randomFLoat < 101 && randomFLoat >= 100)
+                {
+                    numOfSlots = 5;
+                }
+
+                if (randomFLoat == 101)
+                {
+                    numOfSlots = 6;
+                }
+
+                if (numOfSlots >= 1)
+                {
+                    int randomNumber = rand.Next(0, genOne.Count - 1);
+
+                    currentParam.Rows[i].Cells[12].Value = Convert.ToUInt32(genOne[randomNumber]);
+                    currentParam.Rows[i].Cells[13].Value = Convert.ToInt32(genTwo[randomNumber]);
+                    currentParam.Rows[i].Cells[14].Value = float.Parse(genThree[randomNumber]);
+                    currentParam.Rows[i].Cells[15].Value = float.Parse(genFour[randomNumber]);
+                }
+
+                if (numOfSlots >= 2)
+                {
+                    int randomNumber = rand.Next(0, genOne.Count - 1);
+
+                    currentParam.Rows[i].Cells[16].Value = Convert.ToUInt32(genOne[randomNumber]);
+                    currentParam.Rows[i].Cells[17].Value = Convert.ToInt32(genTwo[randomNumber]);
+                    currentParam.Rows[i].Cells[18].Value = float.Parse(genThree[randomNumber]);
+                    currentParam.Rows[i].Cells[19].Value = float.Parse(genFour[randomNumber]);
+                }
+
+                if (numOfSlots >= 3)
+                {
+                    int randomNumber = rand.Next(0, genOne.Count - 1);
+
+                    currentParam.Rows[i].Cells[20].Value = Convert.ToUInt32(genOne[randomNumber]);
+                    currentParam.Rows[i].Cells[21].Value = Convert.ToInt32(genTwo[randomNumber]);
+                    currentParam.Rows[i].Cells[22].Value = float.Parse(genThree[randomNumber]);
+                    currentParam.Rows[i].Cells[23].Value = float.Parse(genFour[randomNumber]);
+                }
+
+                if (numOfSlots >= 4)
+                {
+                    int randomNumber = rand.Next(0, genOne.Count - 1);
+
+                    currentParam.Rows[i].Cells[24].Value = Convert.ToUInt32(genOne[randomNumber]);
+                    currentParam.Rows[i].Cells[25].Value = Convert.ToInt32(genTwo[randomNumber]);
+                    currentParam.Rows[i].Cells[26].Value = float.Parse(genThree[randomNumber]);
+                    currentParam.Rows[i].Cells[26].Value = float.Parse(genFour[randomNumber]);
+                }
+
+                if (numOfSlots >= 5)
+                {
+                    int randomNumber = rand.Next(0, genOne.Count - 1);
+
+                    currentParam.Rows[i].Cells[28].Value = Convert.ToUInt32(genOne[randomNumber]);
+                    currentParam.Rows[i].Cells[29].Value = Convert.ToInt32(genTwo[randomNumber]);
+                    currentParam.Rows[i].Cells[30].Value = float.Parse(genThree[randomNumber]);
+                    currentParam.Rows[i].Cells[31].Value = float.Parse(genFour[randomNumber]);
+                }
+
+                if (numOfSlots >= 6)
+                {
+                    int randomNumber = rand.Next(0, genOne.Count - 1);
+
+                    currentParam.Rows[i].Cells[32].Value = Convert.ToUInt32(genOne[randomNumber]);
+                    currentParam.Rows[i].Cells[33].Value = Convert.ToInt32(genTwo[randomNumber]);
+                    currentParam.Rows[i].Cells[34].Value = float.Parse(genThree[randomNumber]);
+                    currentParam.Rows[i].Cells[35].Value = float.Parse(genFour[randomNumber]);
+                }
+            }
+
+            using (StreamWriter writetext = File.AppendText(dummyFilePath))
+            {
+                writetext.WriteLine("GemGenParam");
+
+                for (int i = 0; i < currentParam.Rows.Count; i++)
+                {
+                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+
+                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
+                    {
+                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
+                    }
+                    writetext.WriteLine("");
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
+        }
+
         /////////////////////////////////////////////////////////////////////////////////////
 
         private void FHUPO_Click(object sender, RoutedEventArgs e)
@@ -8265,6 +10580,46 @@ namespace MSB_Test
         private void EnemySizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             sizeOfEnemy = EnemySizeSlider.Value;
+        }
+
+        private void StartingWeaponsRandomizeBox_Checked(object sender, RoutedEventArgs e)
+        {
+            startingWeaponsOnlyBool = StartingWeaponsRandomizeBox.IsChecked.Value;
+        }
+
+        private void EasyMultiBossesBox_Checked(object sender, RoutedEventArgs e)
+        {
+            easyMultiBossesBool = EasyMultiBossesBox.IsChecked.Value;
+        }
+
+        private void EasyFailuresBox_Checked(object sender, RoutedEventArgs e)
+        {
+            easyFailuresBool = EasyFailuresBox.IsChecked.Value;
+        }
+
+        private void VFXChange_Checked(object sender, RoutedEventArgs e)
+        {
+            vfxBool = VFXChange.IsChecked.Value;
+        }
+
+        private void FaceBox_Checked(object sender, RoutedEventArgs e)
+        {
+            faceBool = FaceBox.IsChecked.Value;
+        }
+
+        private void GemsAndRunesBox_Checked(object sender, RoutedEventArgs e)
+        {
+            gemBool = GemsAndRunesBox.IsChecked.Value;
+        }
+
+        private void TalkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            talkBool = TalkBox.IsChecked.Value;
+        }
+
+        private void BloodBox_Checked(object sender, RoutedEventArgs e)
+        {
+            bloodBool = BloodBox.IsChecked.Value;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////

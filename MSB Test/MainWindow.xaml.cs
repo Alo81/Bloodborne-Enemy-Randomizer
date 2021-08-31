@@ -10,6 +10,9 @@ using System.CodeDom;
 using System.ComponentModel;
 using System.Security.Cryptography.Xml;
 using Ookii.Dialogs.Wpf;
+using System.Configuration;
+using Microsoft.VisualBasic.CompilerServices;
+using System.Text;
 
 namespace MSB_Test
 {
@@ -29,6 +32,11 @@ namespace MSB_Test
         List<PARAM.Cell> paramList = new List<PARAM.Cell>();
         List<PARAM.Cell> randParamList = new List<PARAM.Cell>();
 
+
+        List<int> numbersInParamToRandomize = new List<int>();
+        List<int> gunsToReplace = new List<int>();
+        List<string> cutEnemyString = new List<string>();
+        bool cutEnemyBool;
         string new2000 = "";
         string new2001 = "";
         string new2002 = "";
@@ -41,11 +49,15 @@ namespace MSB_Test
         string paramDefPath;
         string currentTask;
         bool addedStoneGuyBool;
+        bool permaDarknessBool;
+        bool meleeMoveset;
+        bool gunMoveset;
         int stoneGuyParam;
         int stoneGuyThink;
         string stoneGuyModelName;
         string tempStoneEnemyString;
         MSBB.Part.Enemy stoneGuyEnemy;
+        bool addOrphan;
         bool keepGuns;
         bool bossHemwick;
         bool bossCathedralWard;
@@ -70,6 +82,14 @@ namespace MSB_Test
         bool bloodBool;
         bool gemBool;
         bool faceBool;
+        bool sixGemBool;
+        bool threeGemBool;
+        bool excludeEnemiesBool;
+        bool excludeBossesBool;
+        bool easyRomBool;
+        bool easyWitchesBool;
+        bool teamTypeBool;
+        bool noScalingBool;
         double sizeOfEnemy;
         string modelFilePath;
         List<long> longList2 = new List<long>();
@@ -116,6 +136,22 @@ namespace MSB_Test
         bool bellMaidenBool;
         bool keyItemRandomizeBool;
         bool workshopBool;
+        bool customScaling;
+        public int dreamScale;
+        public int hemwickScale;
+        public int cathedralScale;
+        public int upperScale;
+        public int mensisScale;
+        public int yahargulScale;
+        public int frontierScale;
+        public int researchScale;
+        public int oldScale;
+        public int centralScale;
+        public int cainhurstScale;
+        public int woodsScale;
+        public int byrgenwerthScale;
+        public int nightmareScale;
+        public int hamletScale;
         string thisnpc;
         string thismo;
         string thisthink;
@@ -160,10 +196,13 @@ namespace MSB_Test
         long paramNumber = 999999;
         List<string> mapsForParamChanges = new List<string>();
         List<string> chaliceBossString = new List<string>();
+        List<string> newChaliceBossString = new List<string>();
+        List<string> newChaliceBossString2 = new List<string>();
         List<string> npcList = new List<string>();
         List<string> hostileNpcList = new List<string>();
         List<MSBB.Part.Enemy> npcEnemyList = new List<MSBB.Part.Enemy>();
         List<MSBB.Part.Enemy> chaliceBossMSB = new List<MSBB.Part.Enemy>();
+        List<MSBB.Part.Enemy> newChaliceBossMSB = new List<MSBB.Part.Enemy>();
         List<string> chaliceBossParams = new List<string>();
         List<string> insertBossesString = new List<string>();
         List<MSBB.Part.Enemy> insertBossesEnemy = new List<MSBB.Part.Enemy>();
@@ -173,12 +212,17 @@ namespace MSB_Test
         MSBB.Part.Enemy OoKEnemy;
         List<string> rightHandList = new List<string>();
         List<string> leftHandList = new List<string>();
+        Window1 win1 = new Window1();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            TalkBox.IsEnabled = false;
+
+
+            //TalkBox.IsEnabled = false;
+            //EasyRomBox.IsEnabled = false;
+            //EasyWitchesBox.IsEnabled = false;
 
             UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
             CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);
@@ -192,7 +236,7 @@ namespace MSB_Test
                 "Leaving the slider at a smaller value will lessen the variety of enemies you will see. The higher the value, the greater variety you wil see, but more crashing may happen due to memory issues. " +
                 "I have found that a value of 1-1.5 will work with minimal crashing. \r\n \r\n The Ludwig fight and the Failures fight will work correctly. It is recommended that you " +
                 "Save and quit then continue before the Ludwig and Failures fights. This will stop a crash from happening during the second phase of the Ludwig fight and the beginning of the " +
-                "Failures fight. Rom no longer fights back, the last update broke a lot of boss fights, but it made rom switch phases and fight. I took that out of this version to fix every other boss fight.");
+                "Failures fight.");
             RandomizeKeyItemsBox.IsEnabled = false;
 
             /*
@@ -255,6 +299,7 @@ namespace MSB_Test
             unusedList.Add("c2120_9999");
             unusedList.Add("c2120_9998");
             unusedList.Add("c0000");
+            unusedList.Add("c2560");
             unusedList.Add("c0");
             unusedList.Add("c1020");
             unusedList.Add("c1030");
@@ -316,6 +361,7 @@ namespace MSB_Test
             unusedList.Add("c4520_0000");
             unusedList.Add("c1190");
             unusedList.Add("c1180");
+            unusedList.Add("c1060_0002");
 
             bossList.Add("5090");
             bossList.Add("c2090_0003");
@@ -382,6 +428,7 @@ namespace MSB_Test
 
         private void ParamScalingForBosses(string currentMap)
         {
+            
             var tempMap = MSBB.Read(currentMap);
             
             List<int> npcParamPositions = new List<int>();
@@ -463,7 +510,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx"
                         if (currentMap == filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 20;
+                            int tempInt = npcParamPositions[i] + dreamScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -479,7 +526,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 7;
+                            int tempInt = npcParamPositions[i] + hemwickScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -490,7 +537,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 4;
+                            int tempInt = npcParamPositions[i] + oldScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -501,7 +548,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 21;
+                            int tempInt = npcParamPositions[i] + cathedralScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -512,7 +559,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 1;
+                            int tempInt = npcParamPositions[i] + centralScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -523,7 +570,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 14;
+                            int tempInt = npcParamPositions[i] + upperScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -534,7 +581,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 12;
+                            int tempInt = npcParamPositions[i] + cainhurstScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -545,7 +592,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 17;
+                            int tempInt = npcParamPositions[i] + mensisScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -556,7 +603,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 9;
+                            int tempInt = npcParamPositions[i] + woodsScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -567,7 +614,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 13;
+                            int tempInt = npcParamPositions[i] + yahargulScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -578,7 +625,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 11;
+                            int tempInt = npcParamPositions[i] + byrgenwerthScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -589,7 +636,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 10;
+                            int tempInt = npcParamPositions[i] + frontierScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -600,7 +647,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 24;
+                            int tempInt = npcParamPositions[i] + nightmareScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -611,7 +658,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 27;
+                            int tempInt = npcParamPositions[i] + researchScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -622,7 +669,7 @@ namespace MSB_Test
                         //filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx")
                         {
-                            int tempInt = npcParamPositions[i] + 29;
+                            int tempInt = npcParamPositions[i] + hamletScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
                             using (StreamWriter writetext = File.AppendText(scaleLogFile))
@@ -858,100 +905,74 @@ namespace MSB_Test
         {
             string enemyEntityID;
 
-                Random rand = new Random();
+            Random rand = new Random();
 
-                var tempGUY = MSBB.Read(currentMap);
+            var tempGUY = MSBB.Read(currentMap);
 
-                List<MSBB.Part.Enemy> tempList = new List<MSBB.Part.Enemy>();
+            List<MSBB.Part.Enemy> tempList = new List<MSBB.Part.Enemy>();
 
-                bool addEnemy;
+            bool addEnemy;
 
-                for (int i = 0; i < tempGUY.Parts.Enemies.Count; i++)
+            for (int i = 0; i < tempGUY.Parts.Enemies.Count; i++)
+            {
+                addEnemy = true;
+
+            if (!addedStoneGuyBool)
+            {
+                if (tempGUY.Parts.Enemies[i].ModelName.Contains("c2521"))
                 {
-                    addEnemy = true;
-
-                if (!addedStoneGuyBool)
-                {
-                    if (tempGUY.Parts.Enemies[i].ModelName.Contains("c2521"))
-                    {
-                        stoneGuyEnemy = tempGUY.Parts.Enemies[i];
-                        tempStoneEnemyString = (stoneGuyEnemy.NPCParamID.ToString() + "*" + stoneGuyEnemy.ThinkParamID.ToString() + "*" + stoneGuyEnemy.ModelName);
-                        int tempnpcint = tempStoneEnemyString.IndexOf("*");
-                        string tempNpcParam = tempStoneEnemyString.Substring(0, tempnpcint);
-                        string tempThinkId = tempStoneEnemyString.Substring(tempnpcint + 1, tempStoneEnemyString.LastIndexOf("*") - tempnpcint - 1);
-                        stoneGuyModelName = tempStoneEnemyString.Substring(tempStoneEnemyString.LastIndexOf("*") + 1, 5);
-                        stoneGuyParam = int.Parse(tempNpcParam);
-                        stoneGuyThink = int.Parse(tempThinkId);
-                    }
+                    stoneGuyEnemy = tempGUY.Parts.Enemies[i];
+                    tempStoneEnemyString = (stoneGuyEnemy.NPCParamID.ToString() + "*" + stoneGuyEnemy.ThinkParamID.ToString() + "*" + stoneGuyEnemy.ModelName);
+                    int tempnpcint = tempStoneEnemyString.IndexOf("*");
+                    string tempNpcParam = tempStoneEnemyString.Substring(0, tempnpcint);
+                    string tempThinkId = tempStoneEnemyString.Substring(tempnpcint + 1, tempStoneEnemyString.LastIndexOf("*") - tempnpcint - 1);
+                    stoneGuyModelName = tempStoneEnemyString.Substring(tempStoneEnemyString.LastIndexOf("*") + 1, 5);
+                    stoneGuyParam = int.Parse(tempNpcParam);
+                    stoneGuyThink = int.Parse(tempThinkId);
                 }
+            }
 
-                    if (!oopsAll)
+                if (!oopsAll)
+                {
+                    for (int j = 0; j < noNoList.Count; j++)
                     {
-                        for (int j = 0; j < noNoList.Count; j++)
+                        if (tempGUY.Parts.Enemies[i].Name.Contains(noNoList[j]))
                         {
-                            if (tempGUY.Parts.Enemies[i].Name.Contains(noNoList[j]))
+                            addEnemy = false;
+                            j = noNoList.Count + 1;
+                        }
+                        else if(tempGUY.Parts.Enemies[i].ThinkParamID <= 1)
+                        {
+                            addEnemy = false;
+                            j = noNoList.Count + 1;
+                        }
+                        else if (tempGUY.Parts.Enemies[i].NPCParamID <= 1)
+                        {
+                            addEnemy = false;
+                            j = noNoList.Count + 1;
+                        }
+                    }
+
+                    if (currentMap.Contains("m29"))
+                    {
+                        for (int j = 0; j < chaliceBossParams.Count; j++)
+                        {
+                            if (tempGUY.Parts.Enemies[i].NPCParamID.ToString() == chaliceBossParams[j])
                             {
                                 addEnemy = false;
-                                j = noNoList.Count + 1;
-                            }
-                            else if(tempGUY.Parts.Enemies[i].ThinkParamID <= 1)
-                            {
-                                addEnemy = false;
-                                j = noNoList.Count + 1;
-                            }
-                            else if (tempGUY.Parts.Enemies[i].NPCParamID <= 1)
-                            {
-                                addEnemy = false;
-                                j = noNoList.Count + 1;
                             }
                         }
+                    }
 
-                        if (currentMap.Contains("m29"))
+                    if (addEnemy)
+                    {
+                        if (randomize)
                         {
-                            for (int j = 0; j < chaliceBossParams.Count; j++)
+                            if (!tempList.Contains(tempGUY.Parts.Enemies[i]))
                             {
-                                if (tempGUY.Parts.Enemies[i].NPCParamID.ToString() == chaliceBossParams[j])
+                                if (tempGUY.Parts.Enemies[i].Name.Contains("c1110_0000"))
                                 {
-                                    addEnemy = false;
-                                }
-                            }
-                        }
-
-                        if (addEnemy)
-                        {
-                            if (randomize)
-                            {
-                                if (!tempList.Contains(tempGUY.Parts.Enemies[i]))
-                                {
-                                    if (tempGUY.Parts.Enemies[i].Name.Contains("c1110_0000"))
-                                    {
-                                        if (tempGUY.Parts.Enemies[i].TalkID != 111010)
-                                        {
-                                            bool add = true;
-
-                                            for (int n = 0; n < tempList.Count; n++)
-                                            {
-                                                if (tempGUY.Parts.Enemies[i].NPCParamID == tempList[n].NPCParamID)
-                                                {
-                                                    add = false;
-                                                }
-                                            }
-                                            if (add)
-                                            {
-                                                if (currentMap.Contains("m29"))
-                                                {
-                                                    chaliceEnemiesMSB.Add(tempGUY.Parts.Enemies[i]);
-                                                    addedEnemyList.Add(tempGUY.Parts.Enemies[i]);
-                                                }
-                                                else
-                                                {
-                                                    tempList.Add(tempGUY.Parts.Enemies[i]);
-                                                    addedEnemyList.Add(tempGUY.Parts.Enemies[i]);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else
+                                    if (tempGUY.Parts.Enemies[i].TalkID != 111010)
                                     {
                                         bool add = true;
 
@@ -962,13 +983,7 @@ namespace MSB_Test
                                                 add = false;
                                             }
                                         }
-
-                                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2561"))
-                                    {
-                                        add = false;
-                                    }
-
-                                    if (add)
+                                        if (add)
                                         {
                                             if (currentMap.Contains("m29"))
                                             {
@@ -979,18 +994,48 @@ namespace MSB_Test
                                             {
                                                 tempList.Add(tempGUY.Parts.Enemies[i]);
                                                 addedEnemyList.Add(tempGUY.Parts.Enemies[i]);
-                                                enemyEntityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
                                             }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    bool add = true;
+
+                                    for (int n = 0; n < tempList.Count; n++)
+                                    {
+                                        if (tempGUY.Parts.Enemies[i].NPCParamID == tempList[n].NPCParamID)
+                                        {
+                                            add = false;
+                                        }
+                                    }
+
+                                if (tempGUY.Parts.Enemies[i].Name.Contains("c2561"))
+                                {
+                                    add = false;
+                                }
+
+                                if (add)
+                                    {
+                                        if (currentMap.Contains("m29"))
+                                        {
+                                            chaliceEnemiesMSB.Add(tempGUY.Parts.Enemies[i]);
+                                            addedEnemyList.Add(tempGUY.Parts.Enemies[i]);
+                                        }
+                                        else
+                                        {
+                                            tempList.Add(tempGUY.Parts.Enemies[i]);
+                                            addedEnemyList.Add(tempGUY.Parts.Enemies[i]);
+                                            enemyEntityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
                                         }
                                     }
                                 }
                             }
                         }
                     }
-
                 }
 
-
+            }
 
             if (!oopsAll)
             {
@@ -1078,6 +1123,36 @@ namespace MSB_Test
         {
             this.Dispatcher.Invoke(() =>
             {
+                if (NoScaleBox.IsChecked == true)
+                {
+                    noScalingBool = true;
+                }
+                else noScalingBool = false;
+
+                if (MeleeMovesetBox.IsChecked == true)
+                {
+                    meleeMoveset = true;
+                }
+                else meleeMoveset = false;
+
+                if (GunMovesetBox.IsChecked == true)
+                {
+                    gunMoveset = true;
+                }
+                else gunMoveset = false;
+
+                //if (CutEnemyBox.IsChecked == true)
+                //{
+                //    cutEnemyBool = true;
+                //}
+                //else cutEnemyBool = false;
+
+                if (PermaDarknessBox.IsChecked == true)
+                {
+                    permaDarknessBool = true;
+                }
+                else permaDarknessBool = false;
+
                 if (ChaliceBossBox.IsChecked == true)
                 {
                     bossChalices = true;
@@ -1310,6 +1385,59 @@ namespace MSB_Test
                 }
                 else faceBool = false;
 
+                if (AllDmgAll.IsChecked == true)
+                {
+                    teamTypeBool = true;
+                }
+                else teamTypeBool = false;
+
+                if (SixGemBox.IsChecked == true)
+                {
+                    sixGemBool = true;
+                }
+                else sixGemBool = false;
+
+                if (ThreeGemBox.IsChecked == true)
+                {
+                    threeGemBool = true;
+                }
+                else threeGemBool = false;
+
+                if (CustomScalingBox.IsChecked == true)
+                {
+                    customScaling = true;
+                }
+                else customScaling = false;
+
+                addOrphan = true;
+                
+                if (EasyRomBox.IsChecked == true)
+                {
+                    easyRomBool = true;
+                }
+                else easyRomBool = false;
+
+                if (EasyWitchesBox.IsChecked == true)
+                {
+                    easyWitchesBool = true;
+                }
+                else easyWitchesBool = false;
+                
+                if (ExBossBox.IsChecked == true)
+                {
+                    excludeBossesBool = true;
+                }
+                else excludeBossesBool = false;
+
+                if (ExEnemyBox.IsChecked == true)
+                {
+                    excludeEnemiesBool = true;
+                }
+                else excludeEnemiesBool = false;
+                /*
+                EasyRomBox.IsEnabled = false;
+                EasyWitchesBox.IsEnabled = false;
+                */
                 TEST.IsEnabled = false;
                 TalkBox.IsEnabled = false;
                 RandomizeEnemiesCheck.IsEnabled = false;
@@ -1718,6 +1846,31 @@ namespace MSB_Test
                 }
             }
 
+            /*
+            if (cutEnemyBool)
+            {
+                string[] filePaths = Directory.GetFiles(filePath + "\\MAPS\\", "*.dcx", SearchOption.TopDirectoryOnly);
+
+                List<string> nMapStringList = new List<string>();
+
+                for (int i = 0; i < filePaths.Length; i++)
+                {
+                    nMapStringList.Add(filePaths[i]);
+                }
+
+                List<MSBB.Model.Enemy> cutEnemyModelList = new List<MSBB.Model.Enemy>();
+
+                for (int i = 0; i < nMapStringList.Count; i ++)
+                {
+                    var tempMapp = MSBB.Read(nMapStringList[i]);
+
+                    for(int j = 0; j < tempMapp.Models.Enemies.Count; j ++)
+                    {
+                        modelList.Add(tempMapp.Models.Enemies[j]);
+                    }
+                }
+            }
+            */
             var tempMap = MSBB.Read(filePath + "\\map\\mapstudio\\" + "\\m29_52_01_00\\m29_52_01_91.msb.dcx");
 
             for (int i = 0; i < tempMap.Models.Enemies.Count; i++)
@@ -1899,7 +2052,52 @@ namespace MSB_Test
                     {
                         GenerateEnemyList(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx", unusedPlusBossList);
                     }
+
+                    if (excludeEnemiesBool)
+                    {
+                        if (oopsAllString.Length > 5)
+                        {
+                            string tempOopsString = oopsAllString.Replace(" ", "");
+                            int totalStrings = tempOopsString.Length / 5;
+                            int startingNumber = 0;
+                            for (int i = 0; i < totalStrings; i++)
+                            {
+                                oopsAllList.Add(tempOopsString.Substring(startingNumber, 5));
+                                startingNumber = startingNumber + 5;
+                            }
+                        }
+                        else if (oopsAllString.Length == 5)
+                        {
+                            oopsAllList.Add(oopsAllString);
+                        }
+
+                        for (int i = enemyData.Count - 1; i > -1; i--)
+                        {
+                            for (int j = 0; j < oopsAllList.Count; j++)
+                            {
+                                if (enemyData[i].Contains(oopsAllList[j]))
+                                {
+                                    enemyData.RemoveAt(i);
+                                }
+                            }
+                        }
+                        if (chaliceEnemies)
+                        {
+                            for (int i = chaliceEnemiesString.Count - 1; i > -1; i--)
+                            {
+                                for (int j = 0; j < oopsAllList.Count; j++)
+                                {
+                                    if (chaliceEnemiesString[i].Contains(oopsAllList[j]))
+                                    {
+                                        chaliceEnemiesString.RemoveAt(i);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+
+                unusedPlusBossList.RemoveAt(3);
 
                 if (randomizeEnemiesBool)
                 {
@@ -1917,6 +2115,17 @@ namespace MSB_Test
                     {
                         enemyDataRandomized.Add(uniqueEnemyList[i]);
                     }
+
+                    //CutEnemyScan();
+
+                    //if (cutEnemyBool)
+                    //{
+                        //enemyDataRandomized = new List<string>();
+                        //for (int i = 0; i < cutEnemyString.Count; i++)
+                        //{
+                            //enemyDataRandomized.Add(cutEnemyString[i]);
+                        //}
+                    //}
 
                     if (chaliceEnemies)
                     {
@@ -2021,6 +2230,25 @@ namespace MSB_Test
                     UpdateUI();
                 });
 
+                if(excludeBossesBool)
+                {
+                    if (oopsBossString.Length > 5)
+                    {
+                        string tempOopsString = oopsBossString.Replace(" ", "");
+                        int totalStrings = tempOopsString.Length / 5;
+                        int startingNumber = 0;
+                        for (int i = 0; i < totalStrings; i++)
+                        {
+                            oopsAllBossString.Add(tempOopsString.Substring(startingNumber, 5));
+                            startingNumber = startingNumber + 5;
+                        }
+                    }
+                    else if (oopsBossString.Length == 5)
+                    {
+                        oopsAllBossString.Add(oopsBossString);
+                    }
+                }
+
                 GenerateBossList(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx", unusedPlusBossList);
                 GenerateBossList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx", unusedPlusBossList);
                 GenerateBossList(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx", unusedPlusBossList);
@@ -2070,8 +2298,49 @@ namespace MSB_Test
                         GenerateBossList(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx", unusedPlusBossList);
                     }
                 }
-
-
+                
+                if (excludeBossesBool)
+                {
+                    
+                    if (insertBossesBool)
+                    {
+                        if (insertBossesString != null)
+                        {
+                            if (insertBossesString.Count > 0)
+                            {
+                                for (int i = insertBossesString.Count - 1; i > -1; i--)
+                                {
+                                    for (int j = 0; j < oopsAllBossString.Count; j++)
+                                    {
+                                        if (insertBossesString[i].Contains(oopsAllBossString[j]))
+                                        {
+                                            insertBossesString.RemoveAt(i);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (enemyData != null)
+                    {
+                        if (enemyData.Count > 0)
+                        {
+                            for (int i = enemyData.Count - 1; i > -1; i--)
+                            {
+                                for (int j = 0; j < oopsAllBossString.Count; j++)
+                                {
+                                    if (enemyData[i].Contains(oopsAllBossString[j]))
+                                    {
+                                        enemyData.RemoveAt(i);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                
                 chaliceBossParams.Add("210306015");
 
                 List<string> uniqueEnemyList = enemyData.Distinct().ToList();
@@ -2167,19 +2436,22 @@ namespace MSB_Test
                 Random rando = new Random();
                 int thisOne = rando.Next(0, 3);
 
-                if (!oopsAllBosses)
+                if (addOrphan)
                 {
-                    if (thisOne == 0)
+                    if (!oopsAllBosses)
                     {
-                        AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
-                    }
-                    else if (thisOne == 1)
-                    {
-                        AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
-                    }
-                    else if (thisOne == 2)
-                    {
-                        AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
+                        if (thisOne == 0)
+                        {
+                            AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
+                        }
+                        else if (thisOne == 1)
+                        {
+                            AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx", unusedPlusBossList);
+                        }
+                        else if (thisOne == 2)
+                        {
+                            AddOrphanPhaseOne(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx", unusedPlusBossList);
+                        }
                     }
                 }
 
@@ -2349,6 +2621,7 @@ namespace MSB_Test
                 {
                     if (bossChalices)
                     {
+                        /*
                         //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx", nonoList);
                         InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx", unusedPlusBossList);
                         //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx", nonoList);
@@ -2367,6 +2640,7 @@ namespace MSB_Test
                         InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx", unusedPlusBossList);
                         //InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx", nonoList);
                         InsertBossesVoid(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx", unusedPlusBossList);
+                        */
                     }
                 }
             }
@@ -2477,7 +2751,26 @@ namespace MSB_Test
                 RandomizeNPCs(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
             }
 
-            if(randomizeItemLots)
+            if (easyMultiBossesBool)
+            {
+                EasyModes(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+            }
+            if (easyRomBool)
+            {
+                EasyModes(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+                EasyModes(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+            }
+            if (easyFailuresBool)
+            {
+                EasyModes(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+            }
+            if (easyWitchesBool)
+            {
+                EasyModes(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+                EasyModes(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+            }
+
+            if (randomizeItemLots)
             {
                 nonoItemLots.Add(2600550); //Evil Eye Bridge key (key in nightmare of mensis?)
                 nonoItemLots.Add(2400450); //The key to the Old Town (gascoigne key?)
@@ -2571,7 +2864,191 @@ namespace MSB_Test
                 RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
             }
 
-            if(enemyDropBool)
+            PermaDarknessFunction(filePath + "\\event\\common.emevd.dcx");
+
+            numbersInParamToRandomize = new List<int>();
+            gunsToReplace = new List<int>();
+            gunsToReplace.Add(6000000);
+            gunsToReplace.Add(6000100);
+            gunsToReplace.Add(6000200);
+            gunsToReplace.Add(6000300);
+            gunsToReplace.Add(6000400);
+            gunsToReplace.Add(6000500);
+            gunsToReplace.Add(6000600);
+            gunsToReplace.Add(6000700);
+            gunsToReplace.Add(6000800);
+            gunsToReplace.Add(6000900);
+            gunsToReplace.Add(6001000);
+            gunsToReplace.Add(6100000);
+            gunsToReplace.Add(6100100);
+            gunsToReplace.Add(6100200);
+            gunsToReplace.Add(6100300);
+            gunsToReplace.Add(6100400);
+            gunsToReplace.Add(6100500);
+            gunsToReplace.Add(6100600);
+            gunsToReplace.Add(6100700);
+            gunsToReplace.Add(6100800);
+            gunsToReplace.Add(6100900);
+            gunsToReplace.Add(6101000);
+            gunsToReplace.Add(14000000);
+            gunsToReplace.Add(14000100);
+            gunsToReplace.Add(14000200);
+            gunsToReplace.Add(14000300);
+            gunsToReplace.Add(14000400);
+            gunsToReplace.Add(14000500);
+            gunsToReplace.Add(14000600);
+            gunsToReplace.Add(14000700);
+            gunsToReplace.Add(14000800);
+            gunsToReplace.Add(14000900);
+            gunsToReplace.Add(14001000);
+            gunsToReplace.Add(14100000);
+            gunsToReplace.Add(14100100);
+            gunsToReplace.Add(14100200);
+            gunsToReplace.Add(14100300);
+            gunsToReplace.Add(14100400);
+            gunsToReplace.Add(14100500);
+            gunsToReplace.Add(14100600);
+            gunsToReplace.Add(14100700);
+            gunsToReplace.Add(14100800);
+            gunsToReplace.Add(14100900);
+            gunsToReplace.Add(14101000);
+            gunsToReplace.Add(14200000);
+            gunsToReplace.Add(14200100);
+            gunsToReplace.Add(14200200);
+            gunsToReplace.Add(14200300);
+            gunsToReplace.Add(14200400);
+            gunsToReplace.Add(14200500);
+            gunsToReplace.Add(14200600);
+            gunsToReplace.Add(14200700);
+            gunsToReplace.Add(14200800);
+            gunsToReplace.Add(14200900);
+            gunsToReplace.Add(14201000);
+            gunsToReplace.Add(15000000);
+            gunsToReplace.Add(15000100);
+            gunsToReplace.Add(15000200);
+            gunsToReplace.Add(15000300);
+            gunsToReplace.Add(15000400);
+            gunsToReplace.Add(15000500);
+            gunsToReplace.Add(15000600);
+            gunsToReplace.Add(15000700);
+            gunsToReplace.Add(15000800);
+            gunsToReplace.Add(15000900);
+            gunsToReplace.Add(15001000);
+            gunsToReplace.Add(18000000);
+            gunsToReplace.Add(18000100);
+            gunsToReplace.Add(18000200);
+            gunsToReplace.Add(18000300);
+            gunsToReplace.Add(18000400);
+            gunsToReplace.Add(18000500);
+            gunsToReplace.Add(18000600);
+            gunsToReplace.Add(18000700);
+            gunsToReplace.Add(18000800);
+            gunsToReplace.Add(18000900);
+            gunsToReplace.Add(18001000);
+            gunsToReplace.Add(18100000);
+            gunsToReplace.Add(18100100);
+            gunsToReplace.Add(18100200);
+            gunsToReplace.Add(18100300);
+            gunsToReplace.Add(18100400);
+            gunsToReplace.Add(18100500);
+            gunsToReplace.Add(18100600);
+            gunsToReplace.Add(18100700);
+            gunsToReplace.Add(18100800);
+            gunsToReplace.Add(18100900);
+            gunsToReplace.Add(18101000);
+            gunsToReplace.Add(33000000);
+            gunsToReplace.Add(33000100);
+            gunsToReplace.Add(33000200);
+            gunsToReplace.Add(33000300);
+            gunsToReplace.Add(33000400);
+            gunsToReplace.Add(33000500);
+            gunsToReplace.Add(33000600);
+            gunsToReplace.Add(33000700);
+            gunsToReplace.Add(33000800);
+            gunsToReplace.Add(33000900);
+            gunsToReplace.Add(33001000);
+            gunsToReplace.Add(35000000);
+            gunsToReplace.Add(35000100);
+            gunsToReplace.Add(35000200);
+            gunsToReplace.Add(35000300);
+            gunsToReplace.Add(35000400);
+            gunsToReplace.Add(35000500);
+            gunsToReplace.Add(35000600);
+            gunsToReplace.Add(35000700);
+            gunsToReplace.Add(35000800);
+            gunsToReplace.Add(35000900);
+            gunsToReplace.Add(35001000);
+            gunsToReplace.Add(36000000);
+            gunsToReplace.Add(36000100);
+            gunsToReplace.Add(36000200);
+            gunsToReplace.Add(36000300);
+            gunsToReplace.Add(36000400);
+            gunsToReplace.Add(36000500);
+            gunsToReplace.Add(36000600);
+            gunsToReplace.Add(36000700);
+            gunsToReplace.Add(36000800);
+            gunsToReplace.Add(36000900);
+            gunsToReplace.Add(36001000);
+            numbersInParamToRandomize.Add(3);
+            numbersInParamToRandomize.Add(8);
+            numbersInParamToRandomize.Add(9);
+            numbersInParamToRandomize.Add(10);
+            numbersInParamToRandomize.Add(11);
+            numbersInParamToRandomize.Add(12);
+            numbersInParamToRandomize.Add(13);
+            numbersInParamToRandomize.Add(14);
+            numbersInParamToRandomize.Add(15);
+            numbersInParamToRandomize.Add(19);
+            numbersInParamToRandomize.Add(20);
+            numbersInParamToRandomize.Add(21);
+            numbersInParamToRandomize.Add(51);
+            numbersInParamToRandomize.Add(52);
+            numbersInParamToRandomize.Add(53);
+            numbersInParamToRandomize.Add(54);
+            numbersInParamToRandomize.Add(55);
+            numbersInParamToRandomize.Add(56);
+            numbersInParamToRandomize.Add(57);
+            numbersInParamToRandomize.Add(58);
+            numbersInParamToRandomize.Add(59);
+            numbersInParamToRandomize.Add(60);
+            numbersInParamToRandomize.Add(61);
+            numbersInParamToRandomize.Add(62);
+            numbersInParamToRandomize.Add(63);
+            numbersInParamToRandomize.Add(64);
+            numbersInParamToRandomize.Add(65);
+            numbersInParamToRandomize.Add(66);
+            numbersInParamToRandomize.Add(67);
+            numbersInParamToRandomize.Add(68);
+            numbersInParamToRandomize.Add(69);
+            numbersInParamToRandomize.Add(70);
+            numbersInParamToRandomize.Add(76);
+            numbersInParamToRandomize.Add(77);
+            numbersInParamToRandomize.Add(78);
+            numbersInParamToRandomize.Add(79);
+            numbersInParamToRandomize.Add(80);
+            numbersInParamToRandomize.Add(81);
+            numbersInParamToRandomize.Add(82);
+            numbersInParamToRandomize.Add(90);
+            numbersInParamToRandomize.Add(91);
+            numbersInParamToRandomize.Add(92);
+            numbersInParamToRandomize.Add(93);
+            numbersInParamToRandomize.Add(94);
+            numbersInParamToRandomize.Add(95);
+            numbersInParamToRandomize.Add(96);
+            numbersInParamToRandomize.Add(157);
+            numbersInParamToRandomize.Add(158);
+
+            if (meleeMoveset)
+            {
+                RandomizeMeleeMoveset("EquipParamWeapon", numbersInParamToRandomize, gunsToReplace);
+            }
+
+            if(gunMoveset)
+            {
+                RandomizeGunMoveset("EquipParamWeapon", numbersInParamToRandomize, gunsToReplace);
+            }
+
+            if (enemyDropBool)
             {
                 RandomizeItemDrops();
             }
@@ -2590,6 +3067,11 @@ namespace MSB_Test
                 //VfxRandomizer("Bullet");
                 //BulletRandomizer();
                 //VfxRandomizer("AiSoundParam");
+            }
+
+            if(teamTypeBool)
+            {
+                TeamTypeRando();
             }
 
             if(faceBool)
@@ -2613,6 +3095,8 @@ namespace MSB_Test
                 TalkRandomizer();
             }
 
+            //CutEnemyScan();
+
             string dateNoww = DateTime.Now.ToString("h:mm:ss tt");
             string buttss = dateNoww.Replace(":", "-");
             scaleLogFile = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttss + "-ScaleLog.txt";
@@ -2628,45 +3112,901 @@ namespace MSB_Test
                 UpdateUI();
             });
 
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
-            ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
-            if (GOBAdded)
+            if (!noScalingBool)
             {
-                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
-            }
+                if (!customScaling)
+                {
+                    dreamScale = 20;
+                    hemwickScale = 7;
+                    cathedralScale = 21;
+                    upperScale = 14;
+                    mensisScale = 17;
+                    yahargulScale = 13;
+                    frontierScale = 10;
+                    researchScale = 27;
+                    oldScale = 4;
+                    centralScale = 1;
+                    cainhurstScale = 12;
+                    woodsScale = 9;
+                    byrgenwerthScale = 11;
+                    nightmareScale = 24;
+                    hamletScale = 29;
+                }
+                else
+                {
 
+                    string huntersDreamIndex ="";
+                    string hemwickIndex = "";
+                    string cathedralWardIndex = "";
+                    string upperIndex = "";
+                    string mensisIndex = "";
+                    string yahargulIndex = "";
+                    string frontierIndex = "";
+                    string researchIndex = "";
+                    string oldIndex = "";
+                    string centralIndex = "";
+                    string cainhurstIndex = "";
+                    string woodsIndex = "";
+                    string byrgenwerthIndex = "";
+                    string huntersNightmareIndex = "";
+                    string hamletIndex = "";
+                    //var window = (Window1)Application.maind;
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        huntersDreamIndex = win1.HuntersDreamBox.Text;
+                        hemwickIndex = win1.HemwickBox.Text;
+                        cathedralWardIndex = win1.CathedralBox.Text;
+                        upperIndex = win1.UpperBox.Text;
+                        mensisIndex = win1.MensisBox.Text;
+                        yahargulIndex = win1.YahargulBox.Text;
+                        frontierIndex = win1.FrontierBox.Text;
+                        researchIndex = win1.ResearchBox.Text;
+                        oldIndex = win1.OldBox.Text;
+                        centralIndex = win1.CentralBox.Text;
+                        cainhurstIndex = win1.CainhurstBox.Text;
+                        woodsIndex = win1.WoodsBox.Text;
+                        byrgenwerthIndex = win1.ByrgenwerthBox.Text;
+                        huntersNightmareIndex = win1.HuntersNightmareBox.Text;
+                        hamletIndex = win1.HamletBox.Text;
+                    });
+
+                    ////public int dreamScale;
+                    //dreamScale = win1.dreamScale;
+                    ////public int hemwickScale;
+                    //hemwickScale = win1.hemwickScale;
+                    ////public int cathedralScale;
+                    //cathedralScale = win1.cathedralScale;
+                    ////public int upperScale;
+                    //upperScale = win1.upperScale;
+                    ////public int mensisScale;
+                    //mensisScale = win1.mensisScale;
+                    ////public int yahargulScale;
+                    //yahargulScale = win1.yahargulScale;
+                    ////public int frontierScale;
+                    //frontierScale = win1.frontierScale;
+                    ////public int researchScale;
+                    //researchScale = win1.researchScale;
+                    ////public int oldScale;
+                    //oldScale = win1.oldScale;
+                    ////public int centralScale;
+                    //centralScale = win1.centralScale;
+                    ////public int cainhurstScale;
+                    //cainhurstScale = win1.cainhurstScale;
+                    ////public int woodsScale;
+                    //woodsScale = win1.woodsScale;
+                    ////public int byrgenwerthScale;
+                    //byrgenwerthScale = win1.byrgenwerthScale;
+                    ////public int nightmareScale;
+                    //nightmareScale = win1.nightmareScale;
+                    ////public int hamletScale;
+                    //hamletScale = win1.hamletScale;
+
+                    switch (huntersDreamIndex)
+                    {
+                        case "Hunter's Dream":
+                            dreamScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            dreamScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            dreamScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            dreamScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            dreamScale = 17;
+                            break;
+                        case "Yahargul":
+                            dreamScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            dreamScale = 10;
+                            break;
+                        case "Research Hall":
+                            dreamScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            dreamScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            dreamScale = 1;
+                            break;
+                        case "Cainhurst":
+                            dreamScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            dreamScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            dreamScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            dreamScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            dreamScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    //public string hemwickIndex;
+                    switch (hemwickIndex)
+                    {
+                        case "Hunter's Dream":
+                            hemwickScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            hemwickScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            hemwickScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            hemwickScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            hemwickScale = 17;
+                            break;
+                        case "Yahargul":
+                            hemwickScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            hemwickScale = 10;
+                            break;
+                        case "Research Hall":
+                            hemwickScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            hemwickScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            hemwickScale = 1;
+                            break;
+                        case "Cainhurst":
+                            hemwickScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            hemwickScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            hemwickScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            hemwickScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            hemwickScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string cathedralWardIndex;
+                    switch (cathedralWardIndex)
+                    {
+                        case "Hunter's Dream":
+                            cathedralScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            cathedralScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            cathedralScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            cathedralScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            cathedralScale = 17;
+                            break;
+                        case "Yahargul":
+                            cathedralScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            cathedralScale = 10;
+                            break;
+                        case "Research Hall":
+                            cathedralScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            cathedralScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            cathedralScale = 1;
+                            break;
+                        case "Cainhurst":
+                            cathedralScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            cathedralScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            cathedralScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            cathedralScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            cathedralScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string upperIndex;
+                    switch (upperIndex)
+                    {
+                        case "Hunter's Dream":
+                            upperScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            upperScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            upperScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            upperScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            upperScale = 17;
+                            break;
+                        case "Yahargul":
+                            upperScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            upperScale = 10;
+                            break;
+                        case "Research Hall":
+                            upperScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            upperScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            upperScale = 1;
+                            break;
+                        case "Cainhurst":
+                            upperScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            upperScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            upperScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            upperScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            upperScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string mensisIndex;
+                    switch (mensisIndex)
+                    {
+                        case "Hunter's Dream":
+                            mensisScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            mensisScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            mensisScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            mensisScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            mensisScale = 17;
+                            break;
+                        case "Yahargul":
+                            mensisScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            mensisScale = 10;
+                            break;
+                        case "Research Hall":
+                            mensisScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            mensisScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            mensisScale = 1;
+                            break;
+                        case "Cainhurst":
+                            mensisScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            mensisScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            mensisScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            mensisScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            mensisScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string yahargulIndex;
+                    switch (yahargulIndex)
+                    {
+                        case "Hunter's Dream":
+                            yahargulScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            yahargulScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            yahargulScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            yahargulScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            yahargulScale = 17;
+                            break;
+                        case "Yahargul":
+                            yahargulScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            yahargulScale = 10;
+                            break;
+                        case "Research Hall":
+                            yahargulScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            yahargulScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            yahargulScale = 1;
+                            break;
+                        case "Cainhurst":
+                            yahargulScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            yahargulScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            yahargulScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            yahargulScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            yahargulScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string frontierIndex;
+                    switch (frontierIndex)
+                    {
+                        case "Hunter's Dream":
+                            frontierScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            frontierScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            frontierScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            frontierScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            frontierScale = 17;
+                            break;
+                        case "Yahargul":
+                            frontierScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            frontierScale = 10;
+                            break;
+                        case "Research Hall":
+                            frontierScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            frontierScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            frontierScale = 1;
+                            break;
+                        case "Cainhurst":
+                            frontierScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            frontierScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            frontierScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            frontierScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            frontierScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string researchIndex;
+                    switch (researchIndex)
+                    {
+                        case "Hunter's Dream":
+                            researchScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            researchScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            researchScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            researchScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            researchScale = 17;
+                            break;
+                        case "Yahargul":
+                            researchScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            researchScale = 10;
+                            break;
+                        case "Research Hall":
+                            researchScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            researchScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            researchScale = 1;
+                            break;
+                        case "Cainhurst":
+                            researchScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            researchScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            researchScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            researchScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            researchScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string oldIndex;
+                    switch (oldIndex)
+                    {
+                        case "Hunter's Dream":
+                            oldScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            oldScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            oldScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            oldScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            oldScale = 17;
+                            break;
+                        case "Yahargul":
+                            oldScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            oldScale = 10;
+                            break;
+                        case "Research Hall":
+                            oldScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            oldScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            oldScale = 1;
+                            break;
+                        case "Cainhurst":
+                            oldScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            oldScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            oldScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            oldScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            oldScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string centralIndex;
+                    switch (centralIndex)
+                    {
+                        case "Hunter's Dream":
+                            centralScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            centralScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            centralScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            centralScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            centralScale = 17;
+                            break;
+                        case "Yahargul":
+                            centralScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            centralScale = 10;
+                            break;
+                        case "Research Hall":
+                            centralScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            centralScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            centralScale = 1;
+                            break;
+                        case "Cainhurst":
+                            centralScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            centralScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            centralScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            centralScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            centralScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string cainhurstIndex;
+                    switch (cainhurstIndex)
+                    {
+                        case "Hunter's Dream":
+                            cainhurstScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            cainhurstScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            cainhurstScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            cainhurstScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            cainhurstScale = 17;
+                            break;
+                        case "Yahargul":
+                            cainhurstScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            cainhurstScale = 10;
+                            break;
+                        case "Research Hall":
+                            cainhurstScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            cainhurstScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            cainhurstScale = 1;
+                            break;
+                        case "Cainhurst":
+                            cainhurstScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            cainhurstScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            cainhurstScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            cainhurstScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            cainhurstScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string woodsIndex;
+                    switch (woodsIndex)
+                    {
+                        case "Hunter's Dream":
+                            woodsScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            woodsScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            woodsScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            woodsScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            woodsScale = 17;
+                            break;
+                        case "Yahargul":
+                            woodsScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            woodsScale = 10;
+                            break;
+                        case "Research Hall":
+                            woodsScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            woodsScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            woodsScale = 1;
+                            break;
+                        case "Cainhurst":
+                            woodsScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            woodsScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            woodsScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            woodsScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            woodsScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string byrgenwerthIndex;
+                    switch (byrgenwerthIndex)
+                    {
+                        case "Hunter's Dream":
+                            byrgenwerthScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            byrgenwerthScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            byrgenwerthScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            byrgenwerthScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            byrgenwerthScale = 17;
+                            break;
+                        case "Yahargul":
+                            byrgenwerthScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            byrgenwerthScale = 10;
+                            break;
+                        case "Research Hall":
+                            byrgenwerthScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            byrgenwerthScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            byrgenwerthScale = 1;
+                            break;
+                        case "Cainhurst":
+                            byrgenwerthScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            byrgenwerthScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            byrgenwerthScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            byrgenwerthScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            byrgenwerthScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string huntersNightmareIndex;
+                    switch (huntersNightmareIndex)
+                    {
+                        case "Hunter's Dream":
+                            nightmareScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            nightmareScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            nightmareScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            nightmareScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            nightmareScale = 17;
+                            break;
+                        case "Yahargul":
+                            nightmareScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            nightmareScale = 10;
+                            break;
+                        case "Research Hall":
+                            nightmareScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            nightmareScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            nightmareScale = 1;
+                            break;
+                        case "Cainhurst":
+                            nightmareScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            nightmareScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            nightmareScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            nightmareScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            nightmareScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                    //public string hamletIndex;
+                    switch (hamletIndex)
+                    {
+                        case "Hunter's Dream":
+                            hamletScale = 20;
+                            break;
+                        case "Hemwick Charnel Lane":
+                            hamletScale = 7;
+                            break;
+                        case "Cathedral Ward":
+                            hamletScale = 21;
+                            break;
+                        case "Upper Cathedral Ward":
+                            hamletScale = 14;
+                            break;
+                        case "Nightmare of Mensis":
+                            hamletScale = 17;
+                            break;
+                        case "Yahargul":
+                            hamletScale = 13;
+                            break;
+                        case "Nightmare Frontier":
+                            hamletScale = 10;
+                            break;
+                        case "Research Hall":
+                            hamletScale = 27;
+                            break;
+                        case "Old Yharnam":
+                            hamletScale = 4;
+                            break;
+                        case "Central Yharnam":
+                            hamletScale = 1;
+                            break;
+                        case "Cainhurst":
+                            hamletScale = 12;
+                            break;
+                        case "Forbidden Woods":
+                            hamletScale = 9;
+                            break;
+                        case "Byrgenwerth + Lecture hall":
+                            hamletScale = 11;
+                            break;
+                        case "Hunter's Nightmare":
+                            hamletScale = 24;
+                            break;
+                        case "Fishing Hamlet":
+                            hamletScale = 29;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
+                ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+                if (GOBAdded)
+                {
+                    ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
+                }
+            }
             mapList = new List<string>();
 
             mapList.Add(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
@@ -3713,11 +5053,6 @@ namespace MSB_Test
             }
         }
 
-        private void RandomizeMultipleBossBossFights(string currentMap, List<string> noNoList)
-        {
-
-        }
-
         private void GenerateBossList(string currentMap, List<string> noNoList)
         {
             Random rand = new Random();
@@ -3738,6 +5073,17 @@ namespace MSB_Test
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4540_0000"))
                     {
                         OoKEnemy = tempGUY.Parts.Enemies[i];
+                    }
+
+                    if (currentMap.Contains("m29"))
+                    {
+                        for (int k = 0; k < chaliceBossParams.Count; k++)
+                        {
+                            if (tempGUY.Parts.Enemies[i].NPCParamID.ToString() == chaliceBossParams[k])
+                            {
+                                newChaliceBossMSB.Add(tempGUY.Parts.Enemies[i]);
+                            }
+                        }
                     }
 
                     for (int j = 0; j < bossList.Count; j++)
@@ -3956,13 +5302,38 @@ namespace MSB_Test
                     OoKFirstPhase = OoKEnemy.NPCParamID.ToString() + "*" + OoKEnemy.ThinkParamID.ToString() + "*" + OoKEnemy.ModelName;
                 }
 
+                for(int i = 0; i < newChaliceBossMSB.Count; i ++)
+                {
+                    string tempString = newChaliceBossMSB[i].NPCParamID.ToString() + "*" + newChaliceBossMSB[i].ThinkParamID.ToString() + "*" + newChaliceBossMSB[i].ModelName;
+                    newChaliceBossString.Add(newChaliceBossMSB[i].NPCParamID.ToString() + "*" + newChaliceBossMSB[i].ThinkParamID.ToString() + "*" + newChaliceBossMSB[i].ModelName);
+                    newChaliceBossString2.Add(newChaliceBossMSB[i].NPCParamID.ToString() + "*" + newChaliceBossMSB[i].ThinkParamID.ToString() + "*" + newChaliceBossMSB[i].ModelName);
+                }
+
                 for (int i = 0; i < chaliceBossMSB.Count; i++)
                 {
                     string tempString = chaliceBossMSB[i].NPCParamID.ToString() + "*" + chaliceBossMSB[i].ThinkParamID.ToString() + "*" + chaliceBossMSB[i].ModelName;
                     if (chaliceBossMSB[i].ThinkParamID.ToString() != "1")
                     {
-                        chaliceBossString.Add(chaliceBossMSB[i].NPCParamID.ToString() + "*" + chaliceBossMSB[i].ThinkParamID.ToString() + "*" + chaliceBossMSB[i].ModelName);
+                        if (excludeBossesBool)
+                        {
+                            bool add = true;
+                            for (int j = 0; j < oopsAllBossString.Count; j++)
+                            {
+                                if (chaliceBossMSB[i].ModelName.Contains(oopsAllBossString[j]))
+                                {
+                                    add = false;
+                                }
 
+                            }
+                            if (add)
+                            {
+                                chaliceBossString.Add(chaliceBossMSB[i].NPCParamID.ToString() + "*" + chaliceBossMSB[i].ThinkParamID.ToString() + "*" + chaliceBossMSB[i].ModelName);
+                            }
+                        }
+                        else
+                        {
+                            chaliceBossString.Add(chaliceBossMSB[i].NPCParamID.ToString() + "*" + chaliceBossMSB[i].ThinkParamID.ToString() + "*" + chaliceBossMSB[i].ModelName);
+                        }
                     }
                 }
 
@@ -3972,7 +5343,6 @@ namespace MSB_Test
                     if (insertBossesEnemy[i].ThinkParamID.ToString() != "1")
                     {
                         insertBossesString.Add(insertBossesEnemy[i].NPCParamID.ToString() + "*" + insertBossesEnemy[i].ThinkParamID.ToString() + "*" + insertBossesEnemy[i].ModelName);
-
                     }
                 }
             }
@@ -4030,7 +5400,7 @@ namespace MSB_Test
                             writetext.WriteLine("New Boss");
                             writetext.WriteLine(tempNpcParam + " npcParam");
                             writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            writetext.WriteLine(modelName + " new model");
                             writetext.WriteLine("This is first phase Orphan.");
                         }
                     }
@@ -4079,7 +5449,7 @@ namespace MSB_Test
                             writetext.WriteLine("New Boss");
                             writetext.WriteLine(tempNpcParam + " npcParam");
                             writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            writetext.WriteLine(modelName + " new model");
                             writetext.WriteLine("This is first phase Orphan.");
                         }
                     }
@@ -4128,7 +5498,7 @@ namespace MSB_Test
                             writetext.WriteLine("New Boss");
                             writetext.WriteLine(tempNpcParam + " npcParam");
                             writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            writetext.WriteLine(modelName + " new model");
                             writetext.WriteLine("This is first phase Orphan.");
                         }
                     }
@@ -4136,6 +5506,129 @@ namespace MSB_Test
             }
 
             tempGUY.Write(currentMap);
+            tempGUY.Write(currentMap);
+        }
+
+        private void EasyModes(string currentMap)
+        {
+            var tempGUY = MSBB.Read(currentMap);
+
+            for (int i = 0; i < tempGUY.Parts.Enemies.Count; i++)
+            {
+                //shadows
+                if (currentMap.Contains("m27"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0001"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                }
+                //rom
+                else if (currentMap.Contains("m32_00"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c1400"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                }
+                //emissary
+                else if (currentMap.Contains("m24_02"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0001"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0002"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0003"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0004"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0005"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0006"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0007"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0008"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0009"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2500_0010"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                }
+                //failures
+                else if (currentMap.Contains("m35_00"))
+                {
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0001"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0002"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                    if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0003"))
+                    {
+                        tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
+                        tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                    }
+                }
+            }
+
             tempGUY.Write(currentMap);
         }
 
@@ -4206,7 +5699,7 @@ namespace MSB_Test
                             writetext.WriteLine("New Boss");
                             writetext.WriteLine(tempNpcParam + " npcParam");
                             writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " model");
+                            writetext.WriteLine(modelName + " new model");
                         }
                     }
                 }
@@ -4214,143 +5707,124 @@ namespace MSB_Test
                 {
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0001"))
                     {
-                        if (!easyMultiBossesBool)
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
                         {
-                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                            thismo = tempGUY.Parts.Enemies[i].ModelName;
-                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
 
-                            Random rand = new Random();
-                            int randomNumber = rand.Next(0, combinedBossList2.Count);
-                            string thisEnemy = combinedBossList2[randomNumber];
-                            combinedBossList2.RemoveAt(randomNumber);
-
-                            string tempNpcParam;
-                            string tempThinkId;
-                            string modelName;
-
-                            int tempNpcParamInt;
-                            int tempThinkIdInt;
-
-                            int tempnpcint = thisEnemy.IndexOf("*");
+                            tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
-
-                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                            {
-                                randomNumber = rand.Next(0, combinedBossList2.Count);
-                                thisEnemy = combinedBossList2[randomNumber];
-
-                                tempnpcint = thisEnemy.IndexOf("*");
-                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                tempNpcParamInt = int.Parse(tempNpcParam);
-                                tempThinkIdInt = int.Parse(tempThinkId);
-                            }
-
-                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                            tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                            {
-                                writetext.WriteLine(bossCount);
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine(i + " Number in map list");
-                                writetext.WriteLine("Old Boss");
-                                writetext.WriteLine(thisnpc + " npcParam");
-                                writetext.WriteLine(thisthink + " thinkID");
-                                writetext.WriteLine(thismo + " model");
-                                writetext.WriteLine(thisentityID);
-
-                                writetext.WriteLine("New Boss");
-                                writetext.WriteLine(tempNpcParam + " npcParam");
-                                writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " model");
-                            }
                         }
-                        else
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                         {
-                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
-                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " new model");
                         }
                     }
-
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002"))
                     {
-                        if (!easyMultiBossesBool)
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
                         {
-                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                            thismo = tempGUY.Parts.Enemies[i].ModelName;
-                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
 
-                            Random rand = new Random();
-                            int randomNumber = rand.Next(0, combinedBossList2.Count);
-                            string thisEnemy = combinedBossList2[randomNumber];
-                            combinedBossList2.RemoveAt(randomNumber);
-
-                            string tempNpcParam;
-                            string tempThinkId;
-                            string modelName;
-
-                            int tempNpcParamInt;
-                            int tempThinkIdInt;
-
-                            int tempnpcint = thisEnemy.IndexOf("*");
+                            tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
-
-                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                            {
-                                randomNumber = rand.Next(0, combinedBossList2.Count);
-                                thisEnemy = combinedBossList2[randomNumber];
-
-                                tempnpcint = thisEnemy.IndexOf("*");
-                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                tempNpcParamInt = int.Parse(tempNpcParam);
-                                tempThinkIdInt = int.Parse(tempThinkId);
-                            }
-
-                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                            tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                            {
-                                writetext.WriteLine(bossCount);
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine(i + " Number in map list");
-                                writetext.WriteLine("Old Boss");
-                                writetext.WriteLine(thisnpc + " npcParam");
-                                writetext.WriteLine(thisthink + " thinkID");
-                                writetext.WriteLine(thismo + " model");
-                                writetext.WriteLine(thisentityID);
-
-                                writetext.WriteLine("New Boss");
-                                writetext.WriteLine(tempNpcParam + " npcParam");
-                                writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " model");
-                            }
                         }
-                        else
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                         {
-                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
-                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " new model");
                         }
                     }
                 }
@@ -4358,214 +5832,187 @@ namespace MSB_Test
                 {
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0001"))
                     {
-                        if (!easyFailuresBool)
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
                         {
-                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                            thismo = tempGUY.Parts.Enemies[i].ModelName;
-                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
 
-                            Random rand = new Random();
-                            int randomNumber = rand.Next(0, combinedBossList2.Count);
-                            string thisEnemy = combinedBossList2[randomNumber];
-                            combinedBossList2.RemoveAt(randomNumber);
-
-                            string tempNpcParam;
-                            string tempThinkId;
-                            string modelName;
-
-                            int tempNpcParamInt;
-                            int tempThinkIdInt;
-
-                            int tempnpcint = thisEnemy.IndexOf("*");
+                            tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
-
-                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                            {
-                                randomNumber = rand.Next(0, combinedBossList2.Count);
-                                thisEnemy = combinedBossList2[randomNumber];
-
-                                tempnpcint = thisEnemy.IndexOf("*");
-                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                tempNpcParamInt = int.Parse(tempNpcParam);
-                                tempThinkIdInt = int.Parse(tempThinkId);
-                            }
-
-                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                            tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                            {
-                                writetext.WriteLine(bossCount);
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine(i + " Number in map list");
-                                writetext.WriteLine("Old Boss");
-                                writetext.WriteLine(thisnpc + " npcParam");
-                                writetext.WriteLine(thisthink + " thinkID");
-                                writetext.WriteLine(thismo + " model");
-                                writetext.WriteLine(thisentityID);
-
-                                writetext.WriteLine("New Boss");
-                                writetext.WriteLine(tempNpcParam + " npcParam");
-                                writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " model");
-                            }
                         }
-                        else
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                         {
-                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
-                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " new model");
                         }
                     }
 
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0002"))
                     {
-                        if (!easyFailuresBool)
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
                         {
-                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                            thismo = tempGUY.Parts.Enemies[i].ModelName;
-                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
 
-                            Random rand = new Random();
-                            int randomNumber = rand.Next(0, combinedBossList2.Count);
-                            string thisEnemy = combinedBossList2[randomNumber];
-                            combinedBossList2.RemoveAt(randomNumber);
-
-                            string tempNpcParam;
-                            string tempThinkId;
-                            string modelName;
-
-                            int tempNpcParamInt;
-                            int tempThinkIdInt;
-
-                            int tempnpcint = thisEnemy.IndexOf("*");
+                            tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
-
-                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                            {
-                                randomNumber = rand.Next(0, combinedBossList2.Count);
-                                thisEnemy = combinedBossList2[randomNumber];
-
-                                tempnpcint = thisEnemy.IndexOf("*");
-                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                tempNpcParamInt = int.Parse(tempNpcParam);
-                                tempThinkIdInt = int.Parse(tempThinkId);
-                            }
-
-                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                            tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                            {
-                                writetext.WriteLine(bossCount);
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine(i + " Number in map list");
-                                writetext.WriteLine("Old Boss");
-                                writetext.WriteLine(thisnpc + " npcParam");
-                                writetext.WriteLine(thisthink + " thinkID");
-                                writetext.WriteLine(thismo + " model");
-                                writetext.WriteLine(thisentityID);
-
-                                writetext.WriteLine("New Boss");
-                                writetext.WriteLine(tempNpcParam + " npcParam");
-                                writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " model");
-                            }
                         }
-                        else
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                         {
-                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
-                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " new model");
                         }
                     }
 
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0003"))
                     {
-                        if (!easyFailuresBool)
+                        thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
+                        thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
+                        thismo = tempGUY.Parts.Enemies[i].ModelName;
+                        thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(0, combinedBossList2.Count);
+                        string thisEnemy = combinedBossList2[randomNumber];
+                        combinedBossList2.RemoveAt(randomNumber);
+
+                        string tempNpcParam;
+                        string tempThinkId;
+                        string modelName;
+
+                        int tempNpcParamInt;
+                        int tempThinkIdInt;
+
+                        int tempnpcint = thisEnemy.IndexOf("*");
+                        tempNpcParam = thisEnemy.Substring(0, tempnpcint);
+                        tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
+                        modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
+
+                        tempNpcParamInt = int.Parse(tempNpcParam);
+                        tempThinkIdInt = int.Parse(tempThinkId);
+
+                        while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
                         {
-                            thisnpc = tempGUY.Parts.Enemies[i].NPCParamID.ToString();
-                            thisthink = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
-                            thismo = tempGUY.Parts.Enemies[i].ModelName;
-                            thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+                            randomNumber = rand.Next(0, combinedBossList2.Count);
+                            thisEnemy = combinedBossList2[randomNumber];
 
-                            Random rand = new Random();
-                            int randomNumber = rand.Next(0, combinedBossList2.Count);
-                            string thisEnemy = combinedBossList2[randomNumber];
-                            combinedBossList2.RemoveAt(randomNumber);
-
-                            string tempNpcParam;
-                            string tempThinkId;
-                            string modelName;
-
-                            int tempNpcParamInt;
-                            int tempThinkIdInt;
-
-                            int tempnpcint = thisEnemy.IndexOf("*");
+                            tempnpcint = thisEnemy.IndexOf("*");
                             tempNpcParam = thisEnemy.Substring(0, tempnpcint);
                             tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
                             modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
                             tempNpcParamInt = int.Parse(tempNpcParam);
                             tempThinkIdInt = int.Parse(tempThinkId);
-
-                            while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
-                            {
-                                randomNumber = rand.Next(0, combinedBossList2.Count);
-                                thisEnemy = combinedBossList2[randomNumber];
-
-                                tempnpcint = thisEnemy.IndexOf("*");
-                                tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                                tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                                modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-                                tempNpcParamInt = int.Parse(tempNpcParam);
-                                tempThinkIdInt = int.Parse(tempThinkId);
-                            }
-
-                            tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                            tempGUY.Parts.Enemies[i].ModelName = modelName;
-
-                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                            {
-                                writetext.WriteLine(bossCount);
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine(i + " Number in map list");
-                                writetext.WriteLine("Old Boss");
-                                writetext.WriteLine(thisnpc + " npcParam");
-                                writetext.WriteLine(thisthink + " thinkID");
-                                writetext.WriteLine(thismo + " model");
-                                writetext.WriteLine(thisentityID);
-
-                                writetext.WriteLine("New Boss");
-                                writetext.WriteLine(tempNpcParam + " npcParam");
-                                writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " model");
-                            }
                         }
-                        else
+
+                        tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
+                        tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
+                        tempGUY.Parts.Enemies[i].ModelName = modelName;
+
+                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                         {
-                            tempGUY.Parts.Enemies[i].NPCParamID = stoneGuyParam;
-                            tempGUY.Parts.Enemies[i].ThinkParamID = stoneGuyThink;
-                            tempGUY.Parts.Enemies[i].ModelName = stoneGuyModelName;
+                            writetext.WriteLine(bossCount);
+                            writetext.WriteLine(currentMap);
+                            writetext.WriteLine(i + " Number in map list");
+                            writetext.WriteLine("Old Boss");
+                            writetext.WriteLine(thisnpc + " npcParam");
+                            writetext.WriteLine(thisthink + " thinkID");
+                            writetext.WriteLine(thismo + " model");
+                            writetext.WriteLine(thisentityID);
+
+                            writetext.WriteLine("New Boss");
+                            writetext.WriteLine(tempNpcParam + " npcParam");
+                            writetext.WriteLine(tempThinkId + " thinkID");
+                            writetext.WriteLine(modelName + " new model");
                         }
                     }
                 }
@@ -4722,10 +6169,10 @@ namespace MSB_Test
                                 if (tempGUY.Parts.Enemies[i].NPCParamID.ToString() == chaliceBossParams[k])
                                 {
                                     Random rand = new Random();
-                                    int random = rand.Next(0, chaliceBossString.Count);
+                                    int random = rand.Next(0, newChaliceBossString.Count);
                                     string thisEnemy;
 
-                                    thisEnemy = chaliceBossString[random];
+                                    thisEnemy = newChaliceBossString[random];
 
                                     removalNumber = random;
 
@@ -4750,8 +6197,8 @@ namespace MSB_Test
 
                                     while (tempGUY.Parts.Enemies[i].Name.Contains(modelName))
                                     {
-                                        random = rand.Next(0, chaliceBossString.Count);
-                                        thisEnemy = chaliceBossString[random];
+                                        random = rand.Next(0, newChaliceBossString.Count);
+                                        thisEnemy = newChaliceBossString[random];
                                         removalNumber = random;
 
                                         tempnpcint = thisEnemy.IndexOf("*");
@@ -4762,7 +6209,7 @@ namespace MSB_Test
                                         tempThinkIdInt = int.Parse(tempThinkId);
 
                                         addCounter++;
-                                        if (addCounter >= chaliceBossString.Count)
+                                        if (addCounter >= newChaliceBossString.Count)
                                         {
                                             //enemyDataRandomized.Add(secondaryBosses[random]);
                                             addCounter = 0;
@@ -4773,6 +6220,11 @@ namespace MSB_Test
                                     string think = tempGUY.Parts.Enemies[i].ThinkParamID.ToString();
                                     string mo = tempGUY.Parts.Enemies[i].ModelName;
                                     string entityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
+
+                                    thisnpc = npc;
+                                    thisthink = think;
+                                    thismo = mo;
+                                    thisentityID = entityID;
 
                                     tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                                     tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
@@ -4792,9 +6244,30 @@ namespace MSB_Test
                                         writetext.WriteLine("New Boss");
                                         writetext.WriteLine(tempNpcParam + " npcParam");
                                         writetext.WriteLine(tempThinkId + " thinkID");
-                                        writetext.WriteLine(modelName + " model");
+                                        writetext.WriteLine(modelName + " new model");
 
-                                        writetext.WriteLine("Enemy Pool Count: " + chaliceBossString.Count + Environment.NewLine + Environment.NewLine);
+
+                                        writetext.WriteLine("Enemy Pool Count: " + newChaliceBossString.Count);
+
+                                        for (int m = newChaliceBossString.Count - 1; m >= 0; m--)
+                                        {
+                                            if (newChaliceBossString[m].Contains("*" + modelName))
+                                            {
+                                                newChaliceBossString.RemoveAt(m);
+                                            }
+                                        }
+
+                                        writetext.WriteLine("New count after removing similar bosses " + newChaliceBossString.Count + Environment.NewLine + Environment.NewLine);
+
+                                        if (newChaliceBossString.Count <= 0 || newChaliceBossString == null)
+                                        {
+                                            newChaliceBossString = new List<string>();
+
+                                            for (int j = 0; j < newChaliceBossString2.Count; j++)
+                                            {
+                                                newChaliceBossString.Add(newChaliceBossString2[j]);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -4832,7 +6305,7 @@ namespace MSB_Test
                             
                             if(currentMap.Contains("m24_00"))
                             {
-                                while(modelName.Contains("4500"))
+                                while(modelName.Contains("4500") || modelName.Contains("4520"))
                                 {
                                     random = rand.Next(0, combinedBossList.Count);
                                     thisEnemy = combinedBossList[random];
@@ -4858,7 +6331,7 @@ namespace MSB_Test
 
                             if (currentMap.Contains("m24_02"))
                             {
-                                while (modelName.Contains("5100") || modelName.Contains("8050") || modelName.Contains("4520") || modelName.Contains("4500"))
+                                while (modelName.Contains("5100") || modelName.Contains("8050") || modelName.Contains("4520") || modelName.Contains("4500") || modelName.Contains("3060"))
                                 {
                                     random = rand.Next(0, combinedBossList.Count);
                                     thisEnemy = combinedBossList[random];
@@ -4984,7 +6457,7 @@ namespace MSB_Test
                                     writetext.WriteLine("New Boss");
                                     writetext.WriteLine(tempNpcParam + " npcParam");
                                     writetext.WriteLine(tempThinkId + " thinkID");
-                                    writetext.WriteLine(modelName + " model");
+                                    writetext.WriteLine(modelName + " new model");
 
                                     combinedBossList.RemoveAt(random);
                                     writetext.WriteLine("Enemy Pool Count: " + combinedBossList.Count);
@@ -5208,7 +6681,7 @@ namespace MSB_Test
                                     writetext.WriteLine("New Boss");
                                     writetext.WriteLine(tempNpcParam + " npcParam");
                                     writetext.WriteLine(tempThinkId + " thinkID");
-                                    writetext.WriteLine(modelName + " model");
+                                    writetext.WriteLine(modelName + " new model");
 
                                     writetext.WriteLine("Enemy Pool Count: " + BossListString.Count + Environment.NewLine + Environment.NewLine);
                                 }
@@ -5747,7 +7220,7 @@ namespace MSB_Test
                                 writetext.WriteLine("New Enemy");
                                 writetext.WriteLine(tempNpcParam + " npcParam");
                                 writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " model" + Environment.NewLine);
+                                writetext.WriteLine(modelName + " new model" + Environment.NewLine);
                             }
                         }
 
@@ -5814,7 +7287,7 @@ namespace MSB_Test
                                 writetext.WriteLine("New Enemy");
                                 writetext.WriteLine(tempNpcParam + " npcParam");
                                 writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " model" + Environment.NewLine);
+                                writetext.WriteLine(modelName + " new model" + Environment.NewLine);
                             }
                         }
 
@@ -5825,8 +7298,267 @@ namespace MSB_Test
             }
         }
         
+        private void RandomizeMeleeMoveset(string thisParam, List<int> numToReplace, List<int> rowsToReplace)
+        {
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM currentParam;
+
+            currentParam = parms[thisParam];
+
+            List<PARAM.Row> rowList = new List<PARAM.Row>();
+            List<PARAM.Row> randomizedRowList = new List<PARAM.Row>();
+
+            Random rand = new Random();
+
+            int numOfCells = currentParam.Rows[0].Cells.Count - 1;
+
+            for (int i = 0; i < numOfCells; i++)
+            {
+                bool doFirst = false;
+                for (int k = 0; k < numToReplace.Count; k++)
+                {
+                    if (k == i)
+                    {
+                        doFirst = true;
+                    }
+                }
+
+                if (doFirst)
+                {
+                    List<PARAM.Cell> cellList = new List<PARAM.Cell>();
+                    List<PARAM.Cell> randomizedCellList = new List<PARAM.Cell>();
+
+                    for (int j = 0; j < currentParam.Rows.Count; j++)
+                    {
+                        bool doStuff = true;
+
+                        for (int k = 0; k < rowsToReplace.Count; k++)
+                        {
+                            if (currentParam.Rows[j].ID.ToString().Contains(rowsToReplace[k].ToString()))
+                            {
+                                doStuff = false;
+                            }
+                        }
+
+                        if (doStuff)
+                        {
+                            cellList.Add(currentParam.Rows[j].Cells[i]);
+                        }
+                    }
+
+                    //randomize
+                    while (cellList.Count > 0)
+                    {
+                        int randomNumber = rand.Next(0, cellList.Count);
+                        randomizedCellList.Add(cellList[randomNumber]);
+
+                        cellList.RemoveAt(randomNumber);
+                    }
+
+                    for (int j = 0; j < currentParam.Rows.Count; j++)
+                    {
+                        bool doStuff = true;
+
+                        for (int k = 0; k < rowsToReplace.Count; k++)
+                        {
+                            if (currentParam.Rows[j].ID.ToString().Contains(rowsToReplace[k].ToString()))
+                            {
+                                doStuff = false;
+                            }
+                        }
+
+                        if (doStuff)
+                        {
+                            int randomNumber = rand.Next(0, randomizedCellList.Count);
+                            currentParam.Rows[j].Cells[i].Value = randomizedCellList[randomNumber].Value;
+                            randomizedCellList.RemoveAt(randomNumber);
+                        }
+                    }
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
+        }
+
+        private void RandomizeGunMoveset(string thisParam, List<int> numToReplace, List<int> rowsToReplace)
+        {
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM currentParam;
+
+            currentParam = parms[thisParam];
+
+            List<PARAM.Row> rowList = new List<PARAM.Row>();
+            List<PARAM.Row> randomizedRowList = new List<PARAM.Row>();
+
+            Random rand = new Random();
+
+            int numOfCells = currentParam.Rows[0].Cells.Count - 1;
+
+            for (int i = 0; i < numOfCells; i++)
+            {
+                bool doFirst = false;
+                for (int k = 0; k < numToReplace.Count; k++)
+                {
+                    if (k == i)
+                    {
+                        doFirst = true;
+                    }
+                }
+
+                if (doFirst)
+                {
+                    List<PARAM.Cell> cellList = new List<PARAM.Cell>();
+                    List<PARAM.Cell> randomizedCellList = new List<PARAM.Cell>();
+
+                    for (int j = 0; j < currentParam.Rows.Count; j++)
+                    {
+                        bool doStuff = false;
+
+                        for (int k = 0; k < rowsToReplace.Count; k++)
+                        {
+                            if (currentParam.Rows[j].ID.ToString().Contains(rowsToReplace[k].ToString()))
+                            {
+                                doStuff = true;
+                            }
+                        }
+
+                        if (doStuff)
+                        {
+                            cellList.Add(currentParam.Rows[j].Cells[i]);
+                        }
+                    }
+
+                    //randomize
+                    while (cellList.Count > 0)
+                    {
+                        int randomNumber = rand.Next(0, cellList.Count);
+                        randomizedCellList.Add(cellList[randomNumber]);
+
+                        cellList.RemoveAt(randomNumber);
+                    }
+
+                    for (int j = 0; j < currentParam.Rows.Count; j++)
+                    {
+                        bool doStuff = false;
+
+                        for (int k = 0; k < rowsToReplace.Count; k++)
+                        {
+                            if (currentParam.Rows[j].ID.ToString().Contains(rowsToReplace[k].ToString()))
+                            {
+                                doStuff = true;
+                            }
+                        }
+
+                        if (doStuff)
+                        {
+                            int randomNumber = rand.Next(0, randomizedCellList.Count);
+                            currentParam.Rows[j].Cells[i].Value = randomizedCellList[randomNumber].Value;
+                            randomizedCellList.RemoveAt(randomNumber);
+                        }
+                    }
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
+        }
+
+        private void PermaDarknessFunction(string currentEmevd)
+        {
+            var tempEMEVD = EMEVD.Read(currentEmevd);
+
+            for(int i = 0; i < tempEMEVD.Events.Count; i ++)
+            {
+                if (tempEMEVD.Events[i].ID.ToString() == "6548972")
+                {
+                    if (permaDarknessBool)
+                    {
+                        string strOne = "254";
+                        string strTwo = "21";
+                        string strThree = "0";
+                        string strFour = "1";
+                        byte bytOne = byte.Parse(strOne);
+                        byte bytTwo = byte.Parse(strTwo);
+                        byte bytThree = byte.Parse(strThree);
+                        byte bytFour = byte.Parse(strFour);
+
+                        tempEMEVD.Events[i].Instructions[0].ArgData[4] = bytOne;
+                        tempEMEVD.Events[i].Instructions[0].ArgData[5] = bytTwo;
+                        tempEMEVD.Events[i].Instructions[0].ArgData[6] = bytThree;
+                        tempEMEVD.Events[i].Instructions[0].ArgData[8] = bytFour;
+                    }
+                    else if (!permaDarknessBool)
+                    {
+                        string strOne = "159";
+                        string strTwo = "134";
+                        string strThree = "1";
+                        string strFour = "0";
+                        byte bytOne = byte.Parse(strOne);
+                        byte bytTwo = byte.Parse(strTwo);
+                        byte bytThree = byte.Parse(strThree);
+                        byte bytFour = byte.Parse(strFour);
+
+                        tempEMEVD.Events[i].Instructions[0].ArgData[4] = bytOne;
+                        tempEMEVD.Events[i].Instructions[0].ArgData[5] = bytTwo;
+                        tempEMEVD.Events[i].Instructions[0].ArgData[6] = bytThree;
+                        tempEMEVD.Events[i].Instructions[0].ArgData[8] = bytFour;
+                    }
+                }
+            }
+
+            tempEMEVD.Write(currentEmevd);
+        }
+
         private void RandomizeItemDrops()
         {
+            /*
             string newItemLotToSet = "-1";
 
             Random rand = new Random();
@@ -5837,6 +7569,7 @@ namespace MSB_Test
 
             List<string> dontUseList = new List<string>();
 
+            
             for (int i = 0; i < unusedList.Count; i++)
             {
                 dontUseList.Add(unusedList[i]);
@@ -6013,6 +7746,82 @@ namespace MSB_Test
                     file.Bytes = parms[name].Write();
             }
             parambnd.Write(paramPath);
+            */
+
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
+            {
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
+            }
+
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
+
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
+            }
+
+            PARAM npcParamRow = parms["NpcParam"];
+
+            Random rand = new Random();
+
+            List<Int32> itemLotList = new List<Int32>();
+
+            for(int i = 0; i < npcParamRow.Rows.Count; i ++)
+            {
+                if (npcParamRow.Rows[i].ID != 252100)
+                {
+                    if (npcParamRow.Rows[i].ID != 6071)
+                    {
+                        if (npcParamRow.Rows[i].Cells[11].Value.ToString() != "-1")
+                        {
+                            string tempString = npcParamRow.Rows[i].Cells[11].Value.ToString();
+                            itemLotList.Add(Int32.Parse(tempString));
+                        }
+                        if (npcParamRow.Rows[i].Cells[12].Value.ToString() != "-1")
+                        {
+                            string tempString = npcParamRow.Rows[i].Cells[12].Value.ToString();
+                            itemLotList.Add(Int32.Parse(tempString));
+                        }
+                    }
+                }
+            }
+
+            for(int i = 0; i < npcParamRow.Rows.Count; i ++)
+            {
+                if (npcParamRow.Rows[i].ID != 252100)
+                {
+                    if (npcParamRow.Rows[i].ID != 6071)
+                    {
+                        if (npcParamRow.Rows[i].Cells[11].Value.ToString() != "-1")
+                        {
+                            int randomNumber = rand.Next(0, itemLotList.Count - 1);
+                            string tempString = npcParamRow.Rows[i].Cells[11].Value.ToString();
+
+                            while (tempString == itemLotList[randomNumber].ToString())
+                            {
+                                randomNumber = rand.Next(0, itemLotList.Count - 1);
+                            }
+
+                            npcParamRow.Rows[i].Cells[11].Value = itemLotList[randomNumber];
+                        }
+                    }
+                }
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
         }
 
         private void RandomizeKeys()
@@ -6128,87 +7937,46 @@ namespace MSB_Test
             }
         }
 
-        private void GenerateDummyEnemyList(string currentMap)
+        private void TeamTypeRando()
         {
-            var tempGuy = MSBB.Read(currentMap);
+            Random rand = new Random();
 
-            for(int i = 0; i < tempGuy.Parts.DummyEnemies.Count; i ++)
+            var paramdefs = new List<PARAMDEF>();
+            var paramdefbnd = BND4.Read(paramDefPath);
+            foreach (BinderFile file in paramdefbnd.Files)
             {
-                if(tempGuy.Parts.DummyEnemies[i].Description == "【カットシーン用】")
-                {
-                    dummyEnemyList.Add(tempGuy.Parts.DummyEnemies[i]);
-                }
+                var paramdef = PARAMDEF.Read(file.Bytes);
+                paramdefs.Add(paramdef);
             }
 
-            for (int i = 0; i < dummyEnemyList.Count; i++)
+            var parms = new Dictionary<string, PARAM>();
+            var parambnd = BND4.Read(paramPath);
+            foreach (BinderFile file in parambnd.Files)
             {
-                dummyEnemyStringList.Add(dummyEnemyList[i].NPCParamID.ToString() + "*" + dummyEnemyList[i].ThinkParamID.ToString() + "*" + dummyEnemyList[i].ModelName);
-            }
-        }
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                var param = PARAM.Read(file.Bytes);
 
-        private void RandomizeDummyEnemies(string currentMap)
-        {
-            var tempGuy = MSBB.Read(currentMap);
-
-            for(int i = 0; i < tempGuy.Parts.DummyEnemies.Count; i ++)
-            {
-                if (tempGuy.Parts.DummyEnemies[i].Description == "【カットシーン用】")
-                {
-                    Random rand = new Random();
-
-                    int randomNumber = rand.Next(0, dummyEnemyStringList.Count);
-                    string thisEnemy = dummyEnemyStringList[randomNumber];
-
-                    int removalNumber;
-
-                    removalNumber = randomNumber;
-
-                    string tempNpcParam;
-                    string tempThinkId;
-                    string modelName;
-
-                    int tempNpcParamInt;
-                    int tempThinkIdInt;
-
-                    int tempnpcint = thisEnemy.IndexOf("*");
-                    tempNpcParam = thisEnemy.Substring(0, tempnpcint);
-                    tempThinkId = thisEnemy.Substring(tempnpcint + 1, thisEnemy.LastIndexOf("*") - tempnpcint - 1);
-                    modelName = thisEnemy.Substring(thisEnemy.LastIndexOf("*") + 1, 5);
-
-                    tempNpcParamInt = int.Parse(tempNpcParam);
-                    tempThinkIdInt = int.Parse(tempThinkId);
-
-                    thisnpc = tempGuy.Parts.DummyEnemies[i].NPCParamID.ToString();
-                    thisthink = tempGuy.Parts.DummyEnemies[i].ThinkParamID.ToString();
-                    thismo = tempGuy.Parts.DummyEnemies[i].ModelName;
-                    thisentityID = tempGuy.Parts.DummyEnemies[i].EntityID.ToString();
-
-                    tempGuy.Parts.DummyEnemies[i].NPCParamID = tempNpcParamInt;
-                    tempGuy.Parts.DummyEnemies[i].ThinkParamID = tempThinkIdInt;
-                    tempGuy.Parts.DummyEnemies[i].ModelName = modelName;
-
-                    using (StreamWriter writetext = File.AppendText(dummyFilePath))
-                    {
-                        writetext.WriteLine(currentMap);
-                        writetext.WriteLine(i + " Number in map list");
-                        writetext.WriteLine("Old Model");
-                        writetext.WriteLine(thisnpc + " npcParam");
-                        writetext.WriteLine(thisthink + " thinkID");
-                        writetext.WriteLine(thismo + " model");
-                        writetext.WriteLine(thisentityID);
-
-                        writetext.WriteLine("New Model");
-                        writetext.WriteLine(tempNpcParam + " npcParam");
-                        writetext.WriteLine(tempThinkId + " thinkID");
-                        writetext.WriteLine(modelName + " model");
-                        writetext.WriteLine(Environment.NewLine);
-                    }
-
-                    dummyEnemyStringList.RemoveAt(removalNumber);
-                }
+                param.ApplyParamdef(paramdefs.Find(def => def.ParamType == param.ParamType));
+                parms[name] = param;
             }
 
-            tempGuy.Write(currentMap);
+            PARAM currentParam = parms["NpcParam"];
+            List<PARAM.Row> talkList = new List<PARAM.Row>();
+
+            for (int i = 0; i < currentParam.Rows.Count; i++)
+            {
+                byte eight = 25;
+
+                currentParam.Rows[i].Cells[100].Value = eight;
+            }
+
+            foreach (BinderFile file in parambnd.Files)
+            {
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (parms.ContainsKey(name))
+                    file.Bytes = parms[name].Write();
+            }
+            parambnd.Write(paramPath);
         }
 
         private void RandomizeItemLots(string currentMap)
@@ -6262,6 +8030,77 @@ namespace MSB_Test
 
             tempGuy.Write(currentMap);
         }
+        /*
+        private void CutEnemyScan()
+        {
+            List<string> mapStringList = new List<string>();
+
+            List<string> modelNameList = new List<string>();
+            modelNameList.Add("c1020");
+            modelNameList.Add("c1040");
+            modelNameList.Add("c1070");
+            modelNameList.Add("c1080");
+            modelNameList.Add("c2030");
+            modelNameList.Add("c2060");
+            modelNameList.Add("c2070");
+            modelNameList.Add("c2300");
+            modelNameList.Add("c2310");
+            modelNameList.Add("c2800");
+            modelNameList.Add("c2810");
+            modelNameList.Add("c2910");
+            modelNameList.Add("c3110");
+            modelNameList.Add("c5045");
+            modelNameList.Add("c5050");
+            modelNameList.Add("c5060");
+            modelNameList.Add("c5110");
+            modelNameList.Add("c5410");
+            modelNameList.Add("c5420");
+            modelNameList.Add("c5500");
+            modelNameList.Add("c5501");
+            modelNameList.Add("c5502");
+            modelNameList.Add("c5520");
+            modelNameList.Add("c5521");
+            modelNameList.Add("c5522");
+            modelNameList.Add("c7000");
+            modelNameList.Add("c7010");
+            modelNameList.Add("c8000");
+            modelNameList.Add("c8010");
+            modelNameList.Add("c8020");
+            modelNameList.Add("c9000");
+            modelNameList.Add("c9040");
+            modelNameList.Add("c9990");
+            modelNameList.Add("c9991");
+
+            string[] filePaths = Directory.GetFiles(filePath + "\\MAPS\\", "*.dcx", SearchOption.TopDirectoryOnly);
+
+            for(int i = 0; i < filePaths.Length; i ++)
+            {
+                mapStringList.Add(filePaths[i]);
+            }
+
+            List<string> newMapList = new List<string>();
+            List<string> newNameList = new List<string>();
+
+            for (int i = 0; i < mapStringList.Count; i++)
+            {
+                var tempGuy = MSBB.Read(mapStringList[i]);
+                for(int j = 0; j < tempGuy.Parts.Enemies.Count; j ++)
+                {
+                    for(int k = 0; k < modelNameList.Count; k ++)
+                    {
+                        if(tempGuy.Parts.Enemies[j].ModelName.ToString().Contains(modelNameList[k]))
+                        {
+                            newMapList.Add(mapStringList[i]);
+                            newNameList.Add(tempGuy.Parts.Enemies[j].NPCParamID.ToString() + "*" + tempGuy.Parts.Enemies[j].ThinkParamID.ToString() + "*" + tempGuy.Parts.Enemies[j].ModelName);
+                        }
+                    }
+                }
+
+            }
+
+            cutEnemyString = newNameList.Distinct().ToList();
+            List<string> uniqueMapList = newMapList.Distinct().ToList();
+        }*/
 
         private void BossCheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -6283,6 +8122,12 @@ namespace MSB_Test
         private void OopsAllCheck_Checked(object sender, RoutedEventArgs e)
         {
             oopsAll = OopsAllCheck.IsChecked.Value;
+
+            if (OopsAllCheck.IsChecked.Value == true)
+            {
+                ExEnemyBox.IsChecked = false;
+                ExBossBox.IsChecked = false;
+            }
         }
 
         private void SeedBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -6349,6 +8194,12 @@ namespace MSB_Test
         {
             oopsAllBosses = OopsAllBossesCheck.IsChecked.Value;
             includeBosses = OopsAllBossesCheck.IsChecked.Value;
+
+            if (OopsAllBossesCheck.IsChecked.Value == true)
+            {
+                ExEnemyBox.IsChecked = false;
+                ExBossBox.IsChecked = false;
+            }
         }
 
         private void RandomizeEnemiesCheck_Checked(object sender, RoutedEventArgs e)
@@ -9445,22 +11296,6 @@ namespace MSB_Test
                 }
             }
 
-            using (StreamWriter writetext = File.AppendText(dummyFilePath))
-            {
-                writetext.WriteLine("DecalParam");
-
-                for (int i = 0; i < currentParam.Rows.Count; i++)
-                {
-                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
-
-                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
-                    {
-                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
-                    }
-                    writetext.WriteLine("");
-                }
-            }
-
             foreach (BinderFile file in parambnd.Files)
             {
                 string name = Path.GetFileNameWithoutExtension(file.Name);
@@ -9494,42 +11329,51 @@ namespace MSB_Test
             }
 
             PARAM currentParam = parms["TalkParam"];
-            List<PARAM.Row> talkList = new List<PARAM.Row>();
+
+            List<string> decalList = new List<string>();
+
+            masterList = new List<long>();
+            RandList = new List<long>();
+            cellList = new List<PARAM.Cell>();
+            cellListString = new List<string>();
+
+            paramList = new List<PARAM.Cell>();
+            randParamList = new List<PARAM.Cell>();
+
+            listOfCellLists = new List<List<PARAM.Cell>>();
 
             for (int i = 0; i < currentParam.Rows.Count; i++)
             {
-                talkList.Add(currentParam.Rows[i]);
+                cellList = new List<PARAM.Cell>();
+                cellList = currentParam.Rows[i].Cells.ToList();
+                listOfCellLists.Add(cellList);
             }
 
-            List<PARAM.Row> randomizedTalkList = new List<PARAM.Row>();
-
-            while(talkList.Count > 0)
+            for (int i = 0; i < listOfCellLists[0].Count; i++)
             {
-                int randomNumber = rand.Next(0, talkList.Count -1);
-                randomizedTalkList.Add(talkList[randomNumber]);
-                talkList.RemoveAt(randomNumber);
-            }
+                paramList = new List<PARAM.Cell>();
+                randParamList = new List<PARAM.Cell>();
 
-            for(int i = 0; i < currentParam.Rows.Count; i ++)
-            {
-                int randomNumber = rand.Next(0, randomizedTalkList.Count - 1);
-
-                currentParam.Rows[i].ID = randomizedTalkList[randomNumber].ID;
-            }
-
-            using (StreamWriter writetext = File.AppendText(dummyFilePath))
-            {
-                writetext.WriteLine("TalkParam");
-
-                for (int i = 0; i < currentParam.Rows.Count; i++)
+                for (int j = 0; j < listOfCellLists.Count; j++)
                 {
-                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+                    paramList.Add(listOfCellLists[j][i]);
+                }
 
-                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
-                    {
-                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
-                    }
-                    writetext.WriteLine("");
+                while (paramList.Count > 0)
+                {
+                    int index = rand.Next(0, paramList.Count);
+                    randParamList.Add(paramList[index]);
+                    paramList.RemoveAt(index);
+                }
+
+                for (int j = 0; j < randParamList.Count; j++)
+                {
+                    string tempString = listOfCellLists[j][i].ToString();
+                    int spaceInd = tempString.IndexOf(" ");
+                    tempString = tempString.Substring(spaceInd + 1, tempString.Length - spaceInd - 1);
+                    int equalInd = tempString.IndexOf("=");
+                    tempString = tempString.Substring(0, equalInd - 1);
+                    currentParam.Rows[j][tempString].Value = randParamList[j].Value;
                 }
             }
 
@@ -9947,21 +11791,6 @@ namespace MSB_Test
                 }
             }
 
-            using (StreamWriter writetext = File.AppendText(dummyFilePath))
-            {
-                writetext.WriteLine("Bullet");
-
-                for (int i = 0; i < currentParam.Rows.Count; i++)
-                {
-                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
-
-                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
-                    {
-                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
-                    }
-                    writetext.WriteLine("");
-                }
-            }
 
             foreach (BinderFile file in parambnd.Files)
             {
@@ -10086,21 +11915,6 @@ namespace MSB_Test
                 spEffectVfxParam.Rows[i].Cells[0].Value = Convert.ToInt32(randomizedList[i]);
             }
             */
-            using (StreamWriter writetext = File.AppendText(dummyFilePath))
-            {
-                writetext.WriteLine(paramString);
-
-                for (int i = 0; i < currentParam.Rows.Count; i ++)
-                {
-                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
-
-                    for(int j = 0; j < currentParam.Rows[i].Cells.Count; j ++)
-                    {
-                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
-                    }
-                    writetext.WriteLine("");
-                }
-            }
 
             foreach (BinderFile file in parambnd.Files)
             {
@@ -10289,6 +12103,16 @@ namespace MSB_Test
                     numOfSlots = 6;
                 }
 
+                if(sixGemBool)
+                {
+                    numOfSlots = 6;
+                }
+
+                if(threeGemBool)
+                {
+                    numOfSlots = 3;
+                }
+
                 if (numOfSlots >= 1)
                 {
                     int randomNumber = rand.Next(0, genOne.Count - 1);
@@ -10347,22 +12171,6 @@ namespace MSB_Test
                     currentParam.Rows[i].Cells[33].Value = Convert.ToInt32(genTwo[randomNumber]);
                     currentParam.Rows[i].Cells[34].Value = float.Parse(genThree[randomNumber]);
                     currentParam.Rows[i].Cells[35].Value = float.Parse(genFour[randomNumber]);
-                }
-            }
-
-            using (StreamWriter writetext = File.AppendText(dummyFilePath))
-            {
-                writetext.WriteLine("GemGenParam");
-
-                for (int i = 0; i < currentParam.Rows.Count; i++)
-                {
-                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
-
-                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
-                    {
-                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
-                    }
-                    writetext.WriteLine("");
                 }
             }
 
@@ -10621,6 +12429,101 @@ namespace MSB_Test
         {
             bloodBool = BloodBox.IsChecked.Value;
         }
+
+        private void ExEnemyBox_Checked(object sender, RoutedEventArgs e)
+        {
+            excludeEnemiesBool = ExEnemyBox.IsChecked.Value;
+
+            if(ExEnemyBox.IsChecked.Value == true)
+            {
+                OopsAllCheck.IsChecked = false;
+                OopsAllBossesCheck.IsChecked = false;
+            }
+        }
+
+        private void ExBossBox_Checked(object sender, RoutedEventArgs e)
+        {
+            excludeBossesBool = ExBossBox.IsChecked.Value;
+
+            if (ExBossBox.IsChecked.Value == true)
+            {
+                OopsAllCheck.IsChecked = false;
+                OopsAllBossesCheck.IsChecked = false;
+            }
+        }
+        
+        private void EasyRomBox_Checked(object sender, RoutedEventArgs e)
+        {
+            easyRomBool = EasyRomBox.IsChecked.Value;
+        }
+
+        private void EasyWitchesBox_Checked(object sender, RoutedEventArgs e)
+        {
+            easyWitchesBool = EasyWitchesBox.IsChecked.Value;
+        }
+        
+        private void AllDmgAll_Checked(object sender, RoutedEventArgs e)
+        {
+            //cell 100 team type 25
+            teamTypeBool = AllDmgAll.IsChecked.Value;
+        }
+
+        private void SixGemBox_Checked(object sender, RoutedEventArgs e)
+        {
+            sixGemBool = SixGemBox.IsChecked.Value;
+            if (ThreeGemBox.IsChecked.Value == true)
+            {
+                ThreeGemBox.IsChecked = false;
+            }
+        }
+
+        private void NoScaleBox_Checked(object sender, RoutedEventArgs e)
+        {
+            noScalingBool = NoScaleBox.IsChecked.Value;
+        }
+
+        private void PermaDarknessBox_Checked(object sender, RoutedEventArgs e)
+        {
+            permaDarknessBool = PermaDarknessBox.IsChecked.Value;
+        }
+
+        private void GunMovesetBox_Checked(object sender, RoutedEventArgs e)
+        {
+            gunMoveset = GunMovesetBox.IsChecked.Value;
+        }
+
+        private void MeleeMovesetBox_Checked(object sender, RoutedEventArgs e)
+        {
+            meleeMoveset = MeleeMovesetBox.IsChecked.Value;
+        }
+
+        private void ThreeGemBox_Checked(object sender, RoutedEventArgs e)
+        {
+            threeGemBool = ThreeGemBox.IsChecked.Value;
+            if(SixGemBox.IsChecked.Value == true)
+            {
+                SixGemBox.IsChecked = false;
+            }
+        }
+
+        private void ScaleWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            win1.Show();
+        }
+
+        private void CustomScalingBox_Checked(object sender, RoutedEventArgs e)
+        {
+            customScaling = CustomScalingBox.IsChecked.Value;
+        }
+
+
+
+        //private void CutEnemyBox_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    cutEnemyBool = CutEnemyBox.IsChecked.Value;
+        //}
+
+
 
         /////////////////////////////////////////////////////////////////////////////////////
 

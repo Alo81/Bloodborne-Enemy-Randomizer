@@ -1,0 +1,284 @@
+﻿<Window x:Class="MSB_Test.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MSB_Test"
+        mc:Ignorable="d"
+        Title="Window1" Height="359" Width="800" ResizeMode="NoResize">
+    <Grid x:Name="ScalingWindow" Margin="0,0,0,4">
+        <ComboBox x:Name="HemwickBox"  HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="HemwickBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+
+        <Label Content="Hemwick Charnel Lane" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top"/>
+        <Label Content="Hunter's Dream" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="HuntersDreamBox" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="HuntersDreamBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Button x:Name="CloseScalingWindowButton" Content="Close and Save" HorizontalAlignment="Left" Margin="540,257,0,0" VerticalAlignment="Top" Click="CloseScalingWindowButton_Click"/>
+        <Label Content="Cathedral Ward" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CathedralBox" HorizontalAlignment="Left" Margin="10,146,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="CathedralBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label x:Name="UpperLabel" Content="Upper Cathedral Ward" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="UpperBox" HorizontalAlignment="Left" Margin="10,206,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="UpperBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Nightmare of Mensis" HorizontalAlignment="Left" Margin="10,244,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="MensisBox" HorizontalAlignment="Left" Margin="10,270,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="MensisBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Yahargul" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="YahargulBox" HorizontalAlignment="Left" Margin="170,36,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="YahargulBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Nightmare Frontier" HorizontalAlignment="Left" Margin="170,63,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="FrontierBox" HorizontalAlignment="Left" Margin="170,89,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="FrontierBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Research Hall" HorizontalAlignment="Left" Margin="170,120,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="ResearchBox" HorizontalAlignment="Left" Margin="170,146,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ResearchBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Old Yharnam" HorizontalAlignment="Left" Margin="170,180,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="OldBox" HorizontalAlignment="Left" Margin="170,206,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="OldBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Central Yharnam" HorizontalAlignment="Left" Margin="170,244,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CentralBox" HorizontalAlignment="Left" Margin="170,270,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="CentralBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Cainhurst" HorizontalAlignment="Left" Margin="326,10,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CainhurstBox" HorizontalAlignment="Left" Margin="326,36,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="CainhurstBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Forbidden Woods" HorizontalAlignment="Left" Margin="326,63,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="WoodsBox" HorizontalAlignment="Left" Margin="326,89,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="WoodsBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Byrgenwerth + Lecture Hall" HorizontalAlignment="Left" Margin="326,120,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="ByrgenwerthBox" HorizontalAlignment="Left" Margin="326,146,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ByrgenwerthBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Hunter's Nightmare" HorizontalAlignment="Left" Margin="326,180,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="HuntersNightmareBox" HorizontalAlignment="Left" Margin="326,206,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="HuntersNightmareBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+        <Label Content="Fishing Hamlet" HorizontalAlignment="Left" Margin="326,244,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="HamletBox" HorizontalAlignment="Left" Margin="323,270,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="HamletBox_SelectionChanged">
+            <ComboBoxItem Content="Hunter's Dream"></ComboBoxItem>
+            <ComboBoxItem Content="Hemwick Charnel Lane"></ComboBoxItem>
+            <ComboBoxItem Content="Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Upper Cathedral Ward"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare of Mensis"></ComboBoxItem>
+            <ComboBoxItem Content="Yahargul"></ComboBoxItem>
+            <ComboBoxItem Content="Nightmare Frontier"></ComboBoxItem>
+            <ComboBoxItem Content="Research Hall"></ComboBoxItem>
+            <ComboBoxItem Content="Old Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Central Yharnam"></ComboBoxItem>
+            <ComboBoxItem Content="Cainhurst"></ComboBoxItem>
+            <ComboBoxItem Content="Forbidden Woods"></ComboBoxItem>
+            <ComboBoxItem Content="Byrgenwerth + Lecture hall"></ComboBoxItem>
+            <ComboBoxItem Content="Hunter's Nightmare"></ComboBoxItem>
+            <ComboBoxItem Content="Fishing Hamlet"></ComboBoxItem>
+        </ComboBox>
+
+    </Grid>
+</Window>

@@ -14,10 +14,10 @@
             <RowDefinition Height="271*"/>
             <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
-        <CheckBox ToolTip="Include chalice enemies in enemy randomization pool. This will also randomize enemies in the chalice maps." x:Name="ChaliceEnemies" Content="Include Chalice Enemies" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Checked="Chalice_Checked" Height="15" Width="147"/>
+        <CheckBox ToolTip="Include chalice enemies in enemy randomization pool. This will also randomize enemies in the chalice maps." x:Name="ChaliceEnemies" Content="Include Chalice Enemies" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Checked="Chalice_Checked" Height="15" Width="147"/>
         <CheckBox ToolTip="Randomize bosses in all maps, excluding chalice maps." x:Name="BossCheckBox" Content="Randomize Bosses" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Checked="BossCheckBox_Checked" Height="15" Width="118"/>
-        <CheckBox ToolTip="Randomly select an enemy to be replaced by a boss." x:Name="InsertBosses" Content="Bosses Can Replace Enemies" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Checked="InsertBosses_Checked" Height="15" Width="174"/>
-        <CheckBox ToolTip="Include chalice bosses in enemy randomization pool. This will also randomize bosses in the chalice maps." x:Name="ChaliceBoss" Content="Include Chalice Bosses" HorizontalAlignment="Left" Margin="10,149,0,0" VerticalAlignment="Top" Checked="ChaliceBoss_Checked" Height="15" Width="139"/>
+        <CheckBox ToolTip="Randomly select an enemy to be replaced by a boss." x:Name="InsertBosses" Content="Bosses Can Replace Enemies" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top" Checked="InsertBosses_Checked" Height="15" Width="174"/>
+        <CheckBox ToolTip="Include chalice bosses in enemy randomization pool. This will also randomize bosses in the chalice maps." x:Name="ChaliceBoss" Content="Include Chalice Bosses" HorizontalAlignment="Left" Margin="10,112,0,0" VerticalAlignment="Top" Checked="ChaliceBoss_Checked" Height="15" Width="139"/>
         <Label Content="Percentage Chance an Enemy Will Be a Boss" HorizontalAlignment="Left" Margin="370,36,0,0" VerticalAlignment="Top" Height="26" Width="256" FontWeight="Bold" FontStyle="Normal" Grid.Row="1"/>
         <CheckBox ToolTip="Customize the enemies that will appear in all maps." x:Name="OopsAllCheck" Content="Enemies" HorizontalAlignment="Left" Margin="110,131,0,0" VerticalAlignment="Top" Checked="OopsAllCheck_Checked" Height="15" Width="79" Grid.Row="1"/>
         <TextBox x:Name="OopsAllStringName" TextWrapping="Wrap" TextChanged="OopsAllStringName_TextChanged" Margin="84,166,10,92" Grid.Row="1"/>
@@ -25,9 +25,9 @@
         <TextBox x:Name="OopsBoss" Margin="84,208,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="29" TextChanged="OopsBoss_TextChanged" Grid.Row="1"/>
         <Label Content="Enemies:" HorizontalAlignment="Left" Margin="21,171,0,0" VerticalAlignment="Top" Grid.Row="1"/>
         <Label Content="Bosses:" HorizontalAlignment="Left" Margin="25,210,0,0" VerticalAlignment="Top" Grid.Row="1"/>
-        <CheckBox ToolTip="Customize the bosses that will appear in all maps." x:Name="OopsAllBossesCheck" Content="Bosses" HorizontalAlignment="Left" Margin="214,131,0,0" VerticalAlignment="Top" Checked="OopsAllBossesCheck_Checked" Grid.Row="1"/>
+        <CheckBox ToolTip="Customize the bosses that will appear in all maps." x:Name="OopsAllBossesCheck" Content="Bosses" HorizontalAlignment="Left" Margin="189,131,0,0" VerticalAlignment="Top" Checked="OopsAllBossesCheck_Checked" Grid.Row="1"/>
         <CheckBox ToolTip="Randomize enemies in all maps, excluding chalice maps." x:Name="RandomizeEnemiesCheck" Content="Randomize Enemies" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" Checked="RandomizeEnemiesCheck_Checked"/>
-        <CheckBox ToolTip="Randomize the NPCs in all maps." x:Name="AddNPCS" Content="Randomize NPCs" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top" Checked="AddNPCS_Checked"/>
+        <CheckBox ToolTip="Randomize the NPCs in all maps." x:Name="AddNPCS" Content="Randomize NPCs" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Checked="AddNPCS_Checked"/>
         <CheckBox ToolTip="Randomize non-key items in all maps." x:Name="ArmorRandomizerCheckBox" Content="Randomize Non-Key Overworld Items" HorizontalAlignment="Left" Margin="290,91,0,0" VerticalAlignment="Top" Checked="ArmorRandomizerCheckBox_Checked"/>
         <ProgressBar x:Name="TotalProgressBar" HorizontalAlignment="Center" Height="18" Margin="0,267,0,0" Grid.Row="1" VerticalAlignment="Top" Width="1100" ValueChanged="TotalProgressBar_ValueChanged"/>
         <Label x:Name="CurrentTaskLabel" Content="CURRENT TASK" HorizontalAlignment="Left" Margin="10,239,0,0" Grid.Row="1" VerticalAlignment="Top" Width="638"/>
@@ -35,7 +35,7 @@
         <Label x:Name="TotalTime" Content="0:00" HorizontalAlignment="Left" Margin="1094,242,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Label Content="Customize Run" HorizontalAlignment="Left" Margin="17,124,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <CheckBox ToolTip="Include bosses from group boss fights as a single boss. Witches, Shadows, Emissary, Failures, and One Reborn." x:Name="LesserBossesBox" Content="Include Lesser Bosses in Boss Fight Pool " HorizontalAlignment="Left" Margin="290,71,0,0" VerticalAlignment="Top" Checked="LesserBossesBox_Checked"/>
-        <CheckBox ToolTip="Keep Bell Maidens from being changed, keeping the generators working." x:Name="BellMaidenBox" Content="Keep Bell Maidens the Same" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Checked="BellMaidenBox_Checked"/>
+        <CheckBox ToolTip="Keep Bell Maidens from being changed, keeping the generators working." x:Name="BellMaidenBox" Content="Unchanged Bell Maidens" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Checked="BellMaidenBox_Checked"/>
         <CheckBox ToolTip="Randomize key items in all maps." x:Name="RandomizeKeyItemsBox" Content="Randomize Key Overworld Items (With Logic)" HorizontalAlignment="Left" Margin="290,111,0,0" VerticalAlignment="Top" Checked="RandomizeKeyItemsBox_Checked"/>
         <CheckBox ToolTip="Randomize items that will appear in all shops." x:Name="RandomizeShopBox" Content="Randomize Shop Items" HorizontalAlignment="Left" Margin="290,131,0,0" VerticalAlignment="Top" Checked="RandomizeShopBox_Checked"/>
         <CheckBox ToolTip="Randomize items that drop from enemies." x:Name="EnemyDropBox" Content="Randomize Enemy Drops" HorizontalAlignment="Left" Margin="290,151,0,0" VerticalAlignment="Top" Checked="EnemyDropBox_Checked"/>
@@ -188,18 +188,32 @@
         <CheckBox x:Name="ByrgenwerthBossBox" Content="" HorizontalAlignment="Left" Margin="1104,4,0,0" Grid.Row="1" VerticalAlignment="Top" Checked="ByrgenwerthBossBox_Checked"/>
         <CheckBox x:Name="NightmareBossBox" Content="" HorizontalAlignment="Left" Margin="1104,58,0,0" Grid.Row="1" VerticalAlignment="Top" Checked="NightmareBossBox_Checked"/>
         <CheckBox x:Name="HamletBossBox" Content="" HorizontalAlignment="Left" Margin="1104,111,0,0" Grid.Row="1" VerticalAlignment="Top" Checked="HamletBossBox_Checked"/>
-        <CheckBox x:Name="ChaliceBossBox" Content="Bosses Can Replace Enemies (Chalice Dungeons)" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Checked="ChaliceBossBox_Checked"/>
+        <CheckBox x:Name="ChaliceBossBox" Content="Bosses Can Replace Enemies (Chalice Dungeons)" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Checked="ChaliceBossBox_Checked"/>
         <Slider x:Name="EnemySizeSlider" HorizontalAlignment="Left" Height="31" Margin="10,241,0,0" VerticalAlignment="Top" Width="598" Grid.RowSpan="2" Minimum="1" Value="1" ValueChanged="EnemySizeSlider_ValueChanged" SmallChange="1" LargeChange="1" TickFrequency="1"/>
         <Label x:Name="SliderSizeLabel" Content="{Binding ElementName=EnemySizeSlider, Path=Value}" HorizontalAlignment="Left" Margin="433,210,0,0" VerticalAlignment="Top" Height="26" Width="33"/>
         <Label Content="Upper limit of filesize for enemy replacing original enemy. Original enemy size * " HorizontalAlignment="Left" Margin="8,210,0,0" VerticalAlignment="Top" Height="31"/>
         <Label Content="Leave at 1 for minimal crashing." HorizontalAlignment="Left" Margin="466,210,0,0" VerticalAlignment="Top" Height="31"/>
         <CheckBox x:Name="StartingWeaponsRandomizeBox" Content="Randomize Starting Weapons" HorizontalAlignment="Left" Margin="290,190,0,0" VerticalAlignment="Top" Checked="StartingWeaponsRandomizeBox_Checked"/>
         <CheckBox x:Name="EasyMultiBossesBox" Content="Easy Shadows" HorizontalAlignment="Left" Margin="290,32,0,0" VerticalAlignment="Top" Checked="EasyMultiBossesBox_Checked"/>
-        <CheckBox x:Name="EasyFailuresBox" Content="Easy Living Failures" HorizontalAlignment="Left" Margin="389,32,0,0" VerticalAlignment="Top" Checked="EasyFailuresBox_Checked"/>
+        <CheckBox x:Name="EasyFailuresBox" Content="Easy Failures" HorizontalAlignment="Left" Margin="389,32,0,0" VerticalAlignment="Top" Checked="EasyFailuresBox_Checked"/>
         <CheckBox x:Name="VFXChange" Content="Super Aggro" HorizontalAlignment="Left" Margin="555,53,0,0" VerticalAlignment="Top" Checked="VFXChange_Checked"/>
-        <CheckBox x:Name="FaceBox" Content="Face Data" HorizontalAlignment="Left" Margin="555,72,0,0" VerticalAlignment="Top" Checked="FaceBox_Checked"/>
-        <CheckBox x:Name="GemsAndRunesBox" Content="Gems + Runes" HorizontalAlignment="Left" Margin="555,91,0,0" VerticalAlignment="Top" Checked="GemsAndRunesBox_Checked"/>
-        <CheckBox x:Name="TalkBox" Content="Talk Data" HorizontalAlignment="Left" Margin="555,111,0,0" VerticalAlignment="Top" Checked="TalkBox_Checked"/>
-        <CheckBox x:Name="BloodBox" Content="Blood Decals" HorizontalAlignment="Left" Margin="555,131,0,0" VerticalAlignment="Top" Checked="BloodBox_Checked"/>
+        <CheckBox x:Name="FaceBox" Content="Face Data" HorizontalAlignment="Left" Margin="555,74,0,0" VerticalAlignment="Top" Checked="FaceBox_Checked"/>
+        <CheckBox x:Name="GemsAndRunesBox" Content="Gems + Runes" HorizontalAlignment="Left" Margin="181,119,0,0" VerticalAlignment="Top" Checked="GemsAndRunesBox_Checked"/>
+        <CheckBox x:Name="TalkBox" Content="Talk Data" HorizontalAlignment="Left" Margin="555,129,0,0" VerticalAlignment="Top" Checked="TalkBox_Checked"/>
+        <CheckBox x:Name="BloodBox" Content="Blood Decals" HorizontalAlignment="Left" Margin="555,149,0,0" VerticalAlignment="Top" Checked="BloodBox_Checked"/>
+        <Label Content="Exclude" HorizontalAlignment="Left" Margin="341,124,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <CheckBox x:Name="ExEnemyBox" Content="Enemies" HorizontalAlignment="Left" Margin="400,131,0,0" Grid.Row="1" VerticalAlignment="Top" Checked="ExEnemyBox_Checked"/>
+        <CheckBox x:Name="ExBossBox" Content="Bosses" HorizontalAlignment="Left" Margin="473,131,0,0" Grid.Row="1" VerticalAlignment="Top" Checked="ExBossBox_Checked"/>
+        <CheckBox x:Name="AllDmgAll" Content="No Team Type" HorizontalAlignment="Left" Margin="555,169,0,0" VerticalAlignment="Top" Checked="AllDmgAll_Checked"/>
+        <CheckBox x:Name="SixGemBox" Content="6 gem effects" HorizontalAlignment="Left" Margin="181,156,0,0" VerticalAlignment="Top" Checked="SixGemBox_Checked"/>
+        <CheckBox x:Name="EasyRomBox" Content="Easy Rom" HorizontalAlignment="Left" Margin="480,32,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="EasyWitchesBox" Content="Easy Emissary" HorizontalAlignment="Left" Margin="555,33,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="NoScaleBox" Content="No Scaling" HorizontalAlignment="Left" Margin="555,190,0,0" VerticalAlignment="Top" Checked="NoScaleBox_Checked"/>
+        <CheckBox x:Name="PermaDarknessBox" Content="Nurse Perma-Darkness" HorizontalAlignment="Left" Margin="145,92,0,0" VerticalAlignment="Top" Checked="PermaDarknessBox_Checked"/>
+        <CheckBox x:Name="GunMovesetBox" Content="Gun Movesets" HorizontalAlignment="Left" Margin="145,72,0,0" VerticalAlignment="Top" Checked="GunMovesetBox_Checked"/>
+        <CheckBox x:Name="MeleeMovesetBox" Content="Melee Movesets" HorizontalAlignment="Left" Margin="145,54,0,0" VerticalAlignment="Top" Checked="MeleeMovesetBox_Checked"/>
+        <CheckBox x:Name="ThreeGemBox" Content="3 gem effects" HorizontalAlignment="Left" Margin="181,137,0,0" VerticalAlignment="Top" Checked="ThreeGemBox_Checked"/>
+        <Button x:Name="ScaleWindowButton" Content="Open Scaling Window" HorizontalAlignment="Left" Margin="169,25,0,0" VerticalAlignment="Top" Click="ScaleWindowButton_Click"/>
+        <CheckBox x:Name="CustomScalingBox" Content=" " HorizontalAlignment="Left" Margin="155,28,0,0" VerticalAlignment="Top" Visibility="Visible" Checked="CustomScalingBox_Checked"/>
     </Grid>
 </Window>

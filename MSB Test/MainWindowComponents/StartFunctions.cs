@@ -1,4 +1,5 @@
-﻿using SoulsFormats;
+﻿using MSB_Test.Randomizers;
+using SoulsFormats;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -97,71 +98,8 @@ namespace MSB_Test
                 UpdateUI();
             });
 
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
-
-            if (File.Exists(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx"))
-            {
-                mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
-                GOBAdded = true;
-            }
-
-            eventFileList.Add(filePath + "\\event\\m21_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m21_01_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m22_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m23_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m24_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m24_01_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m24_02_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m25_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m26_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m27_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m28_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m32_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m33_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m34_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m35_00_00_00.emevd.dcx");
-            eventFileList.Add(filePath + "\\event\\m36_00_00_00.emevd.dcx");
+            BuildMapLists();
+            BuildEventList();
 
             string dateNowww = DateTime.Now.ToString("h:mm:ss tt");
             string buttsss = dateNowww.Replace(":", "-");
@@ -193,19 +131,12 @@ namespace MSB_Test
 
             string dateNowwwwww = DateTime.Now.ToString("h:mm:ss tt");
             string buttssssss = dateNowwwwww.Replace(":", "-");
-            randomizedItemLotPath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttssssss + "-RandomizedItemLog.txt";
-            if (logging)
-                if (logging)
-                using (FileStream sw1 = File.Create(randomizedItemLotPath))
-                {
 
-                }
-
-            for (int i = 0; i < mapList.Count; i++)
+            for (int i = 0; i < allMaps.Count; i++)
             {
-                if (File.Exists(mapList[i] + ".bak"))
+                if (File.Exists(allMaps[i] + ".bak"))
                 {
-                    var tempMapRead = MSBB.Read(mapList[i] + ".bak");
+                    var tempMapRead = MSBB.Read(allMaps[i] + ".bak");
 
                     long maxSizeLong = 0;
 
@@ -271,17 +202,17 @@ namespace MSB_Test
             //if(seedString == "" || seedString == "Insert Seed.... Numbers Only")
 
 
-            for (int i = 0; i < mapList.Count; i++)
+            for (int i = 0; i < allMaps.Count; i++)
             {
-                if (!File.Exists(mapList[i] + ".bak"))
+                if (!File.Exists(allMaps[i] + ".bak"))
                 {
-                    File.Copy(mapList[i], mapList[i] + ".bak");
+                    File.Copy(allMaps[i], allMaps[i] + ".bak");
                 }
 
-                else if (File.Exists(mapList[i] + ".bak"))
+                else if (File.Exists(allMaps[i] + ".bak"))
                 {
-                    File.Delete(mapList[i]);
-                    File.Copy(mapList[i] + ".bak", mapList[i]);
+                    File.Delete(allMaps[i]);
+                    File.Copy(allMaps[i] + ".bak", allMaps[i]);
                 }
             }
 
@@ -315,9 +246,9 @@ namespace MSB_Test
                 }
 
             //setting models in list to paste into all maps
-            for (int i = 0; i < mapList.Count; i++)
+            for (int i = 0; i < allMaps.Count; i++)
             {
-                var tempAss = MSBB.Read(mapList[i]);
+                var tempAss = MSBB.Read(allMaps[i]);
 
                 for (int j = 0; j < tempAss.Models.Enemies.Count; j++)
                 {
@@ -367,9 +298,9 @@ namespace MSB_Test
                     }
             }
 
-            for (int i = 0; i < mapList.Count; i++)
+            for (int i = 0; i < allMaps.Count; i++)
             {
-                var tempAss = MSBB.Read(mapList[i]);
+                var tempAss = MSBB.Read(allMaps[i]);
 
                 for (int j = 0; j < modelList.Count; j++)
                 {
@@ -379,7 +310,7 @@ namespace MSB_Test
                     }
                 }
 
-                tempAss.Write(mapList[i]);
+                tempAss.Write(allMaps[i]);
             }
 
             if (oopsAll)
@@ -403,9 +334,9 @@ namespace MSB_Test
 
                 oopsAllEnemyList = new List<MSBB.Part.Enemy>();
 
-                for (int i = 0; i < mapList.Count; i++)
+                for (int i = 0; i < allMaps.Count; i++)
                 {
-                    OopsAll(mapList[i]);
+                    OopsAll(allMaps[i]);
                 }
 
 
@@ -444,9 +375,9 @@ namespace MSB_Test
 
                 oopsAllBossList = new List<MSBB.Part.Enemy>();
 
-                for (int i = 0; i < mapList.Count; i++)
+                for (int i = 0; i < allMaps.Count; i++)
                 {
-                    OopsAllBoss(mapList[i]);
+                    OopsAllBoss(allMaps[i]);
                 }
 
                 for (int i = 0; i < oopsAllBossList.Count; i++)
@@ -1257,96 +1188,14 @@ namespace MSB_Test
 
             if (randomizeItemLots)
             {
-                nonoItemLots.Add(2600550); //Evil Eye Bridge key (key in nightmare of mensis?)
-                nonoItemLots.Add(2400450); //The key to the Old Town (gascoigne key?)
-                nonoItemLots.Add(3500800); //The key to the dungeon usually door (braidor key?)
-                keyItemLots.Add(2800290); //The key to Cathedral Street C (UCW key)
-                keyItemLots.Add(3200720); //The key to nightmare classroom (byrgenworth lower floor key)
-                keyItemLots.Add(3200810); //Veranda of key (key to rom fight)
-                keyItemLots.Add(2410990); //Invitation to the castle (cainhurst summons)
-                keyItemLots.Add(3502000); //Parish length Ω Startup Item (laurence skull)
-                keyItemLots.Add(3401810); //Altar Elevator Startup Item (eye pendant)
-                workshopItemsList.Add(2411000); //Blood gem workshop tool (chest after gascoigne)
-                workshopItemsList.Add(2200360); //Rune tool (after witches)
-
-                for (int i = 0; i < keyItemLots.Count; i++)
-                {
-                    nonoItemLots.Add(keyItemLots[i]);
-                }
-
-                if (!workshopBool)
-                {
-                    for (int i = 0; i < workshopItemsList.Count; i++)
-                    {
-                        nonoItemLots.Add(workshopItemsList[i]);
-                    }
-                }
-
                 this.Dispatcher.Invoke(() =>
                 {
                     totalPercent = 85;
                     currentTask = "Generating Item List...";
                     UpdateUI();
                 });
-
-                //GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
-                GenerateItemLotList(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
-
-                this.Dispatcher.Invoke(() =>
-                {
-                    totalPercent = 90;
-                    currentTask = "Randomizing Items...";
-                    UpdateUI();
-                });
-
-                //RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
-                RandomizeItemLots(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+                var itemRandomizer = new ItemRandomizer(filePath, ref universalRand, workshopBool, logging);
+                itemRandomizer.RandomizeItems(mapList);
             }
 
             PermaDarknessFunction(filePath + "\\event\\common.emevd.dcx");

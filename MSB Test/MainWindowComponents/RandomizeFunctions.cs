@@ -3303,59 +3303,6 @@ namespace MSB_Test
             parambnd.Write(paramPath);
         }
 
-        private void RandomizeItemLots(string currentMap)
-        {
-            var tempGuy = MSBB.Read(currentMap);
-
-
-
-            int randomNumber;
-
-            if (itemLotList.Count > 0)
-            {
-                for (int i = 0; i < tempGuy.Events.Treasures.Count; i++)
-                {
-                    bool changeKey = true;
-
-                    for (int j = 0; j < nonoItemLots.Count; j++)
-                    {
-                        if (tempGuy.Events.Treasures[i].ItemLot1 == nonoItemLots[j])
-                        {
-                            changeKey = false;
-                        }
-                    }
-
-                    if (tempGuy.Events.Treasures[i].ItemLot1 > 0 && changeKey)
-                    {
-                        numberOfKeyIemsRandomized++;
-
-                        if (logging)
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine("Number of items randomized so far " + numberOfKeyIemsRandomized);
-                                writetext.WriteLine("Old item lot");
-                                writetext.WriteLine(tempGuy.Events.Treasures[i].ItemLot1);
-                            }
-
-                        randomNumber = universalRand.Next(0, itemLotList.Count);
-                        tempGuy.Events.Treasures[i].ItemLot1 = itemLotList[randomNumber];
-
-                        if (logging)
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("New item lot");
-                                writetext.WriteLine(itemLotList[randomNumber]);
-                                writetext.WriteLine(Environment.NewLine);
-                            }
-
-                        itemLotList.RemoveAt(randomNumber);
-                    }
-                }
-            }
-
-            tempGuy.Write(currentMap);
-        }
         /*
         private void CutEnemyScan()
         {

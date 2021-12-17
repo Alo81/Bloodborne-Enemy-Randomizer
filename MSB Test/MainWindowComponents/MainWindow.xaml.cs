@@ -50,176 +50,67 @@ namespace MSB_Test
             NightmareBossBox.IsChecked = true;
             HamletBossBox.IsChecked = true;
             */
+            chaliceBossParams = new List<string>{
+                "10313090",     "110304090",        "110304098",
+                "110304096",        "210501006",        "310501006",
+                "10750090",     "110216090",        "210305006",
+                "310305006",        "10127090",     "110313080",
+                "210209096",        "310209096",        "10304090",
+                "10304096",     "10304098",     "110313070",
+                "210510096",        "310509006",        "10106090",
+                "210305016",        "10216090",     "110501000",
+                "210512096",        "110209090",        "210504000",
+                "310504000",        "10305006",     "110509010",
+                "10218090",     "110504000",        "210508006",
+                "310504000",        "110257000",        "210251096",
+                "310305016",        "210306016",        "511000"
+            };
 
-            chaliceBossParams.Add("10313090");
-            chaliceBossParams.Add("110304090");
-            chaliceBossParams.Add("110304098");
-            chaliceBossParams.Add("110304096");
-            chaliceBossParams.Add("210501006");
-            chaliceBossParams.Add("310501006");
-            chaliceBossParams.Add("10750090");
-            chaliceBossParams.Add("110216090");
-            chaliceBossParams.Add("210305006");
-            chaliceBossParams.Add("310305006");
-            chaliceBossParams.Add("10127090");
-            chaliceBossParams.Add("110313080");
-            chaliceBossParams.Add("210209096");
-            chaliceBossParams.Add("310209096");
-            chaliceBossParams.Add("10304090");
-            chaliceBossParams.Add("10304096");
-            chaliceBossParams.Add("10304098");
-            chaliceBossParams.Add("110313070");
-            chaliceBossParams.Add("210510096");
-            chaliceBossParams.Add("310509006");
-            chaliceBossParams.Add("10106090");
-            chaliceBossParams.Add("210305016");
-            chaliceBossParams.Add("10216090");
-            chaliceBossParams.Add("110501000");
-            chaliceBossParams.Add("210512096");
-            chaliceBossParams.Add("110209090");
-            chaliceBossParams.Add("210504000");
-            chaliceBossParams.Add("310504000");
-            chaliceBossParams.Add("10305006");
-            chaliceBossParams.Add("110509010");
-            chaliceBossParams.Add("10218090");
-            chaliceBossParams.Add("110504000");
-            chaliceBossParams.Add("210508006");
-            chaliceBossParams.Add("310504000");
-            chaliceBossParams.Add("110257000");
-            chaliceBossParams.Add("210251096");
-            chaliceBossParams.Add("310305016");
-            chaliceBossParams.Add("210306016");
-            chaliceBossParams.Add("511000");
+            unusedList = new List<string>{
+                "c2120_9999",       "c2120_9998",       "c0000",
+                "c2560",        "c0",       "c1020",
+                "c1030",        "c1080",        "c2030",
+                "c2300",        "c2310",        "c2800",
+                "c2810",        "c2910",        "c3110",
+                "c4150",        "c5030",        "c5110",
+                "c5140",        "c5150",        "c5400",
+                "c5420",        "c5500",        "c5501",
+                "c5502",        "c5520",        "c5521",
+                "c5522",        "c7000",        "c7010",
+                "c7100",        "c8010",        "c8020",
+                "c2501",        "c90",      "c9030",
+                "c2501",        "c2571",        "c8030_0000",
+                "c8040_0000",       "c9020_0000",       "c9020_0001",
+                "c9020_0002",       "c9020_0003",       "c8030_0000",
+                "c5072_0000",       "c4023_0000",       "c4160_0000",
+                "c4160_0001",       "c4160_0002",       "c4160_0003",
+                "c4550_0000",       "c7110_0000",       "c5071_0000",
+                "c4511_0000",       "c5510_0001",       "c5510_0002",
+                "c4540_0000",       "c4543_0000",       "c8070_0000",
+                "c5130_0000",       "c4031_0000",       "c4520_0000",
+                "c1190",        "c1180",        "c1060_0002"
+            };
 
-            unusedList.Add("c2120_9999");
-            unusedList.Add("c2120_9998");
-            unusedList.Add("c0000");
-            unusedList.Add("c2560");
-            unusedList.Add("c0");
-            unusedList.Add("c1020");
-            unusedList.Add("c1030");
-            unusedList.Add("c1080");
-            unusedList.Add("c2030");
-            unusedList.Add("c2300");
-            unusedList.Add("c2310");
-            unusedList.Add("c2800");
-            unusedList.Add("c2810");
-            unusedList.Add("c2910");
-            unusedList.Add("c3110");
-            unusedList.Add("c4150");
-            unusedList.Add("c5030");
-            unusedList.Add("c5110");
-            unusedList.Add("c5140");
-            unusedList.Add("c5150");
-            unusedList.Add("c5400");
-            unusedList.Add("c5420");
-            unusedList.Add("c5500");
-            unusedList.Add("c5501");
-            unusedList.Add("c5502");
-            unusedList.Add("c5520");
-            unusedList.Add("c5521");
-            unusedList.Add("c5522");
-            unusedList.Add("c7000");
-            unusedList.Add("c7010");
-            unusedList.Add("c7100");
-            unusedList.Add("c8010");
-            unusedList.Add("c8020");
-            unusedList.Add("c2501");
-            unusedList.Add("c90");
-            unusedList.Add("c9030");
-            unusedList.Add("c2501");
-            unusedList.Add("c2571");
-            unusedList.Add("c8030_0000");
-            unusedList.Add("c8040_0000");
-            unusedList.Add("c9020_0000");
-            unusedList.Add("c9020_0001");
-            unusedList.Add("c9020_0002");
-            unusedList.Add("c9020_0003");
-            unusedList.Add("c8030_0000");
-            unusedList.Add("c5072_0000");
-            unusedList.Add("c4023_0000");
-            unusedList.Add("c4160_0000");
-            unusedList.Add("c4160_0001");
-            unusedList.Add("c4160_0002");
-            unusedList.Add("c4160_0003");
-            unusedList.Add("c4550_0000");
-            unusedList.Add("c7110_0000");
-            unusedList.Add("c5071_0000");
-            unusedList.Add("c4511_0000");
-            unusedList.Add("c5510_0001");
-            unusedList.Add("c5510_0002");
-            unusedList.Add("c4540_0000");
-            unusedList.Add("c4543_0000");
-            unusedList.Add("c8070_0000");
-            unusedList.Add("c5130_0000");
-            unusedList.Add("c4031_0000");
-            unusedList.Add("c4520_0000");
-            unusedList.Add("c1190");
-            unusedList.Add("c1180");
-            unusedList.Add("c1060_0002");
-
-            bossList.Add("5090");
-            bossList.Add("c2090_0003");
-            bossList.Add("c2100_0000");
-            bossList.Add("c2100_0001");
-            bossList.Add("c2120_0000");
-            bossList.Add("c2120_0001");
-            bossList.Add("c2120_0002");
-            bossList.Add("c2320_0000");
-            bossList.Add("c2500_0000");
-            bossList.Add("c2570_0001");
-            bossList.Add("c2510_0000");
-            bossList.Add("c2710_0000");
-            bossList.Add("c2720_0000");
-            bossList.Add("c4520_0002");
-            bossList.Add("c4030_0000");
-            bossList.Add("c4030_0001");
-            bossList.Add("c4030_0002");
-            bossList.Add("c4030_0003");
-            bossList.Add("c4030_0004");
-            bossList.Add("c4500_0000");
-            bossList.Add("c4510_0000");
-            bossList.Add("c4540_0000");
-            bossList.Add("c4541_0000");
-            bossList.Add("c5000_0000");
-            bossList.Add("c5020_0000");
-            bossList.Add("c5070_0000");
-            bossList.Add("c5080_0000");
-            bossList.Add("c5100_0000");
-            bossList.Add("c5120_0001");
-            bossList.Add("c5400_0000");
-            bossList.Add("c5510_0000");
-            bossList.Add("c8050_0000");
-            bossList.Add("c3130_0000");
-            bossList.Add("c5010_0000");
-            bossList.Add("c4510_0002");
-            bossList.Add("c3050_0000");
-            bossList.Add("c3060_0000");
-            bossList.Add("c5110");
-
-
-            for (int i = 0; i < unusedList.Count; i++)
+            bossList = new List<string>
             {
-                unusedPlusBossList.Add(unusedList[i]);
-            }
-            for (int i = 0; i < bossList.Count; i++)
-            {
-                unusedPlusBossList.Add(bossList[i]);
-            }
+                "5090",     "c2090_0003",       "c2100_0000",
+                "c2100_0001",       "c2120_0000",       "c2120_0001",
+                "c2120_0002",       "c2320_0000",       "c2500_0000",
+                "c2570_0001",       "c2510_0000",       "c2710_0000",
+                "c2720_0000",       "c4520_0002",       "c4030_0000",
+                "c4030_0001",       "c4030_0002",       "c4030_0003",
+                "c4030_0004",       "c4500_0000",       "c4510_0000",
+                "c4540_0000",       "c4541_0000",       "c5000_0000",
+                "c5020_0000",       "c5070_0000",       "c5080_0000",
+                "c5100_0000",       "c5120_0001",       "c5400_0000",
+                "c5510_0000",       "c8050_0000",       "c3130_0000",
+                "c5010_0000",       "c4510_0002",       "c3050_0000",
+                "c3060_0000",       "c5110"
+            };
+
+            unusedPlusBossList.AddRange(unusedList);
+            unusedPlusBossList.AddRange(bossList);
         }
-
-        string currentDirectory;
-        string filePath;
-
-
-        ///regular maps
-        List<string> mapList = new List<string>();
-
-        List<MSBB.Part.Enemy> randEnemyList = new List<MSBB.Part.Enemy>();
-        List<MSBB.Part.Enemy> newEnemyList = new List<MSBB.Part.Enemy>();
-        List<string> enemyData = new List<string>();
-        List<string> enemyDataRandomized = new List<string>();
-        List<MSBB.Model.Enemy> modelList = new List<MSBB.Model.Enemy>();
 
         private void ParamScalingForBosses(string currentMap)
         {
@@ -238,6 +129,7 @@ namespace MSB_Test
                 }
             }
 
+            /*
             //int position = 0;
 
             //m21_00 Hunter's Dream														 7021 7022
@@ -288,6 +180,8 @@ namespace MSB_Test
             //7485 29
             //7486 30
             //7487 31
+            */
+
             if (logging)
                 using (StreamWriter writetext = File.AppendText(scaleLogFile))
                 {
@@ -1449,7 +1343,6 @@ namespace MSB_Test
             tempGUY.Write(currentMap);
         }
 
-
         private void PermaDarknessFunction(string currentEmevd)
         {
             var tempEMEVD = EMEVD.Read(currentEmevd);
@@ -1494,29 +1387,6 @@ namespace MSB_Test
             }
 
             tempEMEVD.Write(currentEmevd);
-        }
-
-        private void GenerateItemLotList(string currentMap)
-        {
-            var tempGuy = MSBB.Read(currentMap);
-
-            for (int i = 0; i < tempGuy.Events.Treasures.Count; i++)
-            {
-                bool changeKey = true;
-
-                for (int j = 0; j < nonoItemLots.Count; j++)
-                {
-                    if (tempGuy.Events.Treasures[i].ItemLot1 == nonoItemLots[j])
-                    {
-                        changeKey = false;
-                    }
-                }
-
-                if (tempGuy.Events.Treasures[i].ItemLot1 > 1 && changeKey)
-                {
-                    itemLotList.Add(tempGuy.Events.Treasures[i].ItemLot1);
-                }
-            }
         }
     }
 }

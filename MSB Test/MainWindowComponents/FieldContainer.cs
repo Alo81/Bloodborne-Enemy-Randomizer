@@ -35,6 +35,33 @@ namespace MSB_Test
         Random keyitemRand = new Random();
         int seed;
 
+        ///regular maps
+        private List<string> _allMaps;
+        public List<string> allMaps 
+        { 
+            get 
+            { 
+                if(_allMaps == null)
+                {
+                    _allMaps = new List<string>();
+                    _allMaps.AddRange(mapList);
+                    _allMaps.AddRange(chaliceMapList);
+                }
+                return _allMaps; 
+            } 
+        }
+        List<string> mapList = new List<string>();
+        List<string> chaliceMapList = new List<string>();
+
+        List<MSBB.Part.Enemy> randEnemyList = new List<MSBB.Part.Enemy>();
+        List<MSBB.Part.Enemy> newEnemyList = new List<MSBB.Part.Enemy>();
+        List<string> enemyData = new List<string>();
+        List<string> enemyDataRandomized = new List<string>();
+        List<MSBB.Model.Enemy> modelList = new List<MSBB.Model.Enemy>();
+
+        string currentDirectory;
+        string filePath;
+
         List<long> masterList = new List<long>();
         List<long> RandList = new List<long>();
         List<PARAM.Cell> cellList = new List<PARAM.Cell>();

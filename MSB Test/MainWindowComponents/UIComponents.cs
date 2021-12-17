@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
@@ -2364,14 +2362,14 @@ namespace MSB_Test
         }
 
 
-    //private void CutEnemyBox_Checked(object sender, RoutedEventArgs e)
-    //{
-    //    cutEnemyBool = CutEnemyBox.IsChecked.Value;
-    //}
+        //private void CutEnemyBox_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    cutEnemyBool = CutEnemyBox.IsChecked.Value;
+        //}
 
 
 
-    /////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////
 
-}
+    }
 }

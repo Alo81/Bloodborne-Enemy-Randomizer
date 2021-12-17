@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace MSB_Test
 {
@@ -509,21 +508,22 @@ namespace MSB_Test
                             tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                             tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                            using (StreamWriter writetext = File.AppendText(enemyLogFilePath))
-                            {
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine(i + " Number in map list");
-                                writetext.WriteLine("Old Enemy");
-                                writetext.WriteLine(npc + " npcParam");
-                                writetext.WriteLine(think + " thinkID");
-                                writetext.WriteLine(mo + " model");
-                                writetext.WriteLine(entityID);
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(enemyLogFilePath))
+                                {
+                                    writetext.WriteLine(currentMap);
+                                    writetext.WriteLine(i + " Number in map list");
+                                    writetext.WriteLine("Old Enemy");
+                                    writetext.WriteLine(npc + " npcParam");
+                                    writetext.WriteLine(think + " thinkID");
+                                    writetext.WriteLine(mo + " model");
+                                    writetext.WriteLine(entityID);
 
-                                writetext.WriteLine("New Enemy");
-                                writetext.WriteLine(tempNpcParam + " npcParam");
-                                writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " new model" + Environment.NewLine);
-                            }
+                                    writetext.WriteLine("New Enemy");
+                                    writetext.WriteLine(tempNpcParam + " npcParam");
+                                    writetext.WriteLine(tempThinkId + " thinkID");
+                                    writetext.WriteLine(modelName + " new model" + Environment.NewLine);
+                                }
                         }
 
 
@@ -576,21 +576,22 @@ namespace MSB_Test
                             tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                             tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                            using (StreamWriter writetext = File.AppendText(enemyLogFilePath))
-                            {
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine(i + " Number in map list");
-                                writetext.WriteLine("Old Enemy");
-                                writetext.WriteLine(npc + " npcParam");
-                                writetext.WriteLine(think + " thinkID");
-                                writetext.WriteLine(mo + " model");
-                                writetext.WriteLine(entityID);
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(enemyLogFilePath))
+                                {
+                                    writetext.WriteLine(currentMap);
+                                    writetext.WriteLine(i + " Number in map list");
+                                    writetext.WriteLine("Old Enemy");
+                                    writetext.WriteLine(npc + " npcParam");
+                                    writetext.WriteLine(think + " thinkID");
+                                    writetext.WriteLine(mo + " model");
+                                    writetext.WriteLine(entityID);
 
-                                writetext.WriteLine("New Enemy");
-                                writetext.WriteLine(tempNpcParam + " npcParam");
-                                writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " new model" + Environment.NewLine);
-                            }
+                                    writetext.WriteLine("New Enemy");
+                                    writetext.WriteLine(tempNpcParam + " npcParam");
+                                    writetext.WriteLine(tempThinkId + " thinkID");
+                                    writetext.WriteLine(modelName + " new model" + Environment.NewLine);
+                                }
                         }
 
 
@@ -964,13 +965,14 @@ namespace MSB_Test
                                 }
                             }
 
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("Old Shop Item");
-                                writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
-                                writetext.WriteLine("New Shop Item");
-                                writetext.WriteLine(shopWeaponList[randomNumber]);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("Old Shop Item");
+                                    writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
+                                    writetext.WriteLine("New Shop Item");
+                                    writetext.WriteLine(shopWeaponList[randomNumber]);
+                                }
 
                             shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopWeaponList[randomNumber]);
 
@@ -983,13 +985,14 @@ namespace MSB_Test
                         {
                             int randomNumber = universalRand.Next(0, shopArmorList.Count);
 
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("Old Shop Item");
-                                writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
-                                writetext.WriteLine("New Shop Item");
-                                writetext.WriteLine(shopArmorList[randomNumber]);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("Old Shop Item");
+                                    writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
+                                    writetext.WriteLine("New Shop Item");
+                                    writetext.WriteLine(shopArmorList[randomNumber]);
+                                }
 
                             shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopArmorList[randomNumber]);
 
@@ -1002,13 +1005,14 @@ namespace MSB_Test
                         {
                             int randomNumber = universalRand.Next(0, shopConsumableList.Count);
 
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("Old Shop Item");
-                                writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
-                                writetext.WriteLine("New Shop Item");
-                                writetext.WriteLine(shopConsumableList[randomNumber]);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("Old Shop Item");
+                                    writetext.WriteLine(shopLineupParams.Rows[i].Cells[0].Value);
+                                    writetext.WriteLine("New Shop Item");
+                                    writetext.WriteLine(shopConsumableList[randomNumber]);
+                                }
 
                             shopLineupParams.Rows[i].Cells[0].Value = Int32.Parse(shopConsumableList[randomNumber]);
 
@@ -1092,11 +1096,12 @@ namespace MSB_Test
                 {
                     if (weaponParams.Rows[i].ID.ToString() == new2000)
                     {
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                        {
-                            writetext.WriteLine("New starting item");
-                            writetext.WriteLine(weaponParams.Rows[i].ID);
-                        }
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New starting item");
+                                writetext.WriteLine(weaponParams.Rows[i].ID);
+                            }
 
                         //7000000 8 7 0 0
                         weaponParams.Rows[i].Cells[80].Value = eight;
@@ -1107,11 +1112,12 @@ namespace MSB_Test
 
                     if (weaponParams.Rows[i].ID.ToString() == new2001)
                     {
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                        {
-                            writetext.WriteLine("New starting item");
-                            writetext.WriteLine(weaponParams.Rows[i].ID);
-                        }
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New starting item");
+                                writetext.WriteLine(weaponParams.Rows[i].ID);
+                            }
 
                         //5000000 9 8 0 0
                         weaponParams.Rows[i].Cells[80].Value = nine;
@@ -1122,11 +1128,12 @@ namespace MSB_Test
 
                     if (weaponParams.Rows[i].ID.ToString() == new2002)
                     {
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                        {
-                            writetext.WriteLine("New starting item");
-                            writetext.WriteLine(weaponParams.Rows[i].ID);
-                        }
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New starting item");
+                                writetext.WriteLine(weaponParams.Rows[i].ID);
+                            }
 
                         //22000000 7 9 0 0
                         weaponParams.Rows[i].Cells[80].Value = seven;
@@ -1139,11 +1146,12 @@ namespace MSB_Test
                     {
                         if (weaponParams.Rows[i].ID.ToString() == new2010)
                         {
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("New starting item");
-                                writetext.WriteLine(weaponParams.Rows[i].ID);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("New starting item");
+                                    writetext.WriteLine(weaponParams.Rows[i].ID);
+                                }
 
                             //14000000 7 9 5 0
                             weaponParams.Rows[i].Cells[80].Value = seven;
@@ -1154,11 +1162,12 @@ namespace MSB_Test
 
                         if (weaponParams.Rows[i].ID.ToString() == new2011)
                         {
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("New starting item");
-                                writetext.WriteLine(weaponParams.Rows[i].ID);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("New starting item");
+                                    writetext.WriteLine(weaponParams.Rows[i].ID);
+                                }
 
                             //6000000 7 9 5 0
                             weaponParams.Rows[i].Cells[80].Value = seven;
@@ -1178,11 +1187,12 @@ namespace MSB_Test
                     {
                         if (weaponParams.Rows[j].ID.ToString() == new2000StringList[i])
                         {
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("New starting item");
-                                writetext.WriteLine(weaponParams.Rows[j].ID);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("New starting item");
+                                    writetext.WriteLine(weaponParams.Rows[j].ID);
+                                }
 
                             //7000000 8 7 0 0
                             weaponParams.Rows[j].Cells[80].Value = eight;
@@ -1200,11 +1210,12 @@ namespace MSB_Test
                     {
                         if (weaponParams.Rows[j].ID.ToString() == new2001StringList[i])
                         {
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("New starting item");
-                                writetext.WriteLine(weaponParams.Rows[j].ID);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("New starting item");
+                                    writetext.WriteLine(weaponParams.Rows[j].ID);
+                                }
 
                             //5000000 9 8 0 0
                             weaponParams.Rows[j].Cells[80].Value = nine;
@@ -1222,11 +1233,12 @@ namespace MSB_Test
                     {
                         if (weaponParams.Rows[j].ID.ToString() == new2002StringList[i])
                         {
-                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                            {
-                                writetext.WriteLine("New starting item");
-                                writetext.WriteLine(weaponParams.Rows[j].ID);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                {
+                                    writetext.WriteLine("New starting item");
+                                    writetext.WriteLine(weaponParams.Rows[j].ID);
+                                }
 
                             //22000000 7 9 0 0
                             weaponParams.Rows[j].Cells[80].Value = seven;
@@ -1246,11 +1258,12 @@ namespace MSB_Test
                         {
                             if (weaponParams.Rows[j].ID.ToString() == new2010StringList[i])
                             {
-                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                                {
-                                    writetext.WriteLine("New starting item");
-                                    writetext.WriteLine(weaponParams.Rows[j].ID);
-                                }
+                                if (logging)
+                                    using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                    {
+                                        writetext.WriteLine("New starting item");
+                                        writetext.WriteLine(weaponParams.Rows[j].ID);
+                                    }
 
                                 //14000000 7 9 5 0
                                 weaponParams.Rows[j].Cells[80].Value = seven;
@@ -1268,11 +1281,12 @@ namespace MSB_Test
                         {
                             if (weaponParams.Rows[j].ID.ToString() == new2011StringList[i])
                             {
-                                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                                {
-                                    writetext.WriteLine("New starting item");
-                                    writetext.WriteLine(weaponParams.Rows[j].ID);
-                                }
+                                if (logging)
+                                    using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                                    {
+                                        writetext.WriteLine("New starting item");
+                                        writetext.WriteLine(weaponParams.Rows[j].ID);
+                                    }
 
                                 //6000000 7 9 5 0
                                 weaponParams.Rows[j].Cells[80].Value = seven;
@@ -1284,10 +1298,11 @@ namespace MSB_Test
                     }
                 }
             }
-            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-            {
-                writetext.WriteLine("Ending Required Stat Changing...");
-            }
+            if (logging)
+                using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                {
+                    writetext.WriteLine("Ending Required Stat Changing...");
+                }
 
             foreach (BinderFile file in parambnd.Files)
             {
@@ -1371,22 +1386,23 @@ namespace MSB_Test
 
                     if (tempGuy.Parts.Enemies[i].NPCParamID != 6380)
                     {
-                        using (StreamWriter writetext = File.AppendText(randomizedNPCPath))
-                        {
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(npcList.Count);
-                            writetext.WriteLine("Old NPC");
-                            writetext.WriteLine(npc + " npcParam");
-                            writetext.WriteLine(think + " thinkID");
-                            writetext.WriteLine(mo + " UNKT07");
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(randomizedNPCPath))
+                            {
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(npcList.Count);
+                                writetext.WriteLine("Old NPC");
+                                writetext.WriteLine(npc + " npcParam");
+                                writetext.WriteLine(think + " thinkID");
+                                writetext.WriteLine(mo + " UNKT07");
 
-                            writetext.WriteLine("New NPC");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " UNKT07");
+                                writetext.WriteLine("New NPC");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " UNKT07");
 
-                            writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
-                        }
+                                writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                            }
 
                         tempGuy.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGuy.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
@@ -1411,22 +1427,23 @@ namespace MSB_Test
                         tempNpcParamInt = int.Parse(tempNpcParam);
                         tempThinkIdInt = int.Parse(tempThinkId);
 
-                        using (StreamWriter writetext = File.AppendText(randomizedNPCPath))
-                        {
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(npcList.Count);
-                            writetext.WriteLine("Old NPC");
-                            writetext.WriteLine(npc + " npcParam");
-                            writetext.WriteLine(think + " thinkID");
-                            writetext.WriteLine(mo + "UNKT07");
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(randomizedNPCPath))
+                            {
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(npcList.Count);
+                                writetext.WriteLine("Old NPC");
+                                writetext.WriteLine(npc + " npcParam");
+                                writetext.WriteLine(think + " thinkID");
+                                writetext.WriteLine(mo + "UNKT07");
 
-                            writetext.WriteLine("New NPC");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " UNKT07");
+                                writetext.WriteLine("New NPC");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " UNKT07");
 
-                            writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
-                        }
+                                writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                            }
 
                         tempGuy.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGuy.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
@@ -1505,16 +1522,17 @@ namespace MSB_Test
                         float assass = universalRand.Next(0, 101);
                         if (assass <= bossPercentage)
                         {
-                            using (StreamWriter writetext = File.AppendText(insertedBossPath))
-                            {
-                                writetext.WriteLine(currentMap);
-                                writetext.WriteLine("Inserted Boss");
-                                writetext.WriteLine(tempNpcParam + " npcParam");
-                                writetext.WriteLine(tempThinkId + " thinkID");
-                                writetext.WriteLine(modelName + " model");
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(insertedBossPath))
+                                {
+                                    writetext.WriteLine(currentMap);
+                                    writetext.WriteLine("Inserted Boss");
+                                    writetext.WriteLine(tempNpcParam + " npcParam");
+                                    writetext.WriteLine(tempThinkId + " thinkID");
+                                    writetext.WriteLine(modelName + " model");
 
-                                writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
-                            }
+                                    writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                                }
 
                             tempGUY.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                             if (tempNpcParamInt == 551000)
@@ -1866,23 +1884,24 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                            writetext.WriteLine("This is first phase Orphan.");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                                writetext.WriteLine("This is first phase Orphan.");
+                            }
                     }
                 }
                 else if (currentMap.Contains("m24_02"))
@@ -1915,23 +1934,24 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                            writetext.WriteLine("This is first phase Orphan.");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                                writetext.WriteLine("This is first phase Orphan.");
+                            }
                     }
                 }
                 else if (currentMap.Contains("m34_00"))
@@ -1964,23 +1984,24 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                            writetext.WriteLine("This is first phase Orphan.");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                                writetext.WriteLine("This is first phase Orphan.");
+                            }
                     }
                 }
             }
@@ -2197,45 +2218,46 @@ namespace MSB_Test
                                     tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                                     tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                                    using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                                    {
-                                        writetext.WriteLine(bossCount);
-                                        writetext.WriteLine(currentMap);
-                                        writetext.WriteLine(i + " Number in map list");
-                                        writetext.WriteLine("Old Boss");
-                                        writetext.WriteLine(thisnpc + " npcParam");
-                                        writetext.WriteLine(thisthink + " thinkID");
-                                        writetext.WriteLine(thismo + " model");
-                                        writetext.WriteLine(thisentityID);
-
-                                        writetext.WriteLine("New Boss");
-                                        writetext.WriteLine(tempNpcParam + " npcParam");
-                                        writetext.WriteLine(tempThinkId + " thinkID");
-                                        writetext.WriteLine(modelName + " new model");
-
-
-                                        writetext.WriteLine("Enemy Pool Count: " + newChaliceBossString.Count);
-
-                                        for (int m = newChaliceBossString.Count - 1; m >= 0; m--)
+                                    if (logging)
+                                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                                         {
-                                            if (newChaliceBossString[m].Contains("*" + modelName))
+                                            writetext.WriteLine(bossCount);
+                                            writetext.WriteLine(currentMap);
+                                            writetext.WriteLine(i + " Number in map list");
+                                            writetext.WriteLine("Old Boss");
+                                            writetext.WriteLine(thisnpc + " npcParam");
+                                            writetext.WriteLine(thisthink + " thinkID");
+                                            writetext.WriteLine(thismo + " model");
+                                            writetext.WriteLine(thisentityID);
+
+                                            writetext.WriteLine("New Boss");
+                                            writetext.WriteLine(tempNpcParam + " npcParam");
+                                            writetext.WriteLine(tempThinkId + " thinkID");
+                                            writetext.WriteLine(modelName + " new model");
+
+
+                                            writetext.WriteLine("Enemy Pool Count: " + newChaliceBossString.Count);
+
+                                            for (int m = newChaliceBossString.Count - 1; m >= 0; m--)
                                             {
-                                                newChaliceBossString.RemoveAt(m);
+                                                if (newChaliceBossString[m].Contains("*" + modelName))
+                                                {
+                                                    newChaliceBossString.RemoveAt(m);
+                                                }
+                                            }
+
+                                            writetext.WriteLine("New count after removing similar bosses " + newChaliceBossString.Count + Environment.NewLine + Environment.NewLine);
+
+                                            if (newChaliceBossString.Count <= 0 || newChaliceBossString == null)
+                                            {
+                                                newChaliceBossString = new List<string>();
+
+                                                for (int j = 0; j < newChaliceBossString2.Count; j++)
+                                                {
+                                                    newChaliceBossString.Add(newChaliceBossString2[j]);
+                                                }
                                             }
                                         }
-
-                                        writetext.WriteLine("New count after removing similar bosses " + newChaliceBossString.Count + Environment.NewLine + Environment.NewLine);
-
-                                        if (newChaliceBossString.Count <= 0 || newChaliceBossString == null)
-                                        {
-                                            newChaliceBossString = new List<string>();
-
-                                            for (int j = 0; j < newChaliceBossString2.Count; j++)
-                                            {
-                                                newChaliceBossString.Add(newChaliceBossString2[j]);
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -2410,35 +2432,36 @@ namespace MSB_Test
 
 
 
-                                using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                                {
-                                    writetext.WriteLine(bossCount);
-                                    writetext.WriteLine(currentMap);
-                                    writetext.WriteLine(i + " Number in map list");
-                                    writetext.WriteLine("Old Boss");
-                                    writetext.WriteLine(thisnpc + " npcParam");
-                                    writetext.WriteLine(thisthink + " thinkID");
-                                    writetext.WriteLine(thismo + " model");
-                                    writetext.WriteLine(thisentityID);
-
-                                    writetext.WriteLine("New Boss");
-                                    writetext.WriteLine(tempNpcParam + " npcParam");
-                                    writetext.WriteLine(tempThinkId + " thinkID");
-                                    writetext.WriteLine(modelName + " new model");
-
-                                    combinedBossList.RemoveAt(random);
-                                    writetext.WriteLine("Enemy Pool Count: " + combinedBossList.Count);
-
-                                    for (int m = combinedBossList.Count - 1; m >= 0; m--)
+                                if (logging)
+                                    using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                                     {
-                                        if (combinedBossList[m].Contains("*" + modelName) && !combinedBossList[m].Contains("*4510"))
-                                        {
-                                            combinedBossList.RemoveAt(m);
-                                        }
-                                    }
+                                        writetext.WriteLine(bossCount);
+                                        writetext.WriteLine(currentMap);
+                                        writetext.WriteLine(i + " Number in map list");
+                                        writetext.WriteLine("Old Boss");
+                                        writetext.WriteLine(thisnpc + " npcParam");
+                                        writetext.WriteLine(thisthink + " thinkID");
+                                        writetext.WriteLine(thismo + " model");
+                                        writetext.WriteLine(thisentityID);
 
-                                    writetext.WriteLine("New count after removing similar bosses " + combinedBossList.Count + Environment.NewLine + Environment.NewLine);
-                                }
+                                        writetext.WriteLine("New Boss");
+                                        writetext.WriteLine(tempNpcParam + " npcParam");
+                                        writetext.WriteLine(tempThinkId + " thinkID");
+                                        writetext.WriteLine(modelName + " new model");
+
+                                        combinedBossList.RemoveAt(random);
+                                        writetext.WriteLine("Enemy Pool Count: " + combinedBossList.Count);
+
+                                        for (int m = combinedBossList.Count - 1; m >= 0; m--)
+                                        {
+                                            if (combinedBossList[m].Contains("*" + modelName) && !combinedBossList[m].Contains("*4510"))
+                                            {
+                                                combinedBossList.RemoveAt(m);
+                                            }
+                                        }
+
+                                        writetext.WriteLine("New count after removing similar bosses " + combinedBossList.Count + Environment.NewLine + Environment.NewLine);
+                                    }
                             }
 
 
@@ -2634,24 +2657,25 @@ namespace MSB_Test
                                     }
                                 }
 
-                                using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                                {
-                                    writetext.WriteLine(bossCount);
-                                    writetext.WriteLine(currentMap);
-                                    writetext.WriteLine(i + " Number in map list");
-                                    writetext.WriteLine("Old Boss");
-                                    writetext.WriteLine(thisnpc + " npcParam");
-                                    writetext.WriteLine(thisthink + " thinkID");
-                                    writetext.WriteLine(thismo + " model");
-                                    writetext.WriteLine(thisentityID);
+                                if (logging)
+                                    using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                                    {
+                                        writetext.WriteLine(bossCount);
+                                        writetext.WriteLine(currentMap);
+                                        writetext.WriteLine(i + " Number in map list");
+                                        writetext.WriteLine("Old Boss");
+                                        writetext.WriteLine(thisnpc + " npcParam");
+                                        writetext.WriteLine(thisthink + " thinkID");
+                                        writetext.WriteLine(thismo + " model");
+                                        writetext.WriteLine(thisentityID);
 
-                                    writetext.WriteLine("New Boss");
-                                    writetext.WriteLine(tempNpcParam + " npcParam");
-                                    writetext.WriteLine(tempThinkId + " thinkID");
-                                    writetext.WriteLine(modelName + " new model");
+                                        writetext.WriteLine("New Boss");
+                                        writetext.WriteLine(tempNpcParam + " npcParam");
+                                        writetext.WriteLine(tempThinkId + " thinkID");
+                                        writetext.WriteLine(modelName + " new model");
 
-                                    writetext.WriteLine("Enemy Pool Count: " + BossListString.Count + Environment.NewLine + Environment.NewLine);
-                                }
+                                        writetext.WriteLine("Enemy Pool Count: " + BossListString.Count + Environment.NewLine + Environment.NewLine);
+                                    }
                             }
                             bossCount++;
                             newNPCParam.Add(paramNumber);
@@ -3305,23 +3329,25 @@ namespace MSB_Test
                     {
                         numberOfKeyIemsRandomized++;
 
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                        {
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine("Number of items randomized so far " + numberOfKeyIemsRandomized);
-                            writetext.WriteLine("Old item lot");
-                            writetext.WriteLine(tempGuy.Events.Treasures[i].ItemLot1);
-                        }
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine("Number of items randomized so far " + numberOfKeyIemsRandomized);
+                                writetext.WriteLine("Old item lot");
+                                writetext.WriteLine(tempGuy.Events.Treasures[i].ItemLot1);
+                            }
 
                         randomNumber = universalRand.Next(0, itemLotList.Count);
                         tempGuy.Events.Treasures[i].ItemLot1 = itemLotList[randomNumber];
 
-                        using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
-                        {
-                            writetext.WriteLine("New item lot");
-                            writetext.WriteLine(itemLotList[randomNumber]);
-                            writetext.WriteLine(Environment.NewLine);
-                        }
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(randomizedItemLotPath))
+                            {
+                                writetext.WriteLine("New item lot");
+                                writetext.WriteLine(itemLotList[randomNumber]);
+                                writetext.WriteLine(Environment.NewLine);
+                            }
 
                         itemLotList.RemoveAt(randomNumber);
                     }
@@ -4497,21 +4523,22 @@ namespace MSB_Test
                 }
             }
 
-            using (StreamWriter writetext = File.AppendText(dummyFilePath))
-            {
-                writetext.WriteLine("AiSoundParam");
-
-                for (int i = 0; i < currentParam.Rows.Count; i++)
+            if (logging)
+                using (StreamWriter writetext = File.AppendText(dummyFilePath))
                 {
-                    writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+                    writetext.WriteLine("AiSoundParam");
 
-                    for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
+                    for (int i = 0; i < currentParam.Rows.Count; i++)
                     {
-                        writetext.WriteLine(currentParam.Rows[i].Cells[j]);
+                        writetext.WriteLine("ID = " + currentParam.Rows[i].ID.ToString());
+
+                        for (int j = 0; j < currentParam.Rows[i].Cells.Count; j++)
+                        {
+                            writetext.WriteLine(currentParam.Rows[i].Cells[j]);
+                        }
+                        writetext.WriteLine("");
                     }
-                    writetext.WriteLine("");
                 }
-            }
 
             foreach (BinderFile file in parambnd.Files)
             {

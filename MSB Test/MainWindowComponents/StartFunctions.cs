@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows;
 
@@ -167,15 +166,17 @@ namespace MSB_Test
             string dateNowww = DateTime.Now.ToString("h:mm:ss tt");
             string buttsss = dateNowww.Replace(":", "-");
             sizeFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttsss + "-EnemySizes.txt";
-            using (FileStream sw1 = File.Create(sizeFilePath))
-            {
+            if (logging)
+                using (FileStream sw1 = File.Create(sizeFilePath))
+                {
 
-            }
+                }
 
             string dateNowwww = DateTime.Now.ToString("h:mm:ss tt");
             string buttssss = dateNowwww.Replace(":", "-");
             insertedBossPath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttssss + "-InsertedBossesLog.txt";
-            using (FileStream sw1 = File.Create(insertedBossPath))
+            if (logging)
+                using (FileStream sw1 = File.Create(insertedBossPath))
             {
 
             }
@@ -183,18 +184,22 @@ namespace MSB_Test
             string dateNowwwww = DateTime.Now.ToString("h:mm:ss tt");
             string buttsssss = dateNowwwww.Replace(":", "-");
             randomizedNPCPath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttsssss + "-RandomizedNPCLog.txt";
-            using (FileStream sw1 = File.Create(randomizedNPCPath))
-            {
+            if (logging)
+                if (logging)
+                using (FileStream sw1 = File.Create(randomizedNPCPath))
+                {
 
-            }
+                }
 
             string dateNowwwwww = DateTime.Now.ToString("h:mm:ss tt");
             string buttssssss = dateNowwwwww.Replace(":", "-");
             randomizedItemLotPath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttssssss + "-RandomizedItemLog.txt";
-            using (FileStream sw1 = File.Create(randomizedItemLotPath))
-            {
+            if (logging)
+                if (logging)
+                using (FileStream sw1 = File.Create(randomizedItemLotPath))
+                {
 
-            }
+                }
 
             for (int i = 0; i < mapList.Count; i++)
             {
@@ -218,10 +223,11 @@ namespace MSB_Test
 
                     //maxSizeList.Add(maxSizeLong);
 
-                    using (StreamWriter writetext = File.AppendText(sizeFilePath))
-                    {
-                        //writetext.WriteLine("MAX SIZE " + mapList[i] + " " + maxSizeLong + " " + tempMapRead.Parts.Enemies.Count);
-                    }
+                    if (logging)
+                        using (StreamWriter writetext = File.AppendText(sizeFilePath))
+                        {
+                            //writetext.WriteLine("MAX SIZE " + mapList[i] + " " + maxSizeLong + " " + tempMapRead.Parts.Enemies.Count);
+                        }
                 }
             }
 
@@ -302,10 +308,11 @@ namespace MSB_Test
             string dateNo = DateTime.Now.ToString("h:mm:ss tt");
             string butt = dateNo.Replace(":", "-");
             modelFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + butt + "-ModelLog.txt";
-            using (FileStream sw = File.Create(modelFilePath))
-            {
+            if (logging)
+                using (FileStream sw = File.Create(modelFilePath))
+                {
 
-            }
+                }
 
             //setting models in list to paste into all maps
             for (int i = 0; i < mapList.Count; i++)
@@ -352,11 +359,12 @@ namespace MSB_Test
 
             for (int i = 0; i < modelList.Count; i++)
             {
-                using (StreamWriter writetext = File.AppendText(modelFilePath))
-                {
-                    //writetext.WriteLine("NAME " + modelList[i].Name);
-                    //writetext.WriteLine("PLCH " + modelList[i].Placeholder);
-                }
+                if (logging)
+                    using (StreamWriter writetext = File.AppendText(modelFilePath))
+                    {
+                        //writetext.WriteLine("NAME " + modelList[i].Name);
+                        //writetext.WriteLine("PLCH " + modelList[i].Placeholder);
+                    }
             }
 
             for (int i = 0; i < mapList.Count; i++)
@@ -615,10 +623,11 @@ namespace MSB_Test
             string dateNow = DateTime.Now.ToString("h:mm:ss tt");
             string butts = dateNow.Replace(":", "-");
             enemyLogFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + butts + "-EnemyLog.txt";
-            using (FileStream sw1 = File.Create(enemyLogFilePath))
-            {
+            if (logging)
+                using (FileStream sw1 = File.Create(enemyLogFilePath))
+                {
 
-            }
+                }
 
             this.Dispatcher.Invoke(() =>
             {
@@ -883,18 +892,20 @@ namespace MSB_Test
             dateNow = DateTime.Now.ToString("h:mm:ss tt");
             butts = dateNow.Replace(":", "-");
             bossLogFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + butts + "-BossLog.txt";
-            using (FileStream sw = File.Create(bossLogFilePath))
-            {
+            if (logging)
+                using (FileStream sw = File.Create(bossLogFilePath))
+                {
 
-            }
+                }
 
             dateNow = DateTime.Now.ToString("h:mm:ss tt");
             butts = dateNow.Replace(":", "-");
             dummyFilePath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + butts + "-DummyLog.txt";
-            using (FileStream sw = File.Create(dummyFilePath))
-            {
+            if (logging)
+                using (FileStream sw = File.Create(dummyFilePath))
+                {
 
-            }
+                }
 
             if (includeBosses)
             {
@@ -926,16 +937,17 @@ namespace MSB_Test
                     }
                 }
 
-                using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                {
-                    writetext.WriteLine("Number of bosses in combined boss list");
-                    for (int i = 0; i < combinedBossList.Count; i++)
+                if (logging)
+                    using (StreamWriter writetext = File.AppendText(bossLogFilePath))
                     {
-                        writetext.WriteLine(combinedBossList[i]);
-                    }
+                        writetext.WriteLine("Number of bosses in combined boss list");
+                        for (int i = 0; i < combinedBossList.Count; i++)
+                        {
+                            writetext.WriteLine(combinedBossList[i]);
+                        }
 
-                    writetext.WriteLine("Enemy Pool Count: " + chaliceBossString.Count + Environment.NewLine + Environment.NewLine);
-                }
+                        writetext.WriteLine("Enemy Pool Count: " + chaliceBossString.Count + Environment.NewLine + Environment.NewLine);
+                    }
 
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx", unusedPlusBossList);
                 RandomizeBosses(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx", unusedPlusBossList);
@@ -1010,11 +1022,12 @@ namespace MSB_Test
 
 
 
-                using (StreamWriter writetext = File.AppendText(insertedBossPath))
-                {
-                    writetext.WriteLine("INSERTING BOSSES STARTING BELOW THIS LINE");
-                    writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
-                }
+                if (logging)
+                    using (StreamWriter writetext = File.AppendText(insertedBossPath))
+                    {
+                        writetext.WriteLine("INSERTING BOSSES STARTING BELOW THIS LINE");
+                        writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                    }
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -1118,11 +1131,12 @@ namespace MSB_Test
 
             if (includeNPCs)
             {
-                using (StreamWriter writetext = File.AppendText(randomizedNPCPath))
-                {
-                    writetext.WriteLine("RANDOMIZED NPC'S STARTING BELOW THIS LINE");
-                    writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
-                }
+                if (logging)
+                    using (StreamWriter writetext = File.AppendText(randomizedNPCPath))
+                    {
+                        writetext.WriteLine("RANDOMIZED NPC'S STARTING BELOW THIS LINE");
+                        writetext.WriteLine("" + Environment.NewLine + Environment.NewLine);
+                    }
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -1571,10 +1585,11 @@ namespace MSB_Test
             string dateNoww = DateTime.Now.ToString("h:mm:ss tt");
             string buttss = dateNoww.Replace(":", "-");
             scaleLogFile = filePath + "\\Mod Files\\Logs. Don't Delete\\" + buttss + "-ScaleLog.txt";
-            using (FileStream sw1 = File.Create(scaleLogFile))
-            {
+            if (logging)
+                using (FileStream sw1 = File.Create(scaleLogFile))
+                {
 
-            }
+                }
 
             this.Dispatcher.Invoke(() =>
             {

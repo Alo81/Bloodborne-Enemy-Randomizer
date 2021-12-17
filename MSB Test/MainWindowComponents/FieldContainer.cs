@@ -1,13 +1,13 @@
 ﻿using SoulsFormats;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MSB_Test
 {
     public partial class MainWindow
     {
         // Preconfigured values.
+        bool logging = true;
         string new2000 = "";
         string new2001 = "";
         string new2002 = "";

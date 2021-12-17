@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MSB_Test
+﻿namespace MSB_Test
 {
     public partial class MainWindow
     {

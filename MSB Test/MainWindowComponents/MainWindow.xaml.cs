@@ -1,18 +1,8 @@
-﻿using System;
+﻿using SoulsFormats;
+using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using SoulsFormats;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using System.CodeDom;
-using System.ComponentModel;
-using System.Security.Cryptography.Xml;
-using Ookii.Dialogs.Wpf;
-using System.Configuration;
-using Microsoft.VisualBasic.CompilerServices;
-using System.Text;
+using System.Windows;
 
 namespace MSB_Test
 {
@@ -208,11 +198,11 @@ namespace MSB_Test
             bossList.Add("c5110");
 
 
-            for (int i = 0; i < unusedList.Count; i ++)
+            for (int i = 0; i < unusedList.Count; i++)
             {
                 unusedPlusBossList.Add(unusedList[i]);
             }
-            for(int i = 0; i < bossList.Count; i ++)
+            for (int i = 0; i < bossList.Count; i++)
             {
                 unusedPlusBossList.Add(bossList[i]);
             }
@@ -233,15 +223,15 @@ namespace MSB_Test
 
         private void ParamScalingForBosses(string currentMap)
         {
-            
+
             var tempMap = MSBB.Read(currentMap);
-            
+
             List<int> npcParamPositions = new List<int>();
-            for(int i = 0; i < npcParams.Count; i ++)
+            for (int i = 0; i < npcParams.Count; i++)
             {
-                for(int j = 0; j < longList.Count; j ++)
+                for (int j = 0; j < longList.Count; j++)
                 {
-                    if(npcParams[i] == longList[j])
+                    if (npcParams[i] == longList[j])
                     {
                         npcParamPositions.Add(j);
                     }
@@ -298,35 +288,38 @@ namespace MSB_Test
             //7485 29
             //7486 30
             //7487 31
-            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-            {
-                writetext.WriteLine(currentMap);
-            }
-            for (int i = 0; i < npcParamPositions.Count; i ++)
-            {
-                for(int j = 0; j < tempMap.Parts.Enemies.Count; j ++)
+            if (logging)
+                using (StreamWriter writetext = File.AppendText(scaleLogFile))
                 {
-                    if(tempMap.Parts.Enemies[j].NPCParamID == longList[npcParamPositions[i]])
+                    writetext.WriteLine(currentMap);
+                }
+            for (int i = 0; i < npcParamPositions.Count; i++)
+            {
+                for (int j = 0; j < tempMap.Parts.Enemies.Count; j++)
+                {
+                    if (tempMap.Parts.Enemies[j].NPCParamID == longList[npcParamPositions[i]])
                     {
-                        using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                        {
-                            writetext.WriteLine(tempMap.Parts.Enemies[j].NPCParamID);
-                        }
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                            {
+                                writetext.WriteLine(tempMap.Parts.Enemies[j].NPCParamID);
+                            }
                         //filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx"
                         if (currentMap == filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx")
                         {
                             int tempInt = npcParamPositions[i] + dreamScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx")
                         {
-                            
+
                         }
                         //filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx")
@@ -334,10 +327,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + hemwickScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx")
@@ -345,10 +339,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + oldScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx")
@@ -356,10 +351,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + cathedralScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx")
@@ -367,10 +363,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + centralScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx")
@@ -378,10 +375,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + upperScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx")
@@ -389,10 +387,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + cainhurstScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx")
@@ -400,10 +399,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + mensisScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx")
@@ -411,10 +411,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + woodsScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx")
@@ -422,10 +423,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + yahargulScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx")
@@ -433,10 +435,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + byrgenwerthScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx")
@@ -444,10 +447,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + frontierScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx")
@@ -455,10 +459,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + nightmareScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx")
@@ -466,10 +471,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + researchScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx"
                         else if (currentMap == filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx")
@@ -477,10 +483,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + hamletScale;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //CHALICE SCALING
                         //filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx");
@@ -489,10 +496,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 1;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7001
                         //filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx");
@@ -501,10 +509,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 1;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7003
                         //filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx");
@@ -513,10 +522,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 2;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7004
                         //filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx");
@@ -525,10 +535,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 2;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7006
                         //filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx");
@@ -537,10 +548,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 3;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7006
                         //filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx");
@@ -549,10 +561,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 4;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7007
                         //filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx");
@@ -561,10 +574,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 4;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7008
                         //filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx");
@@ -573,10 +587,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 5;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7009
                         //filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx");
@@ -585,10 +600,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 6;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7010
                         //filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx");
@@ -597,10 +613,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 6;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7011
                         //filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx");
@@ -609,10 +626,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 7;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7013
                         //filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx");
@@ -621,10 +639,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 7;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7014
                         //filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx");
@@ -633,10 +652,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 8;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7016
                         //filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx");
@@ -645,10 +665,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 8;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7017
                         //filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx");
@@ -657,10 +678,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 9;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7019
                         //filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
@@ -669,10 +691,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 9;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7020
                         //filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
@@ -681,10 +704,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 10;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7021
                         //filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
@@ -693,10 +717,11 @@ namespace MSB_Test
                             int tempInt = npcParamPositions[i] + 10;
                             var tempUInt = Convert.ToInt32(longList[tempInt]);
                             tempMap.Parts.Enemies[j].NPCParamID = tempUInt;
-                            using (StreamWriter writetext = File.AppendText(scaleLogFile))
-                            {
-                                writetext.WriteLine(tempUInt);
-                            }
+                            if (logging)
+                                using (StreamWriter writetext = File.AppendText(scaleLogFile))
+                                {
+                                    writetext.WriteLine(tempUInt);
+                                }
                         }
                         //7023
                     }
@@ -710,7 +735,7 @@ namespace MSB_Test
         {
             string enemyEntityID;
 
-            
+
 
             var tempGUY = MSBB.Read(currentMap);
 
@@ -722,20 +747,20 @@ namespace MSB_Test
             {
                 addEnemy = true;
 
-            if (!addedStoneGuyBool)
-            {
-                if (tempGUY.Parts.Enemies[i].ModelName.Contains("c2521"))
+                if (!addedStoneGuyBool)
                 {
-                    stoneGuyEnemy = tempGUY.Parts.Enemies[i];
-                    tempStoneEnemyString = (stoneGuyEnemy.NPCParamID.ToString() + "*" + stoneGuyEnemy.ThinkParamID.ToString() + "*" + stoneGuyEnemy.ModelName);
-                    int tempnpcint = tempStoneEnemyString.IndexOf("*");
-                    string tempNpcParam = tempStoneEnemyString.Substring(0, tempnpcint);
-                    string tempThinkId = tempStoneEnemyString.Substring(tempnpcint + 1, tempStoneEnemyString.LastIndexOf("*") - tempnpcint - 1);
-                    stoneGuyModelName = tempStoneEnemyString.Substring(tempStoneEnemyString.LastIndexOf("*") + 1, 5);
-                    stoneGuyParam = int.Parse(tempNpcParam);
-                    stoneGuyThink = int.Parse(tempThinkId);
+                    if (tempGUY.Parts.Enemies[i].ModelName.Contains("c2521"))
+                    {
+                        stoneGuyEnemy = tempGUY.Parts.Enemies[i];
+                        tempStoneEnemyString = (stoneGuyEnemy.NPCParamID.ToString() + "*" + stoneGuyEnemy.ThinkParamID.ToString() + "*" + stoneGuyEnemy.ModelName);
+                        int tempnpcint = tempStoneEnemyString.IndexOf("*");
+                        string tempNpcParam = tempStoneEnemyString.Substring(0, tempnpcint);
+                        string tempThinkId = tempStoneEnemyString.Substring(tempnpcint + 1, tempStoneEnemyString.LastIndexOf("*") - tempnpcint - 1);
+                        stoneGuyModelName = tempStoneEnemyString.Substring(tempStoneEnemyString.LastIndexOf("*") + 1, 5);
+                        stoneGuyParam = int.Parse(tempNpcParam);
+                        stoneGuyThink = int.Parse(tempThinkId);
+                    }
                 }
-            }
 
                 if (!oopsAll)
                 {
@@ -746,7 +771,7 @@ namespace MSB_Test
                             addEnemy = false;
                             j = noNoList.Count + 1;
                         }
-                        else if(tempGUY.Parts.Enemies[i].ThinkParamID <= 1)
+                        else if (tempGUY.Parts.Enemies[i].ThinkParamID <= 1)
                         {
                             addEnemy = false;
                             j = noNoList.Count + 1;
@@ -815,12 +840,12 @@ namespace MSB_Test
                                         }
                                     }
 
-                                if (tempGUY.Parts.Enemies[i].Name.Contains("c2561"))
-                                {
-                                    add = false;
-                                }
+                                    if (tempGUY.Parts.Enemies[i].Name.Contains("c2561"))
+                                    {
+                                        add = false;
+                                    }
 
-                                if (add)
+                                    if (add)
                                     {
                                         if (currentMap.Contains("m29"))
                                         {
@@ -871,13 +896,13 @@ namespace MSB_Test
             }
         }
 
-        
+
 
         private void OopsAll(string currentMap)
         {
             var tempMap = MSBB.Read(currentMap);
 
-            for(int i = 0; i < tempMap.Parts.Enemies.Count; i ++)
+            for (int i = 0; i < tempMap.Parts.Enemies.Count; i++)
             {
                 for (int j = 0; j < oopsAllList.Count; j++)
                 {
@@ -1044,7 +1069,7 @@ namespace MSB_Test
                         thismo = tempGUY.Parts.Enemies[i].ModelName;
                         thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                        
+
                         int randomNumber = universalRand.Next(0, combinedBossList2.Count);
                         string thisEnemy = combinedBossList2[randomNumber];
                         combinedBossList2.RemoveAt(randomNumber);
@@ -1082,22 +1107,23 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                            }
                     }
                 }
                 else if (currentMap.Contains("m27"))
@@ -1109,7 +1135,7 @@ namespace MSB_Test
                         thismo = tempGUY.Parts.Enemies[i].ModelName;
                         thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                        
+
                         int randomNumber = universalRand.Next(0, combinedBossList2.Count);
                         string thisEnemy = combinedBossList2[randomNumber];
                         combinedBossList2.RemoveAt(randomNumber);
@@ -1146,22 +1172,23 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                            }
                     }
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c2120_0002"))
                     {
@@ -1170,7 +1197,7 @@ namespace MSB_Test
                         thismo = tempGUY.Parts.Enemies[i].ModelName;
                         thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                        
+
                         int randomNumber = universalRand.Next(0, combinedBossList2.Count);
                         string thisEnemy = combinedBossList2[randomNumber];
                         combinedBossList2.RemoveAt(randomNumber);
@@ -1207,22 +1234,23 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                            }
                     }
                 }
                 else if (currentMap.Contains("m35_00"))
@@ -1234,7 +1262,7 @@ namespace MSB_Test
                         thismo = tempGUY.Parts.Enemies[i].ModelName;
                         thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                        
+
                         int randomNumber = universalRand.Next(0, combinedBossList2.Count);
                         string thisEnemy = combinedBossList2[randomNumber];
                         combinedBossList2.RemoveAt(randomNumber);
@@ -1271,22 +1299,23 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                            }
                     }
 
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0002"))
@@ -1296,7 +1325,7 @@ namespace MSB_Test
                         thismo = tempGUY.Parts.Enemies[i].ModelName;
                         thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                        
+
                         int randomNumber = universalRand.Next(0, combinedBossList2.Count);
                         string thisEnemy = combinedBossList2[randomNumber];
                         combinedBossList2.RemoveAt(randomNumber);
@@ -1333,22 +1362,23 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                            }
                     }
 
                     if (tempGUY.Parts.Enemies[i].Name.Contains("c4030_0003"))
@@ -1358,7 +1388,7 @@ namespace MSB_Test
                         thismo = tempGUY.Parts.Enemies[i].ModelName;
                         thisentityID = tempGUY.Parts.Enemies[i].EntityID.ToString();
 
-                        
+
                         int randomNumber = universalRand.Next(0, combinedBossList2.Count);
                         string thisEnemy = combinedBossList2[randomNumber];
                         combinedBossList2.RemoveAt(randomNumber);
@@ -1395,22 +1425,23 @@ namespace MSB_Test
                         tempGUY.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
                         tempGUY.Parts.Enemies[i].ModelName = modelName;
 
-                        using (StreamWriter writetext = File.AppendText(bossLogFilePath))
-                        {
-                            writetext.WriteLine(bossCount);
-                            writetext.WriteLine(currentMap);
-                            writetext.WriteLine(i + " Number in map list");
-                            writetext.WriteLine("Old Boss");
-                            writetext.WriteLine(thisnpc + " npcParam");
-                            writetext.WriteLine(thisthink + " thinkID");
-                            writetext.WriteLine(thismo + " model");
-                            writetext.WriteLine(thisentityID);
+                        if (logging)
+                            using (StreamWriter writetext = File.AppendText(bossLogFilePath))
+                            {
+                                writetext.WriteLine(bossCount);
+                                writetext.WriteLine(currentMap);
+                                writetext.WriteLine(i + " Number in map list");
+                                writetext.WriteLine("Old Boss");
+                                writetext.WriteLine(thisnpc + " npcParam");
+                                writetext.WriteLine(thisthink + " thinkID");
+                                writetext.WriteLine(thismo + " model");
+                                writetext.WriteLine(thisentityID);
 
-                            writetext.WriteLine("New Boss");
-                            writetext.WriteLine(tempNpcParam + " npcParam");
-                            writetext.WriteLine(tempThinkId + " thinkID");
-                            writetext.WriteLine(modelName + " new model");
-                        }
+                                writetext.WriteLine("New Boss");
+                                writetext.WriteLine(tempNpcParam + " npcParam");
+                                writetext.WriteLine(tempThinkId + " thinkID");
+                                writetext.WriteLine(modelName + " new model");
+                            }
                     }
                 }
             }
@@ -1423,7 +1454,7 @@ namespace MSB_Test
         {
             var tempEMEVD = EMEVD.Read(currentEmevd);
 
-            for(int i = 0; i < tempEMEVD.Events.Count; i ++)
+            for (int i = 0; i < tempEMEVD.Events.Count; i++)
             {
                 if (tempEMEVD.Events[i].ID.ToString() == "6548972")
                 {

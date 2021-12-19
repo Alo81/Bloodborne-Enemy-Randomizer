@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 
 namespace SoulsFormats
@@ -27,6 +28,16 @@ namespace SoulsFormats
             }
 
             /// <summary>
+            /// Adds a region to the list; returns the region.
+            /// </summary>
+            public Region Add(Region region)
+            {
+                Regions.Add(region);
+                return region;
+            }
+            IMsbRegion IMsbParam<IMsbRegion>.Add(IMsbRegion item) => Add((Region)item);
+
+            /// <summary>
             /// Returns the list of regions.
             /// </summary>
             public override List<Region> GetEntries()
@@ -37,23 +48,7 @@ namespace SoulsFormats
 
             internal override Region ReadEntry(BinaryReaderEx br)
             {
-                var region = new Region(br);
-                Regions.Add(region);
-                return region;
-            }
-
-            public void Add(IMsbRegion item)
-            {
-                switch (item)
-                {
-                    case Region r:
-                        Regions.Add(r);
-                        break;
-                    default:
-                        throw new ArgumentException(
-                            message: "Item is not recognized",
-                            paramName: nameof(item));
-                }
+                return Regions.EchoAdd(new Region(br));
             }
         }
 
@@ -65,7 +60,17 @@ namespace SoulsFormats
             /// <summary>
             /// Describes the physical shape of the region.
             /// </summary>
-            public MSB.Shape Shape { get; set; }
+            public MSB.Shape Shape
+            {
+                get => _shape;
+                set
+                {
+                    if (value is MSB.Shape.Composite)
+                        throw new ArgumentException("Dark Souls 1 does not support composite shapes.");
+                    _shape = value;
+                }
+            }
+            private MSB.Shape _shape;
 
             /// <summary>
             /// Location of the region.
@@ -87,10 +92,21 @@ namespace SoulsFormats
             /// </summary>
             public Region()
             {
-                Name = "";
+                Name = "Region";
                 Shape = new MSB.Shape.Point();
                 EntityID = -1;
             }
+
+            /// <summary>
+            /// Creates a deep copy of the region.
+            /// </summary>
+            public Region DeepCopy()
+            {
+                var region = (Region)MemberwiseClone();
+                region.Shape = Shape.DeepCopy();
+                return region;
+            }
+            IMsbRegion IMsbRegion.DeepCopy() => DeepCopy();
 
             internal Region(BinaryReaderEx br)
             {
@@ -98,7 +114,7 @@ namespace SoulsFormats
                 int nameOffset = br.ReadInt32();
                 br.AssertInt32(0);
                 br.ReadInt32(); // ID
-                ShapeType shapeType = br.ReadEnum32<ShapeType>();
+                MSB.ShapeType shapeType = br.ReadEnum32<MSB.ShapeType>();
                 Position = br.ReadVector3();
                 Rotation = br.ReadVector3();
                 int unkOffsetA = br.ReadInt32();
@@ -107,42 +123,30 @@ namespace SoulsFormats
                 int entityDataOffset = br.ReadInt32();
                 br.AssertInt32(0);
 
-                Name = br.GetShiftJIS(start + nameOffset);
+                Shape = MSB.Shape.Create(shapeType);
+
+                if (nameOffset == 0)
+                    throw new InvalidDataException($"{nameof(nameOffset)} must not be 0 in type {GetType()}.");
+                if (unkOffsetA == 0)
+                    throw new InvalidDataException($"{nameof(unkOffsetA)} must not be 0 in type {GetType()}.");
+                if (unkOffsetB == 0)
+                    throw new InvalidDataException($"{nameof(unkOffsetB)} must not be 0 in type {GetType()}.");
+                if (Shape.HasShapeData ^ shapeDataOffset != 0)
+                    throw new InvalidDataException($"Unexpected {nameof(shapeDataOffset)} 0x{shapeDataOffset:X} in type {GetType()}.");
+
+                br.Position = start + nameOffset;
+                Name = br.ReadShiftJIS();
 
                 br.Position = start + unkOffsetA;
                 br.AssertInt32(0);
+
                 br.Position = start + unkOffsetB;
                 br.AssertInt32(0);
 
-                br.Position = start + shapeDataOffset;
-                switch (shapeType)
+                if (Shape.HasShapeData)
                 {
-                    case ShapeType.Point:
-                        Shape = new MSB.Shape.Point();
-                        break;
-
-                    case ShapeType.Circle:
-                        Shape = new MSB.Shape.Circle(br);
-                        break;
-
-                    case ShapeType.Sphere:
-                        Shape = new MSB.Shape.Sphere(br);
-                        break;
-
-                    case ShapeType.Cylinder:
-                        Shape = new MSB.Shape.Cylinder(br);
-                        break;
-
-                    case ShapeType.Rect:
-                        Shape = new MSB.Shape.Rect(br);
-                        break;
-
-                    case ShapeType.Box:
-                        Shape = new MSB.Shape.Box(br);
-                        break;
-
-                    default:
-                        throw new NotImplementedException($"Unimplemented shape type: {shapeType}");
+                    br.Position = start + shapeDataOffset;
+                    Shape.ReadShapeData(br);
                 }
 
                 br.Position = start + entityDataOffset;
@@ -170,6 +174,7 @@ namespace SoulsFormats
 
                 bw.FillInt32("UnkOffsetA", (int)(bw.Position - start));
                 bw.WriteInt32(0);
+
                 bw.FillInt32("UnkOffsetB", (int)(bw.Position - start));
                 bw.WriteInt32(0);
 

@@ -51,12 +51,12 @@ namespace MSB_Test.Randomizers
             }
         }
 
-        public void RandomizeItems(List<string> maps)
+        public void RandomizeItems(List<string> maps, List<long> eventList = null)
         {
             var itemLotList = new List<int>();
             foreach (var map in maps.Where(x => !x.Contains("m21_00_00_00")))   // Exclude the dream(?)
             {
-                itemLotList.AddRange(GenerateItemLotList(map, nonoItemLots));
+                itemLotList.AddRange(GenerateItemLotList(map, nonoItemLots, eventList));
             }
             foreach (var map in maps.Where(x => !x.Contains("m21_00_00_00")))   // Exclude the dream(?)
             {
@@ -64,13 +64,17 @@ namespace MSB_Test.Randomizers
             }
         }
 
-        private List<int> GenerateItemLotList(string currentMap, List<int> nonoItemLots)
+        private List<int> GenerateItemLotList(string currentMap, List<int> nonoItemLots, List<long> eventList = null)
         {
             var tempGuy = MSBB.Read(currentMap);
             var itemLotList = new List<int>();
 
             foreach (var treasure in tempGuy.Events.Treasures)
             {
+                if (currentMap.Contains("m24_01"))
+                {
+                    var match = true;
+                }
                 if (treasure.ItemLot1 > 1 && !nonoItemLots.Contains(treasure.ItemLot1))
                 {
                     itemLotList.Add(treasure.ItemLot1);

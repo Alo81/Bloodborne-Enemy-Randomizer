@@ -1339,7 +1339,7 @@ namespace MSB_Test
 
                     for (int k = 0; k < hostileNpcList.Count; k++)
                     {
-                        if (tempGuy.Parts.Enemies[i].UnkT07.ToString().Contains(hostileNpcList[k]))
+                        if (tempGuy.Parts.Enemies[i].UnkT18.ToString().Contains(hostileNpcList[k]))
                         {
                             addHostile = true;
                         }
@@ -1353,7 +1353,7 @@ namespace MSB_Test
                     {
                         random = universalRand.Next(0, hostileNpcList.Count);
 
-                        while (hostileNpcList[random].Contains(tempGuy.Parts.Enemies[i].UnkT07.ToString()))
+                        while (hostileNpcList[random].Contains(tempGuy.Parts.Enemies[i].UnkT18.ToString()))
                         {
                             random = universalRand.Next(0, hostileNpcList.Count);
                             thisentityID = hostileNpcList[random];
@@ -1373,7 +1373,7 @@ namespace MSB_Test
 
                     string npc = tempGuy.Parts.Enemies[i].NPCParamID.ToString();
                     string think = tempGuy.Parts.Enemies[i].ThinkParamID.ToString();
-                    string mo = tempGuy.Parts.Enemies[i].UnkT07.ToString();
+                    string mo = tempGuy.Parts.Enemies[i].UnkT18.ToString();
                     string entityID = tempGuy.Parts.Enemies[i].EntityID.ToString();
 
                     int tempnpcint = thisEnemy.IndexOf("*");
@@ -1406,7 +1406,7 @@ namespace MSB_Test
 
                         tempGuy.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGuy.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                        tempGuy.Parts.Enemies[i].UnkT07 = int.Parse(modelName);
+                        tempGuy.Parts.Enemies[i].UnkT18 = int.Parse(modelName);
                     }
                     else if (tempGuy.Parts.Enemies[i].NPCParamID == 6380)
                     {
@@ -1416,7 +1416,7 @@ namespace MSB_Test
 
                         npc = tempGuy.Parts.Enemies[i].NPCParamID.ToString();
                         think = tempGuy.Parts.Enemies[i].ThinkParamID.ToString();
-                        mo = tempGuy.Parts.Enemies[i].UnkT07.ToString();
+                        mo = tempGuy.Parts.Enemies[i].UnkT18.ToString();
                         entityID = tempGuy.Parts.Enemies[i].EntityID.ToString();
 
                         tempnpcint = thisEnemy.IndexOf("*");
@@ -1447,7 +1447,7 @@ namespace MSB_Test
 
                         tempGuy.Parts.Enemies[i].NPCParamID = tempNpcParamInt;
                         tempGuy.Parts.Enemies[i].ThinkParamID = tempThinkIdInt;
-                        tempGuy.Parts.Enemies[i].UnkT07 = int.Parse(modelName);
+                        tempGuy.Parts.Enemies[i].UnkT18 = int.Parse(modelName);
                     }
 
                     npcList.RemoveAt(random);

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using StudioCore.MsbEditor;
+using StudioCore;
 
 namespace MSB_Test
 {
@@ -11,13 +13,27 @@ namespace MSB_Test
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static void TestBed()
+        {
+        }
+
         public MainWindow()
         {
+            TestBed();
             InitializeComponent();
 
             //TalkBox.IsEnabled = false;
             //EasyRomBox.IsEnabled = false;
             //EasyWitchesBox.IsEnabled = false;
+
+            currentDirectory = Directory.GetCurrentDirectory();
+            parentDir = Directory.GetParent(currentDirectory).FullName;
+            filePath = parentDir + "\\dvdroot_ps4";
+
+            assetLocator = new AssetLocator(filePath);
+            paramBank = new ParamBank();
+            ParamBank.SetAssetLocator(assetLocator);
+            ParamBank.ReloadParams();
 
             UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
             CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);

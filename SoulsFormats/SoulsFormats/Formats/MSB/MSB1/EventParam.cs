@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 
 namespace SoulsFormats
 {
     public partial class MSB1
     {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public enum EventType : uint
+        internal enum EventType : uint
         {
             Light = 0,
             Sound = 1,
             SFX = 2,
-            WindSFX = 3,
+            Wind = 3,
             Treasure = 4,
             Generator = 5,
             Message = 6,
@@ -23,7 +23,6 @@ namespace SoulsFormats
             Environment = 11,
             PseudoMultiplayer = 12,
         }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Contains abstract entities that control various dynamic elements in the map.
@@ -45,12 +44,12 @@ namespace SoulsFormats
             /// <summary>
             /// Particle effects.
             /// </summary>
-            public List<Event.SFX> SFXs { get; set; }
+            public List<Event.SFX> SFX { get; set; }
 
             /// <summary>
-            /// Unknown.
+            /// Wind that affects SFX in the map; should only be one per map, if any.
             /// </summary>
-            public List<Event.WindSFX> WindSFXs { get; set; }
+            public List<Event.Wind> Wind { get; set; }
 
             /// <summary>
             /// Item pickups in the open or in chests.
@@ -104,8 +103,8 @@ namespace SoulsFormats
             {
                 Lights = new List<Event.Light>();
                 Sounds = new List<Event.Sound>();
-                SFXs = new List<Event.SFX>();
-                WindSFXs = new List<Event.WindSFX>();
+                SFX = new List<Event.SFX>();
+                Wind = new List<Event.Wind>();
                 Treasures = new List<Event.Treasure>();
                 Generators = new List<Event.Generator>();
                 Messages = new List<Event.Message>();
@@ -118,12 +117,40 @@ namespace SoulsFormats
             }
 
             /// <summary>
+            /// Adds an event to the appropriate list for its type; returns the event.
+            /// </summary>
+            public Event Add(Event evnt)
+            {
+                switch (evnt)
+                {
+                    case Event.Light e: Lights.Add(e); break;
+                    case Event.Sound e: Sounds.Add(e); break;
+                    case Event.SFX e: SFX.Add(e); break;
+                    case Event.Wind e: Wind.Add(e); break;
+                    case Event.Treasure e: Treasures.Add(e); break;
+                    case Event.Generator e: Generators.Add(e); break;
+                    case Event.Message e: Messages.Add(e); break;
+                    case Event.ObjAct e: ObjActs.Add(e); break;
+                    case Event.SpawnPoint e: SpawnPoints.Add(e); break;
+                    case Event.MapOffset e: MapOffsets.Add(e); break;
+                    case Event.Navmesh e: Navmeshes.Add(e); break;
+                    case Event.Environment e: Environments.Add(e); break;
+                    case Event.PseudoMultiplayer e: PseudoMultiplayers.Add(e); break;
+
+                    default:
+                        throw new ArgumentException($"Unrecognized type {evnt.GetType()}.", nameof(evnt));
+                }
+                return evnt;
+            }
+            IMsbEvent IMsbParam<IMsbEvent>.Add(IMsbEvent item) => Add((Event)item);
+
+            /// <summary>
             /// Returns a list of every event in the order they'll be written.
             /// </summary>
             public override List<Event> GetEntries()
             {
                 return SFUtil.ConcatAll<Event>(
-                    Lights, Sounds, SFXs, WindSFXs, Treasures,
+                    Lights, Sounds, SFX, Wind, Treasures,
                     Generators, Messages, ObjActs, SpawnPoints, MapOffsets,
                     Navmeshes, Environments, PseudoMultiplayers);
             }
@@ -135,122 +162,46 @@ namespace SoulsFormats
                 switch (type)
                 {
                     case EventType.Light:
-                        var light = new Event.Light(br);
-                        Lights.Add(light);
-                        return light;
+                        return Lights.EchoAdd(new Event.Light(br));
 
                     case EventType.Sound:
-                        var sound = new Event.Sound(br);
-                        Sounds.Add(sound);
-                        return sound;
+                        return Sounds.EchoAdd(new Event.Sound(br));
 
                     case EventType.SFX:
-                        var sfx = new Event.SFX(br);
-                        SFXs.Add(sfx);
-                        return sfx;
+                        return SFX.EchoAdd(new Event.SFX(br));
 
-                    case EventType.WindSFX:
-                        var windSFX = new Event.WindSFX(br);
-                        WindSFXs.Add(windSFX);
-                        return windSFX;
+                    case EventType.Wind:
+                        return Wind.EchoAdd(new Event.Wind(br));
 
                     case EventType.Treasure:
-                        var treasure = new Event.Treasure(br);
-                        Treasures.Add(treasure);
-                        return treasure;
+                        return Treasures.EchoAdd(new Event.Treasure(br));
 
                     case EventType.Generator:
-                        var generator = new Event.Generator(br);
-                        Generators.Add(generator);
-                        return generator;
+                        return Generators.EchoAdd(new Event.Generator(br));
 
                     case EventType.Message:
-                        var message = new Event.Message(br);
-                        Messages.Add(message);
-                        return message;
+                        return Messages.EchoAdd(new Event.Message(br));
 
                     case EventType.ObjAct:
-                        var objAct = new Event.ObjAct(br);
-                        ObjActs.Add(objAct);
-                        return objAct;
+                        return ObjActs.EchoAdd(new Event.ObjAct(br));
 
                     case EventType.SpawnPoint:
-                        var spawnPoint = new Event.SpawnPoint(br);
-                        SpawnPoints.Add(spawnPoint);
-                        return spawnPoint;
+                        return SpawnPoints.EchoAdd(new Event.SpawnPoint(br));
 
                     case EventType.MapOffset:
-                        var mapOffset = new Event.MapOffset(br);
-                        MapOffsets.Add(mapOffset);
-                        return mapOffset;
+                        return MapOffsets.EchoAdd(new Event.MapOffset(br));
 
                     case EventType.Navmesh:
-                        var navmesh = new Event.Navmesh(br);
-                        Navmeshes.Add(navmesh);
-                        return navmesh;
+                        return Navmeshes.EchoAdd(new Event.Navmesh(br));
 
                     case EventType.Environment:
-                        var environment = new Event.Environment(br);
-                        Environments.Add(environment);
-                        return environment;
+                        return Environments.EchoAdd(new Event.Environment(br));
 
                     case EventType.PseudoMultiplayer:
-                        var pseudoMultiplayer = new Event.PseudoMultiplayer(br);
-                        PseudoMultiplayers.Add(pseudoMultiplayer);
-                        return pseudoMultiplayer;
+                        return PseudoMultiplayers.EchoAdd(new Event.PseudoMultiplayer(br));
 
                     default:
                         throw new NotImplementedException($"Unsupported event type: {type}");
-                }
-            }
-
-            public void Add(IMsbEvent item)
-            {
-                switch (item)
-                {
-                    case Event.Light e:
-                        Lights.Add(e);
-                        break;
-                    case Event.Sound e:
-                        Sounds.Add(e);
-                        break;
-                    case Event.SFX e:
-                        SFXs.Add(e);
-                        break;
-                    case Event.WindSFX e:
-                        WindSFXs.Add(e);
-                        break;
-                    case Event.Treasure e:
-                        Treasures.Add(e);
-                        break;
-                    case Event.Generator e:
-                        Generators.Add(e);
-                        break;
-                    case Event.Message e:
-                        Messages.Add(e);
-                        break;
-                    case Event.ObjAct e:
-                        ObjActs.Add(e);
-                        break;
-                    case Event.SpawnPoint e:
-                        SpawnPoints.Add(e);
-                        break;
-                    case Event.MapOffset e:
-                        MapOffsets.Add(e);
-                        break;
-                    case Event.Navmesh e:
-                        Navmeshes.Add(e);
-                        break;
-                    case Event.Environment e:
-                        Environments.Add(e);
-                        break;
-                    case Event.PseudoMultiplayer e:
-                        PseudoMultiplayers.Add(e);
-                        break;
-                    default:
-                        throw new ArgumentException(
-                            message: "Item is not recognized",
-                            paramName: nameof(item));
                 }
             }
         }
@@ -260,27 +211,22 @@ namespace SoulsFormats
         /// </summary>
         public abstract class Event : Entry, IMsbEvent
         {
+            private protected abstract EventType Type { get; }
+
             /// <summary>
             /// Unknown, should be unique.
             /// </summary>
             public int EventID { get; set; }
 
             /// <summary>
-            /// The type of this event.
-            /// </summary>
-            public abstract EventType Type { get; }
-
-            /// <summary>
             /// Part referenced by the event.
             /// </summary>
-            [MSBReference(ReferenceType = typeof(Part))]
             public string PartName { get; set; }
             private int PartIndex;
 
             /// <summary>
             /// Region referenced by the event.
             /// </summary>
-            [MSBReference(ReferenceType = typeof(Region))]
             public string RegionName { get; set; }
             private int RegionIndex;
 
@@ -289,14 +235,27 @@ namespace SoulsFormats
             /// </summary>
             public int EntityID { get; set; }
 
-            internal Event()
+            private protected Event(string name)
             {
-                Name = "";
+                Name = name;
                 EventID = -1;
                 EntityID = -1;
             }
 
-            internal Event(BinaryReaderEx br)
+            /// <summary>
+            /// Creates a deep copy of the event.
+            /// </summary>
+            public Event DeepCopy()
+            {
+                var evnt = (Event)MemberwiseClone();
+                DeepCopyTo(evnt);
+                return evnt;
+            }
+            IMsbEvent IMsbEvent.DeepCopy() => DeepCopy();
+
+            private protected virtual void DeepCopyTo(Event evnt) { }
+
+            private protected Event(BinaryReaderEx br)
             {
                 long start = br.Position;
                 int nameOffset = br.ReadInt32();
@@ -307,7 +266,15 @@ namespace SoulsFormats
                 int typeDataOffset = br.ReadInt32();
                 br.AssertInt32(0);
 
-                Name = br.GetShiftJIS(start + nameOffset);
+                if (nameOffset == 0)
+                    throw new InvalidDataException($"{nameof(nameOffset)} must not be 0 in type {GetType()}.");
+                if (baseDataOffset == 0)
+                    throw new InvalidDataException($"{nameof(baseDataOffset)} must not be 0 in type {GetType()}.");
+                if (typeDataOffset == 0)
+                    throw new InvalidDataException($"{nameof(typeDataOffset)} must not be 0 in type {GetType()}.");
+
+                br.Position = start + nameOffset;
+                Name = br.ReadShiftJIS();
 
                 br.Position = start + baseDataOffset;
                 PartIndex = br.ReadInt32();
@@ -316,7 +283,10 @@ namespace SoulsFormats
                 br.AssertInt32(0);
 
                 br.Position = start + typeDataOffset;
+                ReadTypeData(br);
             }
+
+            private protected abstract void ReadTypeData(BinaryReaderEx br);
 
             internal override void Write(BinaryWriterEx bw, int id)
             {
@@ -340,7 +310,10 @@ namespace SoulsFormats
                 bw.WriteInt32(0);
 
                 bw.FillInt32("TypeDataOffset", (int)(bw.Position - start));
+                WriteTypeData(bw);
             }
+
+            private protected abstract void WriteTypeData(BinaryWriterEx bw);
 
             internal virtual void GetNames(MSB1 msb, Entries entries)
             {
@@ -367,30 +340,28 @@ namespace SoulsFormats
             /// </summary>
             public class Light : Event
             {
-                /// <summary>
-                /// EventType.Light
-                /// </summary>
-                public override EventType Type => EventType.Light;
+                private protected override EventType Type => EventType.Light;
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public int UnkT00 { get; set; }
+                public int PointLightID { get; set; }
 
                 /// <summary>
                 /// Creates a Light with default values.
                 /// </summary>
-                public Light() : base() { }
+                public Light() : base($"{nameof(Event)}: {nameof(Light)}") { }
 
-                internal Light(BinaryReaderEx br) : base(br)
+                internal Light(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
-                    UnkT00 = br.ReadInt32();
+                    PointLightID = br.ReadInt32();
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
-                    bw.WriteInt32(UnkT00);
+                    bw.WriteInt32(PointLightID);
                 }
             }
 
@@ -399,10 +370,7 @@ namespace SoulsFormats
             /// </summary>
             public class Sound : Event
             {
-                /// <summary>
-                /// EventType.Sound
-                /// </summary>
-                public override EventType Type => EventType.Sound;
+                private protected override EventType Type => EventType.Sound;
 
                 /// <summary>
                 /// Category of sound.
@@ -417,17 +385,18 @@ namespace SoulsFormats
                 /// <summary>
                 /// Creates a Sound with default values.
                 /// </summary>
-                public Sound() : base() { }
+                public Sound() : base($"{nameof(Event)}: {nameof(Sound)}") { }
 
-                internal Sound(BinaryReaderEx br) : base(br)
+                internal Sound(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     SoundType = br.ReadInt32();
                     SoundID = br.ReadInt32();
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteInt32(SoundType);
                     bw.WriteInt32(SoundID);
                 }
@@ -438,57 +407,42 @@ namespace SoulsFormats
             /// </summary>
             public class SFX : Event
             {
-                /// <summary>
-                /// EventType.SFX
-                /// </summary>
-                public override EventType Type => EventType.SFX;
+                private protected override EventType Type => EventType.SFX;
 
                 /// <summary>
                 /// ID of the effect in the ffxbnds.
                 /// </summary>
-                public int FFXID { get; set; }
+                public int EffectID { get; set; }
 
                 /// <summary>
                 /// Creates an SFX with default values.
                 /// </summary>
-                public SFX() : base() { }
+                public SFX() : base($"{nameof(Event)}: {nameof(SFX)}") { }
 
-                internal SFX(BinaryReaderEx br) : base(br)
+                internal SFX(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
-                    FFXID = br.ReadInt32();
+                    EffectID = br.ReadInt32();
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
-                    bw.WriteInt32(FFXID);
+                    bw.WriteInt32(EffectID);
                 }
             }
 
             /// <summary>
-            /// Unknown.
+            /// Wind that affects particle effects.
             /// </summary>
-            public class WindSFX : Event
+            public class Wind : Event
             {
-                /// <summary>
-                /// EventType.WindSFX
-                /// </summary>
-                public override EventType Type => EventType.WindSFX;
+                private protected override EventType Type => EventType.Wind;
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT00 { get; set; }
-
-                /// <summary>
-                /// Unknown.
-                /// </summary>
-                public float UnkT04 { get; set; }
-
-                /// <summary>
-                /// Unknown.
-                /// </summary>
-                public float UnkT08 { get; set; }
+                public Vector3 WindVecMin { get; set; }
 
                 /// <summary>
                 /// Unknown.
@@ -498,17 +452,7 @@ namespace SoulsFormats
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT10 { get; set; }
-
-                /// <summary>
-                /// Unknown.
-                /// </summary>
-                public float UnkT14 { get; set; }
-
-                /// <summary>
-                /// Unknown.
-                /// </summary>
-                public float UnkT18 { get; set; }
+                public Vector3 WindVecMax { get; set; }
 
                 /// <summary>
                 /// Unknown.
@@ -518,87 +462,80 @@ namespace SoulsFormats
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT20 { get; set; }
+                public float WindSwingCycle0 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT24 { get; set; }
+                public float WindSwingCycle1 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT28 { get; set; }
+                public float WindSwingCycle2 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT2C { get; set; }
+                public float WindSwingCycle3 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT30 { get; set; }
+                public float WindSwingPow0 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT34 { get; set; }
+                public float WindSwingPow1 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT38 { get; set; }
+                public float WindSwingPow2 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public float UnkT3C { get; set; }
+                public float WindSwingPow3 { get; set; }
 
                 /// <summary>
-                /// Creates a WindSFX with default values.
+                /// Creates a Wind with default values.
                 /// </summary>
-                public WindSFX() : base() { }
+                public Wind() : base($"{nameof(Event)}: {nameof(Wind)}") { }
 
-                internal WindSFX(BinaryReaderEx br) : base(br)
+                internal Wind(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
-                    UnkT00 = br.ReadSingle();
-                    UnkT04 = br.ReadSingle();
-                    UnkT08 = br.ReadSingle();
+                    WindVecMin = br.ReadVector3();
                     UnkT0C = br.ReadSingle();
-                    UnkT10 = br.ReadSingle();
-                    UnkT14 = br.ReadSingle();
-                    UnkT18 = br.ReadSingle();
+                    WindVecMax = br.ReadVector3();
                     UnkT1C = br.ReadSingle();
-                    UnkT20 = br.ReadSingle();
-                    UnkT24 = br.ReadSingle();
-                    UnkT28 = br.ReadSingle();
-                    UnkT2C = br.ReadSingle();
-                    UnkT30 = br.ReadSingle();
-                    UnkT34 = br.ReadSingle();
-                    UnkT38 = br.ReadSingle();
-                    UnkT3C = br.ReadSingle();
+                    WindSwingCycle0 = br.ReadSingle();
+                    WindSwingCycle1 = br.ReadSingle();
+                    WindSwingCycle2 = br.ReadSingle();
+                    WindSwingCycle3 = br.ReadSingle();
+                    WindSwingPow0 = br.ReadSingle();
+                    WindSwingPow1 = br.ReadSingle();
+                    WindSwingPow2 = br.ReadSingle();
+                    WindSwingPow3 = br.ReadSingle();
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
-                    bw.WriteSingle(UnkT00);
-                    bw.WriteSingle(UnkT04);
-                    bw.WriteSingle(UnkT08);
+                    bw.WriteVector3(WindVecMin);
                     bw.WriteSingle(UnkT0C);
-                    bw.WriteSingle(UnkT10);
-                    bw.WriteSingle(UnkT14);
-                    bw.WriteSingle(UnkT18);
+                    bw.WriteVector3(WindVecMax);
                     bw.WriteSingle(UnkT1C);
-                    bw.WriteSingle(UnkT20);
-                    bw.WriteSingle(UnkT24);
-                    bw.WriteSingle(UnkT28);
-                    bw.WriteSingle(UnkT2C);
-                    bw.WriteSingle(UnkT30);
-                    bw.WriteSingle(UnkT34);
-                    bw.WriteSingle(UnkT38);
-                    bw.WriteSingle(UnkT3C);
+                    bw.WriteSingle(WindSwingCycle0);
+                    bw.WriteSingle(WindSwingCycle1);
+                    bw.WriteSingle(WindSwingCycle2);
+                    bw.WriteSingle(WindSwingCycle3);
+                    bw.WriteSingle(WindSwingPow0);
+                    bw.WriteSingle(WindSwingPow1);
+                    bw.WriteSingle(WindSwingPow2);
+                    bw.WriteSingle(WindSwingPow3);
                 }
             }
 
@@ -607,43 +544,46 @@ namespace SoulsFormats
             /// </summary>
             public class Treasure : Event
             {
-                /// <summary>
-                /// EventType.Treasure
-                /// </summary>
-                public override EventType Type => EventType.Treasure;
+                private protected override EventType Type => EventType.Treasure;
 
                 /// <summary>
                 /// The part that the treasure is attached to, such as an item corpse.
                 /// </summary>
-                [MSBReference(ReferenceType = typeof(Part))]
                 public string TreasurePartName { get; set; }
                 private int TreasurePartIndex;
 
                 /// <summary>
-                /// Five ItemLotParam IDs.
+                /// Item lots to be granted when the treasure is picked up; only the first appears to be functional.
                 /// </summary>
-                [MSBParamReference(ParamName = "ItemLotParam")]
                 public int[] ItemLots { get; private set; }
 
                 /// <summary>
-                /// Whether the treasure is inside a container.
+                /// Changes the text of the pickup prompt.
                 /// </summary>
                 public bool InChest { get; set; }
 
                 /// <summary>
-                /// Whether the treasure should be initially hidden, used for items in breakable objects.
+                /// Whether the treasure should be hidden by default.
                 /// </summary>
                 public bool StartDisabled { get; set; }
 
                 /// <summary>
                 /// Creates a Treasure with default values.
                 /// </summary>
-                public Treasure() : base()
+                public Treasure() : base($"{nameof(Event)}: {nameof(Treasure)}")
                 {
                     ItemLots = new int[5] { -1, -1, -1, -1, -1 };
                 }
 
-                internal Treasure(BinaryReaderEx br) : base(br)
+                private protected override void DeepCopyTo(Event evnt)
+                {
+                    var treasure = (Treasure)evnt;
+                    treasure.ItemLots = (int[])ItemLots.Clone();
+                }
+
+                internal Treasure(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     br.AssertInt32(0);
                     TreasurePartIndex = br.ReadInt32();
@@ -658,9 +598,8 @@ namespace SoulsFormats
                     br.AssertInt16(0);
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteInt32(0);
                     bw.WriteInt32(TreasurePartIndex);
                     for (int i = 0; i < 5; i++)
@@ -691,15 +630,17 @@ namespace SoulsFormats
             /// </summary>
             public class Generator : Event
             {
-                /// <summary>
-                /// EventType.Generator
-                /// </summary>
-                public override EventType Type => EventType.Generator;
+                private protected override EventType Type => EventType.Generator;
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public short MaxNum { get; set; }
+                public byte MaxNum { get; set; }
+
+                /// <summary>
+                /// Unknown.
+                /// </summary>
+                public sbyte GenType { get; set; }
 
                 /// <summary>
                 /// Unknown.
@@ -729,57 +670,65 @@ namespace SoulsFormats
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public int InitialSpawnCount { get; set; }
+                public byte InitialSpawnCount { get; set; }
 
                 /// <summary>
                 /// Points that enemies may be spawned at.
                 /// </summary>
-                [MSBReference(ReferenceType = typeof(Region))]
                 public string[] SpawnPointNames { get; private set; }
                 private int[] SpawnPointIndices;
 
                 /// <summary>
                 /// Enemies to be respawned.
                 /// </summary>
-                [MSBReference(ReferenceType = typeof(Part))]
                 public string[] SpawnPartNames { get; private set; }
                 private int[] SpawnPartIndices;
 
                 /// <summary>
                 /// Creates a Generator with default values.
                 /// </summary>
-                public Generator() : base()
+                public Generator() : base($"{nameof(Event)}: {nameof(Generator)}")
                 {
                     SpawnPointNames = new string[4];
                     SpawnPartNames = new string[32];
                 }
 
-                internal Generator(BinaryReaderEx br) : base(br)
+                private protected override void DeepCopyTo(Event evnt)
                 {
-                    MaxNum = br.ReadInt16();
+                    var generator = (Generator)evnt;
+                    generator.SpawnPointNames = (string[])SpawnPointNames.Clone();
+                    generator.SpawnPartNames = (string[])SpawnPartNames.Clone();
+                }
+
+                internal Generator(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
+                {
+                    MaxNum = br.ReadByte();
+                    GenType = br.ReadSByte();
                     LimitNum = br.ReadInt16();
                     MinGenNum = br.ReadInt16();
                     MaxGenNum = br.ReadInt16();
                     MinInterval = br.ReadSingle();
                     MaxInterval = br.ReadSingle();
-                    InitialSpawnCount = br.ReadInt32();
-                    br.AssertPattern(0x1C, 0x00);
+                    InitialSpawnCount = br.ReadByte();
+                    br.AssertPattern(0x1F, 0x00);
                     SpawnPointIndices = br.ReadInt32s(4);
                     SpawnPartIndices = br.ReadInt32s(32);
                     br.AssertPattern(0x40, 0x00);
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
-                    bw.WriteInt16(MaxNum);
+                    bw.WriteByte(MaxNum);
+                    bw.WriteSByte(GenType);
                     bw.WriteInt16(LimitNum);
                     bw.WriteInt16(MinGenNum);
                     bw.WriteInt16(MaxGenNum);
                     bw.WriteSingle(MinInterval);
                     bw.WriteSingle(MaxInterval);
-                    bw.WriteInt32(InitialSpawnCount);
-                    bw.WritePattern(0x1C, 0x00);
+                    bw.WriteByte(InitialSpawnCount);
+                    bw.WritePattern(0x1F, 0x00);
                     bw.WriteInt32s(SpawnPointIndices);
                     bw.WriteInt32s(SpawnPartIndices);
                     bw.WritePattern(0x40, 0x00);
@@ -805,10 +754,7 @@ namespace SoulsFormats
             /// </summary>
             public class Message : Event
             {
-                /// <summary>
-                /// EventType.Message
-                /// </summary>
-                public override EventType Type => EventType.Message;
+                private protected override EventType Type => EventType.Message;
 
                 /// <summary>
                 /// FMG text ID to display.
@@ -828,9 +774,11 @@ namespace SoulsFormats
                 /// <summary>
                 /// Creates a Message with default values.
                 /// </summary>
-                public Message() : base() { }
+                public Message() : base($"{nameof(Event)}: {nameof(Message)}") { }
 
-                internal Message(BinaryReaderEx br) : base(br)
+                internal Message(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     MessageID = br.ReadInt16();
                     UnkT02 = br.ReadInt16();
@@ -839,9 +787,8 @@ namespace SoulsFormats
                     br.AssertInt16(0);
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteInt16(MessageID);
                     bw.WriteInt16(UnkT02);
                     bw.WriteBoolean(Hidden);
@@ -856,9 +803,18 @@ namespace SoulsFormats
             public class ObjAct : Event
             {
                 /// <summary>
-                /// EventType.ObjAct
+                /// Unknown.
                 /// </summary>
-                public override EventType Type => EventType.ObjAct;
+                public enum StateType : byte
+                {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+                    Default = 0,
+                    Door = 1,
+                    Loop = 2,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+                }
+
+                private protected override EventType Type => EventType.ObjAct;
 
                 /// <summary>
                 /// Unknown how this differs from the Event EntityID.
@@ -868,20 +824,18 @@ namespace SoulsFormats
                 /// <summary>
                 /// The object that the ObjAct controls.
                 /// </summary>
-                [MSBReference(ReferenceType = typeof(Part))]
                 public string ObjActPartName { get; set; }
                 private int ObjActPartIndex;
 
                 /// <summary>
                 /// ID in ObjActParam that configures the ObjAct.
                 /// </summary>
-                [MSBParamReference(ParamName = "ObjActParam")]
                 public short ObjActParamID { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                public short UnkT0A { get; set; }
+                public StateType ObjActState { get; set; }
 
                 /// <summary>
                 /// Unknown, probably enables or disables the ObjAct.
@@ -891,29 +845,32 @@ namespace SoulsFormats
                 /// <summary>
                 /// Creates an ObjAct with default values.
                 /// </summary>
-                public ObjAct() : base()
+                public ObjAct() : base($"{nameof(Event)}: {nameof(ObjAct)}")
                 {
                     ObjActEntityID = -1;
                     ObjActParamID = -1;
                     EventFlagID = -1;
                 }
 
-                internal ObjAct(BinaryReaderEx br) : base(br)
+                internal ObjAct(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     ObjActEntityID = br.ReadInt32();
                     ObjActPartIndex = br.ReadInt32();
                     ObjActParamID = br.ReadInt16();
-                    UnkT0A = br.ReadInt16();
+                    ObjActState = br.ReadEnum8<StateType>();
+                    br.AssertByte(0);
                     EventFlagID = br.ReadInt32();
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteInt32(ObjActEntityID);
                     bw.WriteInt32(ObjActPartIndex);
                     bw.WriteInt16(ObjActParamID);
-                    bw.WriteInt16(UnkT0A);
+                    bw.WriteByte((byte)ObjActState);
+                    bw.WriteByte(0);
                     bw.WriteInt32(EventFlagID);
                 }
 
@@ -935,24 +892,22 @@ namespace SoulsFormats
             /// </summary>
             public class SpawnPoint : Event
             {
-                /// <summary>
-                /// EventType.SpawnPoint
-                /// </summary>
-                public override EventType Type => EventType.SpawnPoint;
+                private protected override EventType Type => EventType.SpawnPoint;
 
                 /// <summary>
                 /// Point for the SpawnPoint to spawn at.
                 /// </summary>
-                [MSBReference(ReferenceType = typeof(Region))]
                 public string SpawnPointName { get; set; }
                 private int SpawnPointIndex;
 
                 /// <summary>
                 /// Creates a SpawnPoint with default values.
                 /// </summary>
-                public SpawnPoint() : base() { }
+                public SpawnPoint() : base($"{nameof(Event)}: {nameof(SpawnPoint)}") { }
 
-                internal SpawnPoint(BinaryReaderEx br) : base(br)
+                internal SpawnPoint(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     SpawnPointIndex = br.ReadInt32();
                     br.AssertInt32(0);
@@ -960,9 +915,8 @@ namespace SoulsFormats
                     br.AssertInt32(0);
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteInt32(SpawnPointIndex);
                     bw.WriteInt32(0);
                     bw.WriteInt32(0);
@@ -987,10 +941,7 @@ namespace SoulsFormats
             /// </summary>
             public class MapOffset : Event
             {
-                /// <summary>
-                /// EventType.MapOffset
-                /// </summary>
-                public override EventType Type => EventType.MapOffset;
+                private protected override EventType Type => EventType.MapOffset;
 
                 /// <summary>
                 /// Position of the map.
@@ -1005,17 +956,18 @@ namespace SoulsFormats
                 /// <summary>
                 /// Creates a MapOffset with default values.
                 /// </summary>
-                public MapOffset() : base() { }
+                public MapOffset() : base($"{nameof(Event)}: {nameof(MapOffset)}") { }
 
-                internal MapOffset(BinaryReaderEx br) : base(br)
+                internal MapOffset(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     Position = br.ReadVector3();
                     Degree = br.ReadSingle();
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteVector3(Position);
                     bw.WriteSingle(Degree);
                 }
@@ -1026,24 +978,22 @@ namespace SoulsFormats
             /// </summary>
             public class Navmesh : Event
             {
-                /// <summary>
-                /// EventType.Navmesh
-                /// </summary>
-                public override EventType Type => EventType.Navmesh;
+                private protected override EventType Type => EventType.Navmesh;
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
-                [MSBReference(ReferenceType = typeof(Region))]
                 public string NavmeshRegionName { get; set; }
                 private int NavmeshRegionIndex;
 
                 /// <summary>
                 /// Creates a Navmesh with default values.
                 /// </summary>
-                public Navmesh() : base() { }
+                public Navmesh() : base($"{nameof(Event)}: {nameof(Navmesh)}") { }
 
-                internal Navmesh(BinaryReaderEx br) : base(br)
+                internal Navmesh(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     NavmeshRegionIndex = br.ReadInt32();
                     br.AssertInt32(0);
@@ -1051,9 +1001,8 @@ namespace SoulsFormats
                     br.AssertInt32(0);
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteInt32(NavmeshRegionIndex);
                     bw.WriteInt32(0);
                     bw.WriteInt32(0);
@@ -1078,10 +1027,7 @@ namespace SoulsFormats
             /// </summary>
             public class Environment : Event
             {
-                /// <summary>
-                /// EventType.Environment
-                /// </summary>
-                public override EventType Type => EventType.Environment;
+                private protected override EventType Type => EventType.Environment;
 
                 /// <summary>
                 /// Unknown.
@@ -1116,9 +1062,11 @@ namespace SoulsFormats
                 /// <summary>
                 /// Creates an Environment with default values.
                 /// </summary>
-                public Environment() : base() { }
+                public Environment() : base($"{nameof(Event)}: {nameof(Environment)}") { }
 
-                internal Environment(BinaryReaderEx br) : base(br)
+                internal Environment(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     UnkT00 = br.ReadInt32();
                     UnkT04 = br.ReadSingle();
@@ -1130,9 +1078,8 @@ namespace SoulsFormats
                     br.AssertInt32(0);
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteInt32(UnkT00);
                     bw.WriteSingle(UnkT04);
                     bw.WriteSingle(UnkT08);
@@ -1149,10 +1096,7 @@ namespace SoulsFormats
             /// </summary>
             public class PseudoMultiplayer : Event
             {
-                /// <summary>
-                /// EventType.PseudoMultiplayer
-                /// </summary>
-                public override EventType Type => EventType.PseudoMultiplayer;
+                private protected override EventType Type => EventType.PseudoMultiplayer;
 
                 /// <summary>
                 /// The NPC whose world you're entering.
@@ -1172,13 +1116,15 @@ namespace SoulsFormats
                 /// <summary>
                 /// Creates a PseudoMultiplayer with default values.
                 /// </summary>
-                public PseudoMultiplayer() : base()
+                public PseudoMultiplayer() : base($"{nameof(Event)}: {nameof(PseudoMultiplayer)}")
                 {
                     HostEntityID = -1;
                     EventFlagID = -1;
                 }
 
-                internal PseudoMultiplayer(BinaryReaderEx br) : base(br)
+                internal PseudoMultiplayer(BinaryReaderEx br) : base(br) { }
+
+                private protected override void ReadTypeData(BinaryReaderEx br)
                 {
                     HostEntityID = br.ReadInt32();
                     EventFlagID = br.ReadInt32();
@@ -1186,9 +1132,8 @@ namespace SoulsFormats
                     br.AssertInt32(0);
                 }
 
-                internal override void Write(BinaryWriterEx bw, int id)
+                private protected override void WriteTypeData(BinaryWriterEx bw)
                 {
-                    base.Write(bw, id);
                     bw.WriteInt32(HostEntityID);
                     bw.WriteInt32(EventFlagID);
                     bw.WriteInt32(ActivateGoodsID);

@@ -1,5 +1,7 @@
 ﻿using MSB_Test.Randomizers;
 using SoulsFormats;
+using StudioCore;
+using StudioCore.MsbEditor;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,10 +52,6 @@ namespace MSB_Test
                 unusedPlusBossList.Add("c1055");
             }
 
-            currentDirectory = Directory.GetCurrentDirectory();
-            var parentDir = Directory.GetParent(currentDirectory);
-            filePath = parentDir + "\\dvdroot_ps4";
-
             var logFile = File.ReadAllLines(filePath + "\\Mod Files\\NPC Scaling File\\NPCScalingFile.txt");
             logList = new List<string>(logFile);
 
@@ -89,7 +87,7 @@ namespace MSB_Test
                 namesAndSizes.Add(nameList[i], sizeList[i]);
             }
 
-            mapList = new List<string>();
+            coreMapList = new List<string>();
 
             this.Dispatcher.Invoke(() =>
             {
@@ -244,6 +242,21 @@ namespace MSB_Test
                 {
 
                 }
+            #region File Backup
+            #endregion
+            if (randomizeItemLots)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    totalPercent = 85;
+                    currentTask = "Generating Item List...";
+                    UpdateUI();
+                });
+                var itemRandomizer = new ItemRandomizer(filePath, ref universalRand, workshopBool, logging);
+                var events = EventRandomizer.GetEventsFromEventsFiles(eventFileList);
+                itemRandomizer.RandomizeItems(coreMapList, events);
+            }
+
 
             //setting models in list to paste into all maps
             for (int i = 0; i < allMaps.Count; i++)
@@ -1114,8 +1127,8 @@ namespace MSB_Test
 
                 for (int i = 0; i < npcEnemyList.Count; i++)
                 {
-                    string tempString = npcEnemyList[i].NPCParamID.ToString() + "*" + npcEnemyList[i].ThinkParamID.ToString() + "*" + npcEnemyList[i].UnkT07.ToString();
-                    npcList.Add(npcEnemyList[i].NPCParamID.ToString() + "*" + npcEnemyList[i].ThinkParamID.ToString() + "*" + npcEnemyList[i].UnkT07.ToString());
+                    string tempString = npcEnemyList[i].NPCParamID.ToString() + "*" + npcEnemyList[i].ThinkParamID.ToString() + "*" + npcEnemyList[i].UnkT18.ToString();
+                    npcList.Add(npcEnemyList[i].NPCParamID.ToString() + "*" + npcEnemyList[i].ThinkParamID.ToString() + "*" + npcEnemyList[i].UnkT18.ToString());
                 }
 
                 for (int i = 0; i < npcList.Count; i++)
@@ -1186,17 +1199,6 @@ namespace MSB_Test
                 EasyModes(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
             }
 
-            if (randomizeItemLots)
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    totalPercent = 85;
-                    currentTask = "Generating Item List...";
-                    UpdateUI();
-                });
-                var itemRandomizer = new ItemRandomizer(filePath, ref universalRand, workshopBool, logging);
-                itemRandomizer.RandomizeItems(mapList);
-            }
 
             PermaDarknessFunction(filePath + "\\event\\common.emevd.dcx");
 
@@ -2342,59 +2344,59 @@ namespace MSB_Test
                     ParamScalingForBosses(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
                 }
             }
-            mapList = new List<string>();
+            coreMapList = new List<string>();
 
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
-            mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m21_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m21_01_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m22_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m23_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m23_00_00_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m24_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m24_00_00_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m24_01_00_11.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m24_02_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m24_02_00_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m25_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m26_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m27_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m27_00_00_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m28_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m28_00_00_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m32_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m32_00_00_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m33_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m34_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m35_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m36_00_00_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_10_90_00\\m29_10_90_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_20_90_00\\m29_20_90_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_21_90_00\\m29_21_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_30_90_00\\m29_30_90_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_31_90_00\\m29_31_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_40_90_00\\m29_40_90_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_42_90_00\\m29_42_90_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_90_00\\m29_50_90_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_52_90_00\\m29_52_90_01.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_00.msb.dcx");
+            coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_53_90_00\\m29_53_90_01.msb.dcx");
 
             if (GOBAdded)
             {
-                mapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
+                coreMapList.Add(filePath + "\\map\\mapstudio\\" + "m29_50_40_00\\m29_50_40_00.msb.dcx");
             }
 
-            for (int i = 0; i < mapList.Count; i++)
+            for (int i = 0; i < coreMapList.Count; i++)
             {
-                var tempMapRead = MSBB.Read(mapList[i]);
+                var tempMapRead = MSBB.Read(coreMapList[i]);
 
                 long maxSizeLong = 0;
 

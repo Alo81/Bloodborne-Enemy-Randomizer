@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SoulsFormats\SoulsFormats\SoulsFormats.csproj" />
+    <ProjectReference Include="..\StudioCore\StudioCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

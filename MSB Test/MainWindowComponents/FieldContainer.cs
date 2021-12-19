@@ -1,4 +1,6 @@
 ﻿using SoulsFormats;
+using StudioCore;
+using StudioCore.MsbEditor;
 using System;
 using System.Collections.Generic;
 
@@ -35,6 +37,9 @@ namespace MSB_Test
         Random keyitemRand = new Random();
         int seed;
 
+        AssetLocator assetLocator;
+        ParamBank paramBank;
+
         ///regular maps
         private List<string> _allMaps;
         public List<string> allMaps 
@@ -44,13 +49,13 @@ namespace MSB_Test
                 if(_allMaps == null)
                 {
                     _allMaps = new List<string>();
-                    _allMaps.AddRange(mapList);
+                    _allMaps.AddRange(coreMapList);
                     _allMaps.AddRange(chaliceMapList);
                 }
                 return _allMaps; 
             } 
         }
-        List<string> mapList = new List<string>();
+        List<string> coreMapList = new List<string>();
         List<string> chaliceMapList = new List<string>();
 
         List<MSBB.Part.Enemy> randEnemyList = new List<MSBB.Part.Enemy>();
@@ -60,6 +65,7 @@ namespace MSB_Test
         List<MSBB.Model.Enemy> modelList = new List<MSBB.Model.Enemy>();
 
         string currentDirectory;
+        string parentDir;
         string filePath;
 
         List<long> masterList = new List<long>();

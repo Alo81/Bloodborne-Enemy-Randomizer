@@ -252,9 +252,9 @@ namespace MSB_Test
                     currentTask = "Generating Item List...";
                     UpdateUI();
                 });
-                var itemRandomizer = new ItemRandomizer(filePath, ref universalRand, workshopBool, logging);
+                var itemRandomizer = new ItemLotScrambler(filePath, ref universalRand, workshopBool, logging);
                 var events = EventRandomizer.GetEventsFromEventsFiles(eventFileList);
-                itemRandomizer.RandomizeItems(coreMapList, events);
+                itemRandomizer.RandomizeItems(coreMapList);
             }
 
 

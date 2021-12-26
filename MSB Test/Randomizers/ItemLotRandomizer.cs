@@ -1,4 +1,5 @@
 ﻿using SoulsFormats;
+using StudioCore.MsbEditor;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +8,14 @@ using System.Text;
 
 namespace MSB_Test.Randomizers
 {
-    public class ItemRandomizer
+    public enum lotItemCategory
+    {
+        Weapon = 0,
+        Armor = 1,
+        Good = 4,
+        GemAndRune = 8
+    }
+    public class ItemLotRandomizer
     {
         List<int> nonoItemLots;
         List<int> keyItemLots;
@@ -16,55 +24,80 @@ namespace MSB_Test.Randomizers
         bool logging;
         Random rand;
 
-        public ItemRandomizer(string filePath, ref Random rand, bool workshopBool = false, bool logging = true)
+        public ItemLotRandomizer(ref Random rand, bool logging = true)
         {
-            this.filePath = filePath;
             this.logging = logging;
             this.rand = rand;
-
-            nonoItemLots = new List<int>
-            {
-                2600550,     //Evil Eye Bridge key (key in nightmare of mensis?)
-                2400450,     //The key to the Old Town (gascoigne key?)
-                3500800      //The key to the dungeon usually door (braidor key?)
-            };
-            keyItemLots = new List<int>
-            {
-                2800290,    //The key to Cathedral Street C (UCW key)
-                3200720,    //The key to nightmare classroom (byrgenworth lower floor key)
-                3200810,    //Veranda of key (key to rom fight)
-                2410990,    //Invitation to the castle (cainhurst summons)
-                3502000,    //Parish length Ω Startup Item (laurence skull)
-                3401810     //Altar Elevator Startup Item (eye pendant)
-            };
-            workshopItemsList = new List<int>
-            {
-                2411000,    //Blood gem workshop tool (chest after gascoigne)
-                2200360     //Rune tool (after witches)
-            };
-
-            nonoItemLots.AddRange(keyItemLots);
-
-            if (!workshopBool)
-            {
-                nonoItemLots.AddRange(workshopItemsList);
-            }
         }
 
-        public void RandomizeItems(List<string> maps, List<long> eventList = null)
+        public void RandomizeItems(ParamBank bank, IEnumerable<int> treasureLots)
         {
-            var itemLotList = new List<int>();
-            foreach (var map in maps.Where(x => !x.Contains("m21_00_00_00")))   // Exclude the dream(?)
-            {
-                itemLotList.AddRange(GenerateItemLotList(map, nonoItemLots, eventList));
-            }
+            /*
+            lotItemCategory01
+                0 - Weapon
+                1 - Armor
+                4 - Good
+                8 - Gem / Rune
+            
+            Item Count
+                How many of item to get.  Probably do 1x for everything except Goods.  
+
+            Item Slot #     // You can add sequential new lotItemCategorys to add additional item unlocks / create multiple drops.  
+                Item ID.                
+
+            Item # Chance Points
+                You could LIVE randomize like this?  
+                Each item has a chance to be one of x items.  
+                Could mean you play a new run on the same randomizer and find new stuff.
+                Treat it like Gatcha rolls lol.  Every item is 5 rolls, low rate for good stuff, but you get a lot of chances at it.  
+            */
+            /*
+            Should have an already generated list of randomizable items.  
+                Should only have base level weapons.  
+                Cut content items should be user configurable. 
+            Includes: 
+                Item ID 
+                Item Name
+                Item Category
+                Cut Content bool
+                ConfigurableItemCount bool
+                Rarity(?)   // For Gacha style rolls
+                Scaling level(?)    // For scaling-mapped rolls
+            */
+
+            /*
+            For each ItemLot in ParamBank (Maybe only modify ones explcitly linked to treasure?)
+                Check if its a key item.
+                If not, continue. 
+                Pull a random item from item list. 
+                Check category
+                If Weapon, 
+                    Set random upgrade level(?)
+                If Good
+                    Set random item count
+                Replace item with randomized item
+                Check if next slot is used already.  
+                If not, maybe add up to 5x item drops?
+            Once all modified, save.
+            */
+            /*
+            var itemLotList = GetItemLotListFromMaps(maps);
             foreach (var map in maps.Where(x => !x.Contains("m21_00_00_00")))   // Exclude the dream(?)
             {
                 RandomizeItemLots(map, itemLotList, nonoItemLots);
             }
+            */
+
+            var objAct = ParamBank.Params.Where(x => x.Key.Equals("ItemLotParam")).FirstOrDefault().Value.Rows.Where(x => treasureLots.Contains(x.ID));
+
         }
 
-        private List<int> GenerateItemLotList(string currentMap, List<int> nonoItemLots, List<long> eventList = null)
+        public List<int> GetItemLotListFromMaps(List<string> maps)
+        {
+            return null;
+        }
+
+        private List<int> GenerateItemList(string currentMap, List<int> nonoItemLots)
         {
             var tempGuy = MSBB.Read(currentMap);
             var itemLotList = new List<int>();
@@ -96,7 +129,7 @@ namespace MSB_Test.Randomizers
         {
             var randomizedItemLotPath = filePath + "\\Mod Files\\Logs. Don't Delete\\" + DateTime.Now.ToString("h:mm:ss tt").Replace(":", "-") + "-RandomizedItemLog.txt";
             if (logging)
-                using (FileStream sw1 = File.Create(randomizedItemLotPath));
+                using (FileStream sw1 = File.Create(randomizedItemLotPath)) ;
 
             var tempGuy = MSBB.Read(currentMap);
             int numberOfKeyIemsRandomized = 0;
@@ -121,7 +154,7 @@ namespace MSB_Test.Randomizers
                 }
                 if (logging)
                 {
-                    foreach(var result in results)
+                    foreach (var result in results)
                     {
                         WriteOldLog(randomizedItemLotPath, currentMap, numberOfKeyIemsRandomized, result.Item1);
                         numberOfKeyIemsRandomized++;

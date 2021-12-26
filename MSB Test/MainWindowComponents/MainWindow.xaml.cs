@@ -5,6 +5,8 @@ using System.IO;
 using System.Windows;
 using StudioCore.MsbEditor;
 using StudioCore;
+using System.Linq;
+using MSB_Test.Randomizers;
 
 namespace MSB_Test
 {
@@ -13,13 +15,34 @@ namespace MSB_Test
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static void TestBed()
+        public void TestBed()
         {
+            while (!ParamBank.IsParamsLoaded)
+            {
+                System.Threading.Thread.Sleep(1000);
+            }
+            BuildMapLists();
+            var nonos = ItemLotScrambler.GetNoNoItemLots();
+            nonos.AddRange(ItemLotScrambler.GetKeyItemLots());
+            var lots = ItemLotScrambler.GetItemLotListFromMaps(coreMapList, nonos).Distinct();
+            var objAct = ParamBank.Params.Where(x => x.Key.Equals("ItemLotParam")).FirstOrDefault().Value.Rows.Where(x => lots.Contains(x.ID));
+            var doorsThatOpenOneSide = new List<PARAM.Row>();
+            foreach(var act in objAct)
+            {
+                var successType = act.Cells.Where(x => x.Def.InternalName.Equals("spQualifiedType")).FirstOrDefault();
+                var successId = act.Cells.Where(x => x.Def.InternalName.Equals("spQualifiedId")).FirstOrDefault();
+                if ((byte)successType.Value >= 2)
+                {
+                }
+                if((ushort)successId.Value == 4150)
+                {
+                    doorsThatOpenOneSide.Add(act);
+                }
+            }
         }
 
         public MainWindow()
         {
-            TestBed();
             InitializeComponent();
 
             //TalkBox.IsEnabled = false;
@@ -34,6 +57,7 @@ namespace MSB_Test
             paramBank = new ParamBank();
             ParamBank.SetAssetLocator(assetLocator);
             ParamBank.ReloadParams();
+            TestBed();
 
             UpperCathedralLabel.Content = String.Format("{0:0.00}", UpperCathedralWardChance);
             CainhurstLabel.Content = String.Format("{0:0.00}", CainhurstChance);

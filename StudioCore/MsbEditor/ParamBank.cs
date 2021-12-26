@@ -23,6 +23,7 @@ namespace StudioCore.MsbEditor
 
         public static bool IsDefsLoaded { get; private set; } = false;
         public static bool IsMetaLoaded { get; private set; } = false;
+        public static bool IsParamsLoaded { get; private set; } = false;
         public static bool IsLoadingParams { get; private set; } = false;
         public static bool IsLoadingVParams { get; private set; } = false;
 
@@ -186,6 +187,7 @@ namespace StudioCore.MsbEditor
             _vanillaParams = new Dictionary<string, PARAM>();
             IsDefsLoaded = false;
             IsMetaLoaded = false;
+            IsParamsLoaded = false;
             IsLoadingParams = true;
             IsLoadingVParams = true;
 
@@ -222,6 +224,7 @@ namespace StudioCore.MsbEditor
                         TaskManager.Run("PB:RefreshDirtyCache", false, true, () => refreshParamDirtyCache());
                     });
                 }
+                IsParamsLoaded = true;
             });
         }
 
